@@ -1,8 +1,7 @@
 const express = require('express');
-
 const app = express();
 
-const hello = require('./routes/hello');
-app.use('/hello', hello);
+require('express-async-errors');
+require('./routes')(app);
 
 module.exports = app;
