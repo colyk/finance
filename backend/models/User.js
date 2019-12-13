@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
 const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const envConfig = require('../env')[env];
 
-mongoose.Promise = require('bluebird');
-mongoose.connect(envConfig.db, { useMongoClient: true, });
+mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true  });
+
 mongoose.connection.on('connected', function () {
     console.log(`Database connection open to ${mongoose.connection.host} ${mongoose.connection.name}`);
 });
