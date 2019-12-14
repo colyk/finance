@@ -8,4 +8,5 @@ const UserController = {
     res.send(users);
   }
 };
+
 module.exports = UserController;
