@@ -10,9 +10,8 @@ export default class SingIn extends React.Component {
     }
 
     handleChange = event => {
-        const target = event.target;
-        const value = target.type === 'username' ? target.value : target.value;
-        const name = target.name;
+        const value = event.target.value;
+        const name = event.target.name;
 
         this.setState({
             [name]: value
@@ -30,7 +29,6 @@ export default class SingIn extends React.Component {
         axios.post('http://localhost:8000/login', { user })
         .then(res => {
             console.log(res.data);
-            console.log(res.data.data);
         })
     }
 

@@ -1,6 +1,6 @@
 const db = require('../db');
 
-const userModel = db.Schema({
+const userModel = new db.Schema({
     username: String,
     password: String
 }, {
