@@ -38,7 +38,6 @@ createUser = (req, res) => {
             return res.status(400).json({ error, message: 'User not created' });
         return res.status(200).json({ success: true, id: user._id, message: 'User created' });
     });
-
 }
 
 module.exports = {

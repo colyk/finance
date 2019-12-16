@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
-const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const envConfig = require('./env')[env];
+env = {
+    development: {
+        db: 'mongodb://localhost/finance',
+        port: process.env.PORT || 3000
+    },
+    production: {
+        db: process.env.MONGOLAB_URI || 'you can add a mongolab uri here ($ heroku config | grep MONGOLAB_URI)',
+        port: process.env.PORT || 80
+    }
+}
+const envConfig = env[process.env.NODE_ENV || 'development'];
 
-mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 3000 });
 
 mongoose.connection.on('connected', function () {
-    console.log(`Database connection open to ${mongoose.connection.host} ${mongoose.connection.name}`);
+    console.log(`Database
+connection open to ${mongoose.connection.host} ${mongoose.connection.name}`);
 });
 mongoose.connection.on('error', function (err) {
     console.log('Mongoose default connection error: ' + err);

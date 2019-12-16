@@ -26,10 +26,11 @@ export default class SingUp extends React.Component {
             password: this.state.password
         };
 
-        axios.post('http://localhost:8000/registration', { user })
+        axios.post('http://localhost:8000/signup', { user })
         .then(res => {
             console.log(res.data);
         })
+        .catch(console.error);
     }
 
     render() {

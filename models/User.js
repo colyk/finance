@@ -1,10 +1,10 @@
 const db = require('../db');
 
-const userModel = new db.Schema({
+const userSchema = new db.Schema({
     username: String,
     password: String
 }, {
     timestamps: true
 });
 
-module.exports = db.model('user', userModel);
+module.exports = db.model('user', userSchema);

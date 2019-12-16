@@ -30,6 +30,7 @@ export default class SingIn extends React.Component {
         .then(res => {
             console.log(res.data);
         })
+        .catch(console.error);
     }
 
     render() {
@@ -40,7 +41,7 @@ export default class SingIn extends React.Component {
                         <input type="text" name="username" placeholder="username" onChange={this.handleChange}/>
                         <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
                         <button type="submit">login</button>
-                        <p className="message">Not registered? <a href="/registration">Create an account</a></p>
+                        <p className="message">Not registered? <a href="/signup">Create an account</a></p>
                     </form>
                 </div>
             </div>
