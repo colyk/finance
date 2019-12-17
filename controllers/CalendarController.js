@@ -3,7 +3,9 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 class workCalendar {
-    constructor() { }
+    constructor() {
+        this.cache = null
+    }
 
     getWeekdaysCount(start, end, freedays = []) {
         let saturdayCode = 6;
@@ -22,32 +24,45 @@ class workCalendar {
         return count;
     }
 
-    async getWorkingDays({ from_month, from_year, to_month, to_year }) {
-        let res = await axios.get(`https://date.nager.at/api/v2/PublicHolidays/2019/PL`)
-        let data = res.data;
+    async getHolidays(year = 2019, local = 'PL') {
+        if (this.cache)
+            return Promise.resolve(this.cache);
+        let url =`https://date.nager.at/api/v2/PublicHolidays/${year}/${local}`
+        let res = await axios.get(url)
+        this.cache = res.data
+        return Promise.resolve(res.data);
+    }
 
-        let start = new Date(from_year, from_month);
-        let end = new Date(to_year, to_month);
+    /**
+     * Moth range 0 - 11
+     */
+    async getWorkingDays({ from_month, from_year, to_month, to_year }) {
+        let data = await this.getHolidays();
         let freedays = this.parseDates(data);
+
+        let start = new Date(Date.UTC(from_year, from_month));
+        let end = new Date(Date.UTC(to_year, to_month));
         let weekdaysCount = this.getWeekdaysCount(start, end, freedays);
         return weekdaysCount;
-
     }
 
     parseDates(holidays) {
         const dates = [];
 
         for (let holiday of holidays)
-            dates.push((new Date(holiday.date)).getTime())
+            dates.push(Date.UTC(holiday.date))
         return dates;
     }
 }
 
-
-
 let wc = new workCalendar();
 
-async function getHolidays(req, res) { }
+async function getHolidays(req, res) {
+    const query = req.query;
+
+    const holidays = await wc.getHolidays();
+    return res.status(200).json({ holidays: holidays });
+}
 
 async function getWorkdays(req, res) {
     const query = req.query;
