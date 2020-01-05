@@ -1,12 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
-// import Trend from './components/Trend';
-// import SingIn from './components/SingIn';
-// import SingUp from './components/SingUp';
-import Cal from './components/Calendar';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
-// ReactDOM.render(<Trend />, document.getElementById('root'));
-// ReactDOM.render(<SingIn />, document.getElementById('root'));
-// ReactDOM.render(<SingUp />, document.getElementById('root'));
-ReactDOM.render(<Cal />, document.getElementById('root'));
+import './styles/index.css';
+
+import SingIn from './components/SingIn';
+import SingUp from './components/SingUp';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/login">
+          <SingIn />
+        </Route>
+        <Route path="/signup">
+          <SingUp />
+        </Route>
+        <Route path="/">
+          <SingIn />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
