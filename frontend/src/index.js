@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import './styles/index.css';
 
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';
+import Cal from './components/Calendar';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -22,6 +19,9 @@ function App() {
         </Route>
         <Route path="/signup">
           <SingUp />
+        </Route>
+        <Route path="/home">
+          <Cal />
         </Route>
         <Route path="/">
           <SingIn />
