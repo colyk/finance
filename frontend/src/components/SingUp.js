@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import '../styles/login.css';
-import axios from 'axios';
+import requests from '../requests';
 
 class SingUp extends React.Component {
   constructor(props) {
@@ -29,11 +29,11 @@ class SingUp extends React.Component {
       password: this.state.password,
     };
 
-    axios
-      .post('http://localhost:8000/signup', { user })
+    requests
+      .post('/signup', { user })
       .then(res => {
-        console.log(res.data);
-        this.props.history.push('home');
+        if ('error' in res.data) alert(res.data.error);
+        else this.props.history.push('home');
       })
       .catch(console.error);
   };

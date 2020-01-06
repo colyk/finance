@@ -7,11 +7,13 @@ env = {
     port: process.env.PORT || 3000
   },
   production: {
-    db: process.env.MONGOLAB_URI || 'you can add a mongolab uri here ($ heroku config | grep MONGOLAB_URI)',
-    port: process.env.PORT || 80
+    db: process.env.MONGODB_URI,
+    port: process.env.PORT
   }
 }
 const envConfig = env[process.env.NODE_ENV || 'development'];
+
+console.log('DB config: ', envConfig);
 
 mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 3000 });
 

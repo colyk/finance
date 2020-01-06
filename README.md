@@ -32,3 +32,14 @@ cd frontend
 npm i
 npm start
 ```
+
+## Deploy
+    
+```bash
+git push heroku master
+```
+
+See logs:
+```bash
+heroku logs --source app --tail
+```
