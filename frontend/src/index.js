@@ -6,7 +6,7 @@ import './styles/index.css';
 
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';
-import Cal from './components/Calendar';
+import Calendar from './components/Calendar';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -21,7 +21,7 @@ function App() {
           <SingUp />
         </Route>
         <Route path="/home">
-          <Cal />
+          <Calendar />
         </Route>
         <Route path="/">
           <SingIn />
