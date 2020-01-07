@@ -85,6 +85,7 @@ class Calendar extends Component {
           events={this.state.events}
           onNavigate={this.onNavigate}
           style={{ height: '95vh' }}
+          views={['month']}
         />
       </div>
     );

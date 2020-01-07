@@ -9,6 +9,7 @@ class SingUp extends React.Component {
     this.state = {
       username: '',
       password: '',
+      error: '',
     };
   }
 
@@ -30,10 +31,15 @@ class SingUp extends React.Component {
     };
 
     requests
-      .post('/signup', { user })
+      .post('signup', { user })
       .then(res => {
-        if ('error' in res.data) alert(res.data.error);
-        else this.props.history.push('home');
+        if ('error' in res.data) {
+          this.setState({
+            error: res.data.error,
+          });
+        } else {
+          this.props.history.push('home');
+        }
       })
       .catch(console.error);
   };
@@ -42,6 +48,7 @@ class SingUp extends React.Component {
     return (
       <div className="login-page">
         <div className="form">
+          {this.state.error ? <div className="toast toast-error mb-2">{this.state.error}</div> : ''}
           <form className="register-form" method="post" onSubmit={this.handleSubmit}>
             <input type="text" name="username" placeholder="name" onChange={this.handleChange} />
             <input
