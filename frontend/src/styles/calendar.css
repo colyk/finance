@@ -4,6 +4,7 @@
      height: 100%;
      padding: 3%;
      overflow: auto;
+     height: 100vh;
  }
 
  .planer .calendar {
