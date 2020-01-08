@@ -7,7 +7,7 @@ import 'spectre.css';
 
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';
-import Calendar from './components/Calendar';
+import Home from './components/Home';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -22,7 +22,7 @@ function App() {
           <SingUp />
         </Route>
         <Route path="/home">
-          <Calendar />
+          <Home />
         </Route>
         <Route path="/">
           <SingIn />
