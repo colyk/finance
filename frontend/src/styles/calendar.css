@@ -1,6 +1,11 @@
 .planer
  {
-     height: 80%;
-     width: 80%;
-     margin: auto;
+     width: 100%;
+     height: 100%;
+     padding: 3%;
+     overflow: auto;
+ }
+
+ .planer .calendar {
+    min-width: 700px;
  }

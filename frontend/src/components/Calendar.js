@@ -66,6 +66,12 @@ class Calendar extends Component {
     this.fetchHolidays(month, year);
   };
 
+  onSelectEvent = event => {
+    let date = moment(event.start).format('LL');
+    let title = event.title;
+    console.log(date, title);
+  };
+
   render() {
     return (
       <div className="planer">
@@ -78,15 +84,19 @@ class Calendar extends Component {
           ''
         )}
 
-        <RCalendar
-          localizer={localizer}
-          defaultDate={new Date()}
-          defaultView="month"
-          events={this.state.events}
-          onNavigate={this.onNavigate}
-          style={{ height: '95vh' }}
-          views={['month']}
-        />
+        <div className="calendar">
+          <RCalendar
+            localizer={localizer}
+            defaultDate={new Date()}
+            defaultView="month"
+            events={this.state.events}
+            onNavigate={this.onNavigate}
+            onSelectEvent={this.onSelectEvent}
+            style={{ height: '95vh' }}
+            views={['month']}
+            popup={true}
+          />
+        </div>
       </div>
     );
   }
