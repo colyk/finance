@@ -1,31 +1,35 @@
 const http = require('http');
 const express = require('express');
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
-var session = require('express-session')
-var MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const db = require('./db');
+
+
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.set('trust proxy', true);
 app.use(session({
   secret: 'work hard',
-  resave: true,
+  resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000
+  },
   store: new MongoStore({
     mongooseConnection: db.connection
   })
 }));
-
-
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
 
 require('express-async-errors');
 require('./routes/routes')(app);

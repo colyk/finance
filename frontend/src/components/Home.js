@@ -8,17 +8,18 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import Calendar from './Calendar';
+import Budget from './Budget';
 import Trend from './Trend';
 
 function Home() {
   return (
     <Router>
       <Redirect to="/home/calendar" />
-
       <div>
         <header className="navbar">
           <section className="navbar-section">
             <MenuLink to="/home/calendar" label="Calendar" />
+            <MenuLink to="/home/budget" label="Budgets" />
             <MenuLink to="/home/trend" label="Trend" />
           </section>
           <section className="navbar-center">{/* <!-- centered logo or brand --> */}</section>
@@ -27,12 +28,12 @@ function Home() {
             <a href="#" className="btn btn-link">GitHub</a> */}
           </section>
         </header>
-
-        <hr />
-
         <Switch>
           <Route exact path="/home/calendar">
             <Calendar />
+          </Route>
+          <Route exact path="/home/budget">
+            <Budget />
           </Route>
           <Route path="/home/trend">
             <Trend />
