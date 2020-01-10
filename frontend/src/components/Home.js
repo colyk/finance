@@ -9,6 +9,9 @@ import {
 } from 'react-router-dom';
 import Calendar from './Calendar';
 import Trend from './Trend';
+import Income from './Income';
+import Expense from './Expense';
+import Category from './Category';
 
 function Home() {
   return (
@@ -20,8 +23,11 @@ function Home() {
           <section className="navbar-section">
             <MenuLink to="/home/calendar" label="Calendar" />
             <MenuLink to="/home/trend" label="Trend" />
+            <MenuLink to="/incomes" label="Income" />
+            <MenuLink to="/expenses" label="Expense" />
+            <MenuLink to="/categories" label="Categories" />
           </section>
-          <section className="navbar-center">{/* <!-- centered logo or brand --> */}</section>
+          <section className="navbar-center">{/* <!--Expense centered logo or brand --> */}</section>
           <section className="navbar-section">
             {/* <a href="#" className="btn btn-link">Twitter</a>
             <a href="#" className="btn btn-link">GitHub</a> */}
@@ -36,6 +42,15 @@ function Home() {
           </Route>
           <Route path="/home/trend">
             <Trend />
+          </Route>
+          <Route path="/incomes">
+            <Income />
+          </Route>
+          <Route path="/expenses">
+            <Expense />
+          </Route>
+          <Route path="/categories">
+            <Category />
           </Route>
         </Switch>
       </div>
