@@ -10,6 +10,8 @@ class SingIn extends React.Component {
       password: '',
       error: '',
     };
+
+    if (sessionStorage.logged) this.props.history.push('home');
   }
 
   handleChange = event => {
@@ -36,7 +38,9 @@ class SingIn extends React.Component {
           this.setState({
             error: res.data.error,
           });
+          sessionStorage.logged = false;
         } else {
+          sessionStorage.logged = true;
           this.props.history.push('home');
         }
       })

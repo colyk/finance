@@ -10,7 +10,7 @@ const db = require('./db');
 
 app.use(cors({
   origin: ['http://localhost:3000'],
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));
 
@@ -21,10 +21,11 @@ app.use(bodyParser.json());
 app.set('trust proxy', true);
 app.use(session({
   secret: 'work hard',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
   },
   store: new MongoStore({
     mongooseConnection: db.connection

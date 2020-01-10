@@ -8,7 +8,6 @@ import 'spectre.css';
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';
 import Home from './components/Home';
-import FinancialAnalysis from './components/FinancialAnalysis';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -26,10 +25,7 @@ function App() {
           <Home />
         </Route>
         <Route path="/">
-          <Home />
-        </Route>
-        <Route path="/financialanalysis">
-          <FinancialAnalysis />
+          <SingIn />
         </Route>
       </Switch>
     </Router>
