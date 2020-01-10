@@ -13,13 +13,12 @@ createCategory = (req, res) => {
   });
 }
 
-selectAllCategories = async (req, res) => {
+getAllCategories = async (req, res) => {
   categories = await Category.find({});
-  console.log(categories);
   return res.status(200).json({ success: true, message: '', result: categories });
 }
 
 module.exports = {
   createCategory,
-  selectAllCategories
+  getAllCategories
 }

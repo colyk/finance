@@ -1,17 +1,20 @@
-const UserController = require('../controllers/UserController');
-const CalendarController = require('../controllers/CalendarController');
-const IncomeController = require('../controllers/IncomeController');
-const ExpensesController = require('../controllers/ExpensesController');
-const CategoryController = require('../controllers/CategoryController');
-
+const User = require('../controllers/User');
+const Calendar = require('../controllers/Calendar');
+const Budget = require('../controllers/Budget');
+const Income = require('../controllers/Income');
+const Expense = require('../controllers/Expense');
+const Category = require('../controllers/Category');
 
 module.exports = function (app) {
-    app.post('/login', UserController.checkUser);
-    app.post('/signup', UserController.createUser);
-    app.post('/incomes', IncomeController.createIncome);
-    app.post('/expenses', ExpensesController.createExpense);
-    app.post('/categories', CategoryController.createCategory);
-    app.post('/allcategories', CategoryController.selectAllCategories);
-    app.get('/holidays', CalendarController.getHolidays);
-    app.get('/workdays', CalendarController.getWorkdays);
+    app.post('/login', User.checkUser);
+    app.post('/signup', User.createUser);
+    app.post('/incomes', Income.createIncome);
+    app.post('/getallincomes', Income.getAllIncomes);
+    app.post('/expenses', Expense.createExpense);
+    app.post('/getallexpenses', Expense.getAllExpenses);
+    app.post('/categories', Category.createCategory);
+    app.post('/allcategories', Category.getAllCategories);
+    app.get('/holidays', Calendar.getHolidays);
+    app.get('/workdays', Calendar.getWorkdays);
+    app.get('/budget', Budget.getUserBudgets);
 };

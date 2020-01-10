@@ -13,3 +13,23 @@ body {
     width: 100%;
     height: 100%;
 }
+
+.navbar {
+    background-color: #dedeed;
+}
+
+.navbar-section .active {
+    box-shadow: inset 0px -3px 0px 0px #484884;
+}
+
+.form_income {
+    position: absolute;
+    top: 100px;
+    right: 100px;
+}
+
+.form_expense {
+    position: absolute;
+    top: 400px;
+    right: 100px;
+}

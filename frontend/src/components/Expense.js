@@ -41,8 +41,8 @@ class Expense extends React.Component {
 
     render() {
         return (
-            <div className="form">
-                <form onSubmit={this.handleSubmit}>
+            <div className="form_expense">
+                <form className="form" onSubmit={this.handleSubmit}>
                     <p>Expense</p>
                     <input type="text" name="count" placeholder="count" onChange={this.handleChange} />
                     <button type="submit">Add expense</button>

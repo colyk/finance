@@ -8,26 +8,30 @@ import 'spectre.css';
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';
 import Home from './components/Home';
+import FinancialAnalysis from './components/FinancialAnalysis';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
 function App() {
-    return (
-        <Router>
-            <Switch>
-                <Route path="/login">
-                    <SingIn />
-                </Route>
-                <Route path="/signup">
-                    <SingUp />
-                </Route>
-                <Route path="/home">
-                    <Home />
-                </Route>
-                <Route path="/">
-                    <SingIn />
-                </Route>
-            </Switch>
-        </Router>
-    );
+  return (
+    <Router>
+      <Switch>
+        <Route path="/login">
+          <SingIn />
+        </Route>
+        <Route path="/signup">
+          <SingUp />
+        </Route>
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+        <Route path="/financialanalysis">
+          <FinancialAnalysis />
+        </Route>
+      </Switch>
+    </Router>
+  );
 }

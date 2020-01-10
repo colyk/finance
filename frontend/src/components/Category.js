@@ -7,7 +7,7 @@ class Category extends React.Component {
         this.state = {
             name: '',
             number: '',
-            result: []
+            categories: []
         };
         this.allCategories();
     }
@@ -39,9 +39,8 @@ class Category extends React.Component {
           .post('allcategories', {})
           .then(res => {
             this.setState({
-              result: res.data.result
+              categories: res.data.result
             });
-            console.log(res.data.result);
           })
           .catch(console.error);
     };
@@ -57,7 +56,6 @@ class Category extends React.Component {
                     <button type="submit">Add category</button>
                 </form>
             </div>
-              {}
           </div>
         );
     }
