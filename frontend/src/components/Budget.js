@@ -1,7 +1,17 @@
 import React, { Component, useState, useEffect } from 'react';
 import requests from '../requests';
 import DateRangePicker from './DatePickers/DateRangePicker';
-import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom';
+import SingleDatePicker from './DatePickers/SingleDatePicker';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link,
+  useParams,
+  useRouteMatch,
+} from 'react-router-dom';
 import moment from 'moment';
 
 import '../styles/budget.css';
@@ -20,7 +30,7 @@ class Budget extends Component {
 
   fetchBudgets() {
     requests
-      .get('/budget')
+      .get('budget')
       .then(res => {
         this.setState({ budgets: res.data.budgets });
       })
@@ -36,6 +46,10 @@ class Budget extends Component {
     withUpdate && this.fetchBudgets();
   };
 
+  onBudgetUpdate = () => {
+    this.fetchBudgets();
+  };
+
   render() {
     return (
       <Router>
@@ -46,16 +60,21 @@ class Budget extends Component {
             </div>
             <div className="add-btn column col-1">
               <button
-                className="btn btn-action s-circle"
+                className="btn btn-action s-circle tooltip tooltip-up"
                 onClick={this.onShowBudgetAddModalClick}
-                title="Create budget"
+                data-tooltip="Create budget"
               >
                 <i className="icon icon-plus"></i>
               </button>
             </div>
           </div>
           <Switch>
-            <Route path="/:budgetName" children={<BudgetsView budgets={this.state.budgets} />} />
+            <Route
+              path="/:budgetName"
+              children={
+                <BudgetsView budgets={this.state.budgets} onBudgetUpdate={this.onBudgetUpdate} />
+              }
+            />
           </Switch>
 
           {this.state.showBudgetAddModal ? (
@@ -73,11 +92,7 @@ function BudgetsTab({ budgets }) {
   return (
     <ul className="tab">
       {budgets ? (
-        budgets.map(({ name }) => (
-          <li className={`tab-item`} key={name}>
-            <Link to={`/${name}`}>{name}</Link>
-          </li>
-        ))
+        budgets.map(({ name }, idx) => <MenuLink label={name} to={name} idx={idx} key={name} />)
       ) : (
         <li className={`tab-item`}>
           <span className="active disabled">
@@ -89,7 +104,20 @@ function BudgetsTab({ budgets }) {
   );
 }
 
-function BudgetsView({ budgets }) {
+function MenuLink({ label, to, idx }) {
+  to = `/${to}`;
+  let match = useRouteMatch({ path: to });
+  return (
+    <li className={`tab-item ${match ? 'active' : ''}`}>
+      {idx === 0 ? <Redirect to={to} /> : ''}
+      <Link className="btn btn-link" to={to}>
+        {label}
+      </Link>
+    </li>
+  );
+}
+
+function BudgetsView({ budgets, onBudgetUpdate }) {
   const { budgetName } = useParams();
   const [budget, setBudget] = useState(() => ({}));
   const initBudget = budgets ? budgets.find(b => b.name === budgetName) : {};
@@ -99,18 +127,61 @@ function BudgetsView({ budgets }) {
   const formatDate = date => {
     return moment(date).format('DD-MM-YYYY');
   };
+
+  const onRemoveClick = () => {
+    requests
+      .delete('budget', { params: { name: budgetName } })
+      .then(onBudgetUpdate)
+      .catch(console.log);
+  };
+
   return (
     <div>
       {budget.name ? (
-        <div>
-          <h3>{budget.name}</h3>
-          <p>Start date: {formatDate(budget.from)}</p>
-          <p>End date: {formatDate(budget.to)}</p>
-          <p>Goal amount: {budget.goal_amount}</p>
+        <div className="columns">
+          <div className="column col-6 col-mx-auto panel">
+            <div className="panel-header">
+              <div className="panel-title h3">{budget.name}</div>
+            </div>
+            <div className="panel-body">
+              <BudgetViewField label={'Start date'} date={formatDate(budget.from)} />
+              <BudgetViewField label={'End date'} date={formatDate(budget.to)} />
+              <BudgetViewField label={'Goal amount'} text={budget.goal_amount} />
+            </div>
+            <div className="panel-footer">
+              <div className="float-right">
+                <button className="btn mr-2">Edit</button>
+                <button className="btn btn-error" onClick={onRemoveClick}>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         ''
       )}
+    </div>
+  );
+}
+
+function BudgetViewField({ label, text, date }) {
+  return (
+    <div className="tile tile-centered mt-2">
+      <div className="tile-content">
+        <div className="tile-title text-bold">{label}</div>
+        <div className="tile-subtitle">
+          {text ? (
+            text
+          ) : (
+            <SingleDatePicker
+              readOnly={true}
+              date={moment(date, 'DD-MM-YYYY')}
+              onChange={e => console.log(e.target.value)}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -130,7 +201,7 @@ function BudgetAddModal({ onClose }) {
 
   const onCreateClick = e => {
     requests
-      .post('/budget', { from: startDate, to: endDate, amount, name })
+      .post('budget', { from: startDate, to: endDate, amount, name })
       .then(res => {
         toggleModal(false);
         onClose(true);
@@ -187,7 +258,7 @@ function BudgetAddModal({ onClose }) {
         </div>
         <div className="modal-footer">
           <button
-            className="btn btn-link mr-2"
+            className="btn mr-2"
             onClick={() => {
               toggleModal(false);
               onClose();

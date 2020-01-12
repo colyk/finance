@@ -32,7 +32,27 @@ createBudget = (req, res) => {
   });
 }
 
+deleteBudget = (req, res) => {
+  if (!req.session.userId)
+    return res.status(400).json({ error: "User is not logged in" });
+
+  const query = req.query;
+  if (!query.name)
+    return res.status(400).json({ error: "Budget name is not defined" });
+
+  Budget.findOneAndDelete({ user_id: req.session.userId, name: query.name }, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'Budget was not deleted' });
+    }
+    return res.status(200).json();
+
+  })
+}
+
+
 module.exports = {
   getUserBudgets,
-  createBudget
+  createBudget,
+  deleteBudget
 }

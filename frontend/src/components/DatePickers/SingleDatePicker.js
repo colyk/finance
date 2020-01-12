@@ -4,7 +4,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 /* <SingleDatePicker date={moment()} onChange={e => console.log(e.target.value)} /> */
-function SingleDatePicker({ date, onChange }) {
+function SingleDatePicker({ date, onChange, readOnly = false }) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -17,6 +17,7 @@ function SingleDatePicker({ date, onChange }) {
       displayFormat="DD-MM-YYYY"
       hideKeyboardShortcutsPanel
       withFullScreenPortal={window.innerWidth < 400}
+      readOnly={readOnly}
     />
   );
 }

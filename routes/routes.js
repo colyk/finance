@@ -14,7 +14,7 @@ module.exports = function (app) {
   app.post('/getallexpenses', Expense.getAllExpenses);
   app.post('/categories', Category.createCategory);
   app.post('/allcategories', Category.getAllCategories);
-  
+
   addCalendarRoutes(app);
   addBudgetRoutes(app);
 };
@@ -22,6 +22,7 @@ module.exports = function (app) {
 function addBudgetRoutes(app) {
   app.get('/budget', Budget.getUserBudgets);
   app.post('/budget', Budget.createBudget);
+  app.delete('/budget', Budget.deleteBudget);
 }
 
 function addCalendarRoutes(app) {
