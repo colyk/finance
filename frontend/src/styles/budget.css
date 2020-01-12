@@ -1,0 +1,8 @@
+.container {
+    max-width: 100%;
+}
+
+.add-btn {
+    padding: 10px;
+    text-align: center;
+}

@@ -6,15 +6,25 @@ const Expense = require('../controllers/Expense');
 const Category = require('../controllers/Category');
 
 module.exports = function (app) {
-    app.post('/login', User.checkUser);
-    app.post('/signup', User.createUser);
-    app.post('/incomes', Income.createIncome);
-    app.post('/getallincomes', Income.getAllIncomes);
-    app.post('/expenses', Expense.createExpense);
-    app.post('/getallexpenses', Expense.getAllExpenses);
-    app.post('/categories', Category.createCategory);
-    app.post('/allcategories', Category.getAllCategories);
-    app.get('/holidays', Calendar.getHolidays);
-    app.get('/workdays', Calendar.getWorkdays);
-    app.get('/budget', Budget.getUserBudgets);
+  app.post('/login', User.checkUser);
+  app.post('/signup', User.createUser);
+  app.post('/incomes', Income.createIncome);
+  app.post('/getallincomes', Income.getAllIncomes);
+  app.post('/expenses', Expense.createExpense);
+  app.post('/getallexpenses', Expense.getAllExpenses);
+  app.post('/categories', Category.createCategory);
+  app.post('/allcategories', Category.getAllCategories);
+  
+  addCalendarRoutes(app);
+  addBudgetRoutes(app);
 };
+
+function addBudgetRoutes(app) {
+  app.get('/budget', Budget.getUserBudgets);
+  app.post('/budget', Budget.createBudget);
+}
+
+function addCalendarRoutes(app) {
+  app.get('/holidays', Calendar.getHolidays);
+  app.get('/workdays', Calendar.getWorkdays);
+}

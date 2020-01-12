@@ -15,11 +15,7 @@ body {
 }
 
 .navbar {
-    background-color: #dedeed;
-}
-
-.navbar-section .active {
-    box-shadow: inset 0px -3px 0px 0px #484884;
+    background-color: #e2e2f3;
 }
 
 .form_income {

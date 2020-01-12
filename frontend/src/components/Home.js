@@ -23,23 +23,16 @@ class Home extends React.Component {
   render() {
     return (
       <Router>
-        <Redirect to="/financialanalysis" />
+        <Redirect to="/home/budget" />
         <div>
-          <header className="navbar">
-            <section className="navbar-section">
+          <header className="navbar mb-1">
+            <ul className="tab">
               <MenuLink to="/home/calendar" label="Calendar" />
               <MenuLink to="/home/budget" label="Budgets" />
               <MenuLink to="/home/trend" label="Trend" />
               <MenuLink to="/categories" label="Categories" />
               <MenuLink to="/financialanalysis" label="Financial Analysis" />
-            </section>
-            <section className="navbar-center">
-              {/* <!--Expense centered logo or brand --> */}
-            </section>
-            <section className="navbar-section">
-              {/* <a href="#" className="btn btn-link">Twitter</a>
-            <a href="#" className="btn btn-link">GitHub</a> */}
-            </section>
+            </ul>
           </header>
           <Switch>
             <Route exact path="/home/calendar">
@@ -68,11 +61,11 @@ function MenuLink({ label, to }) {
   let match = useRouteMatch({ path: to });
 
   return (
-    <div className={match ? 'active' : ''}>
+    <li className={`tab-item ${match ? 'active' : ''} mr-2`}>
       <Link className="btn btn-link" to={to}>
         {label}
       </Link>
-    </div>
+    </li>
   );
 }
 

@@ -2,7 +2,11 @@ const db = require('../db');
 
 const budgetSchema = new db.Schema({
   user_id: {
-    type: Number,
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
     required: true
   },
   from: {
