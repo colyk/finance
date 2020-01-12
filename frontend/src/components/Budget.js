@@ -16,6 +16,8 @@ import moment from 'moment';
 
 import '../styles/budget.css';
 
+const currencyIntl = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
+
 class Budget extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +62,7 @@ class Budget extends Component {
             </div>
             <div className="add-btn column col-1">
               <button
-                className="btn btn-action s-circle tooltip tooltip-up"
+                className="btn btn-action s-circle tooltip tooltip-left"
                 onClick={this.onShowBudgetAddModalClick}
                 data-tooltip="Create budget"
               >
@@ -146,7 +148,7 @@ function BudgetsView({ budgets, onBudgetUpdate }) {
             <div className="panel-body">
               <BudgetViewField label={'Start date'} date={formatDate(budget.from)} />
               <BudgetViewField label={'End date'} date={formatDate(budget.to)} />
-              <BudgetViewField label={'Goal amount'} text={budget.goal_amount} />
+              <BudgetViewField label={'Goal amount'} amount={budget.goal_amount} />
             </div>
             <div className="panel-footer">
               <div className="float-right">
@@ -165,14 +167,14 @@ function BudgetsView({ budgets, onBudgetUpdate }) {
   );
 }
 
-function BudgetViewField({ label, text, date }) {
+function BudgetViewField({ label, amount, date }) {
   return (
     <div className="tile tile-centered mt-2">
       <div className="tile-content">
         <div className="tile-title text-bold">{label}</div>
         <div className="tile-subtitle">
-          {text ? (
-            text
+          {amount ? (
+            currencyIntl.format(amount)
           ) : (
             <SingleDatePicker
               readOnly={true}
@@ -250,7 +252,7 @@ function BudgetAddModal({ onClose }) {
                   id="budget-modal__amount"
                   type="text"
                   placeholder="0.00"
-                  onChange={e => setAmount(e.target.value)}
+                  onChange={e => setAmount(e.target.value.replace(/\s/g, '').replace(/,/, '.'))}
                 />
               </div>
             </form>

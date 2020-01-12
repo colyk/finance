@@ -25,6 +25,7 @@ function DateRangePicker({ onChange }) {
           handleDatesChange(range);
           onChange(range);
         }}
+        displayFormat="DD-MM-YYYY"
         focusedInput={focusedInput}
         onFocusChange={focusedInput => setFocusedInput(focusedInput)}
         withFullScreenPortal={true}

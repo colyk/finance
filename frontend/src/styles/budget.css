@@ -6,3 +6,7 @@
     padding: 10px;
     text-align: center;
 }
+
+.panel {
+    min-width: 300px;
+}
