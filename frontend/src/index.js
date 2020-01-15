@@ -1,35 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-import './styles/index.css';
+import App from './App';
 
-import 'spectre.css';
-import '../node_modules/spectre.css/dist/spectre-icons.css';
+import store from './components/store/index';
+window.store = store; // For testing from console purpose
 
-import SingIn from './components/SingIn';
-import SingUp from './components/SingUp';
-import Home from './components/Home';
-
-ReactDOM.render(<App />, document.getElementById('root'));
-
-function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/login">
-          <SingIn />
-        </Route>
-        <Route path="/signup">
-          <SingUp />
-        </Route>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Route path="/">
-          <SingIn />
-        </Route>
-      </Switch>
-    </Router>
-  );
-}
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);

@@ -10,7 +10,7 @@ const db = require('./db');
 
 app.use(cors({
   origin: ['http://localhost:3000'],
-  methods: ['GET', 'POST', 'OPTIONS', 'DELETE'],
+  methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'UPDATE'],
   credentials: true
 }));
 

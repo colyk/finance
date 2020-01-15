@@ -51,8 +51,20 @@ deleteBudget = (req, res) => {
 }
 
 
+updateBudget = (req, res) => {
+  if (!req.session.userId)
+    return res.status(400).json({ error: "User is not logged in" });
+
+  const query = req.query;
+  if (!query.name)
+    return res.status(400).json({ error: "Budget name is not defined" });
+
+
+}
+
 module.exports = {
   getUserBudgets,
   createBudget,
-  deleteBudget
+  deleteBudget,
+  updateBudget
 }

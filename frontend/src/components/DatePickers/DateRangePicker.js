@@ -4,9 +4,9 @@ import { DateRangePicker as RDDateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 /* <DateRangePicker onChange={range => console.log(range)}/> */
-function DateRangePicker({ onChange }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+function DateRangePicker({ onChange, from, to, disabled = false }) {
+  const [startDate, setStartDate] = useState(from);
+  const [endDate, setEndDate] = useState(to);
   const [focusedInput, setFocusedInput] = useState(null);
   const handleDatesChange = ({ startDate, endDate }) => {
     setStartDate(startDate);
@@ -23,13 +23,14 @@ function DateRangePicker({ onChange }) {
         numberOfMonths={window.innerWidth < 600 ? 1 : 2}
         onDatesChange={range => {
           handleDatesChange(range);
-          onChange(range);
+          if (onChange) onChange(range);
         }}
         displayFormat="DD-MM-YYYY"
         focusedInput={focusedInput}
         onFocusChange={focusedInput => setFocusedInput(focusedInput)}
         withFullScreenPortal={true}
         hideKeyboardShortcutsPanel
+        disabled={disabled}
       />
     </div>
   );

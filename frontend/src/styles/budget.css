@@ -8,5 +8,14 @@
 }
 
 .panel {
-    min-width: 300px;
+    min-width: 350px;
+}
+
+.tile-subtitle {
+    min-height: 36px;
+}
+
+.DateInput_input::placeholder {
+    color: #bcc3ce;
+    opacity: 1;
 }

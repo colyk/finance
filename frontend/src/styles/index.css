@@ -1,12 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap&subset=cyrillic,latin-ext');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
+
+/* Make placeholders in Firefox more contrast */
+::-moz-placeholder {
+    opacity: 1;
+  }
 
 #root {
     position: fixed;
@@ -28,4 +32,8 @@ body {
     position: absolute;
     top: 400px;
     right: 100px;
+}
+
+.tab .active {
+    font-weight: 500;
 }

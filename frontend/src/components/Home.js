@@ -9,7 +9,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 import Calendar from './Calendar';
-import Budget from './Budget';
+import Budget from './Budget/Budget';
 import Trend from './Trend';
 import Category from './Category';
 import FinancialAnalysis from './FinancialAnalysis';
@@ -56,7 +56,7 @@ function MenuLink({ label, to }) {
   let match = useRouteMatch({ path: to });
 
   return (
-    <li className={`tab-item ${match ? 'active' : ''} mr-2`}>
+    <li className={`tab-item ${match ? 'active' : ''} mx-2`}>
       <Link className="btn btn-link" to={to}>
         {label}
       </Link>
@@ -64,4 +64,4 @@ function MenuLink({ label, to }) {
   );
 }
 
-export default withRouter(Home);
+export default React.memo(withRouter(Home));

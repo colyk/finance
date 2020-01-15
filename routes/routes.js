@@ -20,9 +20,10 @@ module.exports = function (app) {
 };
 
 function addBudgetRoutes(app) {
-  app.get('/budget', Budget.getUserBudgets);
-  app.post('/budget', Budget.createBudget);
-  app.delete('/budget', Budget.deleteBudget);
+  app.get('/budgets', Budget.getUserBudgets);
+  app.post('/budgets', Budget.createBudget);
+  app.delete('/budgets', Budget.deleteBudget);
+  app.put('/budgets', Budget.updateBudget);
 }
 
 function addCalendarRoutes(app) {
