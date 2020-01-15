@@ -64,4 +64,4 @@ function MenuLink({ label, to }) {
   );
 }
 
-export default React.memo(withRouter(Home));
+export default withRouter(Home);

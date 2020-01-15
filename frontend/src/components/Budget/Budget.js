@@ -15,13 +15,12 @@ import BudgetsView from './BudgetsView';
 
 moment.locale('en-gb');
 
-export const currencyIntl = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
-
 const Budget = ({ budgets, updateBudgets }) => {
   const [showBudgetAddModal, setShowBudgetAddModal] = useState(false);
+  // eslint-disable-next-line
   useEffect(() => {
     fetchBudgets();
-  }, []); // Use function in order to fetch budgets only at init
+  }, []);
 
   const fetchBudgets = () => {
     requests

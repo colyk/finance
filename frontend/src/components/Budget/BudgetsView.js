@@ -3,7 +3,7 @@ import requests from '../../requests';
 import DateRangePicker from '../DatePickers/DateRangePicker';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import { currencyIntl } from './Budget';
+import { currencyIntl } from '../utils';
 import { connect } from 'react-redux';
 
 const BudgetsView = ({ budgets, onBudgetUpdate }) => {
@@ -12,19 +12,24 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
   const { budgetName } = useParams();
   const [budget, setBudget] = useState(() => ({}));
   const initBudget = budgets ? budgets.find(b => b.name === budgetName) : {};
+
   useEffect(() => setBudget(initBudget || {}), [initBudget]); // trigger changing state after `[initBudget]` changes
+
   const formatDate = date => {
     return moment(date).format('DD-MM-YYYY');
   };
+
   const onRemoveClick = () => {
     requests
       .delete('budgets', { params: { name: budgetName } })
       .then(onBudgetUpdate)
       .catch(console.log);
   };
+
   const onEditClick = () => {
     toggleEditable(true);
   };
+
   const onUpdateClick = () => {
     console.log(newBudget);
     // requests
@@ -32,6 +37,7 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
     //   .then(onBudgetUpdate)
     //   .catch(console.log);
   };
+
   return (
     <div>
       {budget.name ? (

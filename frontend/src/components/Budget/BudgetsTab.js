@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 const BudgetsTab = ({ budgets }) => {
   return (
     <ul className="tab">
-      {!budgets ? (
+      {budgets ? (
         budgets.map(({ name }, idx) => <MenuLink label={name} to={name} idx={idx} key={name} />)
       ) : (
         <EmptyBudgetsTab />
