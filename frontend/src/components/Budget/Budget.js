@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { updateBudgets } from '../store/actions/index';
 
@@ -17,19 +17,19 @@ moment.locale('en-gb');
 
 const Budget = ({ budgets, updateBudgets }) => {
   const [showBudgetAddModal, setShowBudgetAddModal] = useState(false);
-  // eslint-disable-next-line
-  useEffect(() => {
-    fetchBudgets();
-  }, []);
 
-  const fetchBudgets = () => {
+  const fetchBudgets = useCallback(() => {
     requests
       .get('/budget')
       .then(res => {
         updateBudgets(res.data.budgets);
       })
       .catch(console.log);
-  };
+  }, [updateBudgets]);
+
+  useEffect(() => {
+    fetchBudgets();
+  }, [fetchBudgets]);
 
   const onShowBudgetAddModalClick = () => {
     setShowBudgetAddModal(true);
