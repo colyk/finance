@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import requests from '../../requests';
-import DateRangePicker from '../DatePickers/DateRangePicker';
 import { useParams } from 'react-router-dom';
-import moment from 'moment';
-import { currencyIntl } from '../utils';
-import { connect } from 'react-redux';
 
-const BudgetsView = ({ budgets, onBudgetUpdate }) => {
+import { connect } from 'react-redux';
+import { fetchBudgets } from '../store/actions/index';
+import { putBudget, updateBudget, resetUpdatedBudget } from '../store/actions/componentBudget';
+
+import moment from 'moment';
+
+import requests from '../../requests';
+import { currencyIntl } from '../utils';
+
+import DateRangePicker from '../DatePickers/DateRangePicker';
+
+const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpdatedBudget }) => {
   const [editable, toggleEditable] = useState(false);
-  const [newBudget, updateBudget] = useState({ from: null, to: null, amount: null });
   const { budgetName } = useParams();
   const [budget, setBudget] = useState(() => ({}));
   const initBudget = budgets ? budgets.find(b => b.name === budgetName) : {};
@@ -22,7 +27,9 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
   const onRemoveClick = () => {
     requests
       .delete('/budget', { params: { name: budgetName } })
-      .then(onBudgetUpdate)
+      .then(res => {
+        fetchBudgets();
+      })
       .catch(console.log);
   };
 
@@ -30,12 +37,17 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
     toggleEditable(true);
   };
 
+  const onCancelClick = () => {
+    resetUpdatedBudget();
+    toggleEditable(false);
+  };
+
   const onUpdateClick = () => {
-    console.log(newBudget);
-    // requests
-    //   .delete('budgets', { params: { name: budgetName } })
-    //   .then(onBudgetUpdate)
-    //   .catch(console.log);
+    putBudget(budget.name).then(res => {
+      fetchBudgets();
+    });
+    toggleEditable(false);
+    resetUpdatedBudget();
   };
 
   return (
@@ -43,9 +55,12 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
       {budget.name ? (
         <div className="columns">
           <div className="column col-6 col-mx-auto panel">
-            <div className="panel-header text-center">
-              <div className="panel-title h3">{budget.name}</div>
-            </div>
+            <TitleField
+              editable={editable}
+              title={budget.name}
+              label={'Budget name'}
+              updateBudget={updateBudget}
+            />
             <div className="panel-body">
               <DateRangeField
                 editable={editable}
@@ -64,7 +79,7 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
               <div className="float-right">
                 {editable ? (
                   <span>
-                    <button className="btn mr-2" onClick={() => toggleEditable(false)}>
+                    <button className="btn mr-2" onClick={onCancelClick}>
                       Cancel changes
                     </button>
                     <button className="btn btn-primary mr-2" onClick={onUpdateClick}>
@@ -90,43 +105,90 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
   );
 };
 
-const DateRangeField = ({ editable, label, date }) => {
+const TitleField = ({ editable, title, label, updateBudget }) => {
+  let Component = () => (
+    <input
+      className="form-input"
+      type="text"
+      placeholder={title}
+      onChange={e => {
+        updateBudget({ name: e.target.value });
+      }}
+    />
+  );
+
+  const titleClass = 'panel-header text-center';
+  const bodyClass = 'panel-body mt-2';
   return (
-    <div className="tile tile-centered mt-2">
-      <div className="tile-content">
-        <div className="tile-title text-bold">{label}</div>
-        <div className="tile-subtitle">
-          <DateRangePicker
-            disabled={!editable}
-            from={moment(date.from, 'DD-MM-YYYY')}
-            to={moment(date.to, 'DD-MM-YYYY')}
-          />
-        </div>
-      </div>
+    <div className={editable ? bodyClass : titleClass}>
+      {editable ? (
+        <Field Component={Component} label={label} />
+      ) : (
+        <div className="panel-title h3">{title}</div>
+      )}
     </div>
   );
 };
 
-const AmountField = ({ editable, label, amount }) => {
+const DateRangeField = ({ editable, label, date, updateBudget }) => {
+  const Component = () => (
+    <DateRangePicker
+      disabled={!editable}
+      from={moment(date.from, 'DD-MM-YYYY')}
+      to={moment(date.to, 'DD-MM-YYYY')}
+      onChange={data => updateBudget({ from: data.startDate, to: data.endDate })}
+    />
+  );
+
+  return <Field Component={Component} label={label} />;
+};
+
+const AmountField = ({ editable, label, amount, updateBudget }) => {
   amount = currencyIntl.format(amount);
+
+  let Component = null;
+  if (editable)
+    Component = () => (
+      <input
+        className="form-input"
+        type="text"
+        placeholder={amount}
+        onChange={e => {
+          updateBudget({ amount: e.target.value });
+        }}
+      />
+    );
+  else Component = () => <span>{amount}</span>;
+
+  return <Field Component={Component} label={label} />;
+};
+
+const Field = React.memo(({ Component, label }) => {
   return (
     <div className="tile tile-centered mt-2">
       <div className="tile-content">
-        <div className="tile-title text-bold">{label}</div>
+        <div className="tile-title text-bold mb-1">{label}</div>
         <div className="tile-subtitle mb-2">
-          {editable ? (
-            <input className="form-input" type="text" placeholder={amount} />
-          ) : (
-            <span>{amount}</span>
-          )}
+          <Component />
         </div>
       </div>
     </div>
   );
-};
+});
 
 const mapStateToProps = state => {
-  return { budgets: state.budgets };
+  return {
+    budgets: state.rootReducer.budgets,
+  };
 };
 
-export default connect(mapStateToProps)(BudgetsView);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchBudgets: () => dispatch(fetchBudgets()),
+    updateBudget: payload => dispatch(updateBudget(payload)),
+    resetUpdatedBudget: payload => dispatch(resetUpdatedBudget(payload)),
+    putBudget: payload => dispatch(putBudget(payload)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetsView);

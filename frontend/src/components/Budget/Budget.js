@@ -1,47 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { updateBudgets } from '../store/actions/index';
-
-import requests from '../../requests';
-
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import { connect } from 'react-redux';
+import { toggleAddBudgetModal } from '../store/actions/componentBudget';
+import { fetchBudgets } from '../store/actions/index';
 
 import moment from 'moment';
 
-import '../../styles/budget.css';
-import { BudgetAddModal } from './BudgetAddModal';
+import BudgetAddModal from './BudgetAddModal';
 import BudgetsTab from './BudgetsTab';
 import BudgetsView from './BudgetsView';
 
+import '../../styles/budget.css';
+
 moment.locale('en-gb');
 
-const Budget = ({ budgets, updateBudgets }) => {
-  const [showBudgetAddModal, setShowBudgetAddModal] = useState(false);
-
-  const fetchBudgets = useCallback(() => {
-    requests
-      .get('/budget')
-      .then(res => {
-        updateBudgets(res.data.budgets);
-      })
-      .catch(console.log);
-  }, [updateBudgets]);
-
+const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
   useEffect(() => {
     fetchBudgets();
   }, [fetchBudgets]);
 
   const onShowBudgetAddModalClick = () => {
-    setShowBudgetAddModal(true);
-  };
-
-  const onBudgetAddModalClose = (withUpdate = false) => {
-    setShowBudgetAddModal(false);
-    if (withUpdate) fetchBudgets();
-  };
-
-  const onBudgetUpdate = () => {
-    fetchBudgets();
+    toggleAddBudgetModal(true);
   };
 
   return (
@@ -49,7 +29,7 @@ const Budget = ({ budgets, updateBudgets }) => {
       <div className="container">
         <div className="columns">
           <div className="column col-11">
-            <BudgetsTab budgets={budgets} />
+            <BudgetsTab />
           </div>
           <div className="add-btn column col-1">
             <button
@@ -62,22 +42,23 @@ const Budget = ({ budgets, updateBudgets }) => {
           </div>
         </div>
         <Switch>
-          <Route path="/:budgetName" children={<BudgetsView onBudgetUpdate={onBudgetUpdate} />} />
+          <Route path="/:budgetName" children={<BudgetsView />} />
         </Switch>
 
-        {showBudgetAddModal ? <BudgetAddModal onClose={onBudgetAddModalClose} /> : ''}
+        <BudgetAddModal />
       </div>
     </Router>
   );
 };
 
 const mapStateToProps = state => {
-  return { budgets: state.budgets };
+  return { showAddBudgetModal: state.cBudgetReducer.showAddBudgetModal };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateBudgets: budgets => dispatch(updateBudgets(budgets)),
+    toggleAddBudgetModal: visible => dispatch(toggleAddBudgetModal(visible)),
+    fetchBudgets: () => dispatch(fetchBudgets()),
   };
 }
 

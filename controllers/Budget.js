@@ -55,11 +55,27 @@ updateBudget = (req, res) => {
   if (!req.session.userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  const query = req.query;
-  if (!query.name)
+  const body = req.body
+  if (!body.oldName)
     return res.status(400).json({ error: "Budget name is not defined" });
 
+  Budget.findOne({ user_id: req.session.userId, name: body.oldName }, async function (err, budgetDoc) {
+    if (err || !budgetDoc) {
+      console.log(err);
+      return res.status(400).json({ error: 'Budget was not updated' });
+    }
 
+    if (body.name)
+      budgetDoc.name = body.name;
+    if (body.from)
+      budgetDoc.from = body.from;
+    if (body.to)
+      budgetDoc.to = body.to;
+    if (body.amount)
+      budgetDoc.goal_amount = body.amount;
+    await budgetDoc.save();
+    return res.status(200).json();
+  });
 }
 
 module.exports = {

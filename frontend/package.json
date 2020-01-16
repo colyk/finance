@@ -17,6 +17,7 @@
     "recharts": "^2.0.0-beta.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "spectre.css": "^0.5.8"
   },
   "scripts": {

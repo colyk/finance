@@ -14,8 +14,8 @@ import Trend from './Trend';
 import Category from './Category';
 import FinancialAnalysis from './FinancialAnalysis';
 
-function Home() {
-  if (!sessionStorage.logged) this.props.history.push('login');
+function Home({ history }) {
+  if (!sessionStorage.logged) history.push('/login');
 
   return (
     <Router>

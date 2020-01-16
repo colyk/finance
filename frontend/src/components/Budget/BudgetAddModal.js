@@ -1,13 +1,17 @@
+import { connect } from 'react-redux';
 import React, { useState } from 'react';
-import requests from '../../requests';
+
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
-export function BudgetAddModal({ onClose }) {
+import requests from '../../requests';
+import { toggleAddBudgetModal } from '../store/actions/componentBudget';
+import { fetchBudgets } from '../store/actions/index';
+
+function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [amount, setAmount] = useState(null);
   const [name, setName] = useState(null);
-  const [active, toggleModal] = useState(true);
   const [loading, toggleLoading] = useState(false);
 
   const handleDatesChange = ({ startDate, endDate }) => {
@@ -21,22 +25,20 @@ export function BudgetAddModal({ onClose }) {
       .post('/budget', { from: startDate, to: endDate, amount, name })
       .then(res => {
         toggleLoading(false);
-        onClose(true);
-        toggleModal(false);
+        fetchBudgets();
+        toggleAddBudgetModal(false);
       })
       .catch(e => {
-        console.log(e);
-        toggleLoading(false);
+        toggleAddBudgetModal(false);
       });
   };
 
   return (
-    <div className={`modal ${active ? 'active' : ''}`}>
+    <div className={`modal ${showAddBudgetModal ? 'active' : ''}`}>
       <div
         className="modal-overlay"
         onClick={() => {
-          toggleModal(false);
-          onClose();
+          toggleAddBudgetModal(false);
         }}
       />
       <div className="modal-container" role="document">
@@ -81,8 +83,7 @@ export function BudgetAddModal({ onClose }) {
           <button
             className="btn mr-2"
             onClick={() => {
-              toggleModal(false);
-              onClose();
+              toggleAddBudgetModal(false);
             }}
           >
             Close
@@ -95,3 +96,16 @@ export function BudgetAddModal({ onClose }) {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return { showAddBudgetModal: state.cBudgetReducer.showAddBudgetModal };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleAddBudgetModal: visible => dispatch(toggleAddBudgetModal(visible)),
+    fetchBudgets: () => dispatch(fetchBudgets()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetAddModal);

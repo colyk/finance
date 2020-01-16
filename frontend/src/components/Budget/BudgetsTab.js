@@ -38,7 +38,7 @@ const MenuLink = ({ label, to, idx }) => {
 };
 
 const mapStateToProps = state => {
-  return { budgets: state.budgets };
+  return { budgets: state.rootReducer.budgets };
 };
 
 export default connect(mapStateToProps)(BudgetsTab);
