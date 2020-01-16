@@ -24,7 +24,7 @@ const Budget = ({ budgets, updateBudgets }) => {
 
   const fetchBudgets = () => {
     requests
-      .get('budgets')
+      .get('/budget')
       .then(res => {
         updateBudgets(res.data.budgets);
       })

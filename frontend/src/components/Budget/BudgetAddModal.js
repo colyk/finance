@@ -18,7 +18,7 @@ export function BudgetAddModal({ onClose }) {
   const onCreateClick = e => {
     toggleLoading(true);
     requests
-      .post('budgets', { from: startDate, to: endDate, amount, name })
+      .post('/budget', { from: startDate, to: endDate, amount, name })
       .then(res => {
         toggleLoading(false);
         onClose(true);

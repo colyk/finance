@@ -21,7 +21,7 @@ const BudgetsView = ({ budgets, onBudgetUpdate }) => {
 
   const onRemoveClick = () => {
     requests
-      .delete('budgets', { params: { name: budgetName } })
+      .delete('/budget', { params: { name: budgetName } })
       .then(onBudgetUpdate)
       .catch(console.log);
   };
