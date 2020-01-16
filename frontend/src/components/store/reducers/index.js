@@ -4,10 +4,10 @@ const initialState = {
   budgets: [],
 };
 
-function rootReducer(state = initialState, action) {
-  if (action.type === SET_BUDGETS) {
+function rootReducer(state = initialState, { type, payload = [] }) {
+  if (type === SET_BUDGETS) {
     return Object.assign({}, state, {
-      budgets: action.payload,
+      budgets: payload,
     });
   }
   return state;
