@@ -1,4 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { updateBudgets } from '../store/actions/index';
+
+import requests from '../../requests';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -17,7 +22,19 @@ import '../../styles/budget.css';
 
 moment.locale('en-gb');
 
-const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
+
+const Budget = ({ budgets, updateBudgets }) => {
+  const [showBudgetAddModal, setShowBudgetAddModal] = useState(false);
+
+  const fetchBudgets = useCallback(() => {
+    requests
+      .get('/budget')
+      .then(res => {
+        updateBudgets(res.data.budgets);
+      })
+      .catch(console.log);
+  }, [updateBudgets]);
+
   useEffect(() => {
     fetchBudgets();
   }, [fetchBudgets]);
