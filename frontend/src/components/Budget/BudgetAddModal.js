@@ -80,12 +80,7 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
           </div>
         </div>
         <div className="modal-footer">
-          <button
-            className="btn mr-2"
-            onClick={() => {
-              toggleAddBudgetModal(false);
-            }}
-          >
+          <button className="btn mr-2" onClick={() => toggleAddBudgetModal(false)}>
             Close
           </button>
           <button className={`btn btn-primary ${loading ? 'loading' : ''}`} onClick={onCreateClick}>

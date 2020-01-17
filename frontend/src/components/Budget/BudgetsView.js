@@ -14,6 +14,8 @@ import DateRangePicker from '../DatePickers/DateRangePicker';
 
 const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpdatedBudget }) => {
   const [editable, toggleEditable] = useState(false);
+  const [loading, toggleLoading] = useState(false);
+
   const { budgetName } = useParams();
   const [budget, setBudget] = useState(() => ({}));
   const initBudget = budgets ? budgets.find(b => b.name === budgetName) : {};
@@ -25,12 +27,14 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
   };
 
   const onRemoveClick = () => {
+    toggleLoading(true);
     requests
       .delete('/budget', { params: { name: budgetName } })
       .then(res => {
         fetchBudgets();
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => toggleLoading(false));
   };
 
   const onEditClick = () => {
@@ -43,9 +47,14 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
   };
 
   const onUpdateClick = () => {
-    putBudget(budget.name).then(res => {
-      fetchBudgets();
-    });
+    toggleLoading(true);
+
+    putBudget(budget.name)
+      .then(res => {
+        fetchBudgets();
+      })
+      .catch(console.log)
+      .finally(() => toggleLoading(false));
     toggleEditable(false);
     resetUpdatedBudget();
   };
@@ -54,7 +63,7 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
     <div>
       {budget.name ? (
         <div className="columns">
-          <div className="column col-6 col-mx-auto panel">
+          <div className={`column col-6 col-mx-auto panel ${loading ? 'loading' : ''}`}>
             <TitleField
               editable={editable}
               title={budget.name}

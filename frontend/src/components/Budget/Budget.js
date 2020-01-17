@@ -34,8 +34,8 @@ const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
           <div className="add-btn column col-1">
             <button
               className="btn btn-action s-circle tooltip tooltip-left"
-              onClick={onShowBudgetAddModalClick}
               data-tooltip="Create budget"
+              onClick={onShowBudgetAddModalClick}
             >
               <i className="icon icon-plus"></i>
             </button>
