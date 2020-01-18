@@ -1,0 +1,12 @@
+.panel {
+    width: 320px;
+    margin: auto;
+}
+
+.loading input {
+    opacity: 0;
+}
+
+.loading .twitter-picker {
+    opacity: 0;
+}

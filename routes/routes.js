@@ -5,19 +5,22 @@ const Income = require('../controllers/Income');
 const Expense = require('../controllers/Expense');
 const Category = require('../controllers/Category');
 
-module.exports = function (app) {
+function addUserRoutes(app) {
   app.post('/login', User.checkUser);
   app.post('/signup', User.createUser);
+}
+
+function addTransactionRoutes(app) {
   app.post('/incomes', Income.createIncome);
   app.post('/getallincomes', Income.getAllIncomes);
   app.post('/expenses', Expense.createExpense);
   app.post('/getallexpenses', Expense.getAllExpenses);
-  app.post('/categories', Category.createCategory);
-  app.post('/allcategories', Category.getAllCategories);
+}
 
-  addCalendarRoutes(app);
-  addBudgetRoutes(app);
-};
+function addCategoryRoutes(app) {
+  app.post('/category', Category.createCategory);
+  app.get('/category', Category.getAllCategories);
+}
 
 function addBudgetRoutes(app) {
   app.get('/budget', Budget.getUserBudgets);
@@ -30,3 +33,11 @@ function addCalendarRoutes(app) {
   app.get('/holidays', Calendar.getHolidays);
   app.get('/workdays', Calendar.getWorkdays);
 }
+
+module.exports = function (app) {
+  addUserRoutes(app);
+  addTransactionRoutes(app);
+  addCategoryRoutes(app);
+  addCalendarRoutes(app);
+  addBudgetRoutes(app);
+};

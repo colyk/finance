@@ -7,14 +7,6 @@
     text-align: center;
 }
 
-.panel {
-    min-width: 350px;
-}
-
-.tile-subtitle {
-    min-height: 36px;
-}
-
 .loading .DateRangePicker {
     opacity: 0;
 }

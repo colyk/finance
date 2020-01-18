@@ -76,12 +76,12 @@ class Calendar extends Component {
     return (
       <div className="planer">
         {this.state.workDays ? (
-          <div>
+          <div className="planer__info">
             <p>Work days: {this.state.workDays} </p>
             <p>Work hours: {this.state.workDays * 8} </p>
           </div>
         ) : (
-          ''
+          <div className="planer__info" />
         )}
 
         <div className="calendar">

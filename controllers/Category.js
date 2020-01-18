@@ -1,21 +1,28 @@
 const Category = require('../models/Category');
 
 createCategory = (req, res) => {
+  if (!req.session.userId)
+    return res.status(400).json({ error: "User is not logged in" });
+
   const body = req.body;
-  console.log(body.category);
+  console.log(body);
   Category.create({
-    name: body.category.name,
-    number: body.category.number,
+    user_id: req.session.userId,
+    type: body.type,
+    color: body.color,
   }, (err) => {
-    if (err)
-      return res.status(400).json({ message: 'Category not created' });
-    return res.status(200).json({ success: true, message: 'Category created' });
+    if (err){console.log(err)
+      return res.status(400).json({ message: 'Category was not created' });}
+    return res.status(200).json({});
   });
 }
 
 getAllCategories = async (req, res) => {
-  categories = await Category.find({});
-  return res.status(200).json({ success: true, message: '', result: categories });
+  if (!req.session.userId)
+    return res.status(400).json({ error: "User is not logged in" });
+
+  categories = await Category.find({ user_id: req.session.userId });
+  return res.status(200).json({ categories });
 }
 
 module.exports = {

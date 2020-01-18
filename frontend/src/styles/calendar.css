@@ -1,11 +1,14 @@
-.planer
- {
-     width: 100%;
-     padding: 3%;
-     overflow: auto;
-     height: 100vh;
- }
+.planer {
+    width: 100%;
+    padding: 3%;
+    overflow: auto;
+    height: 100vh;
+}
 
- .planer .calendar {
+.planer .calendar {
     min-width: 700px;
- }
+}
+
+.planer .planer__info {
+    min-height: 80px;
+}

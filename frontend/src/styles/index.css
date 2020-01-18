@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap&subset=cyrillic,latin-ext');
-
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
 }
 
 /* Make placeholders in Firefox more contrast */
+
 ::-moz-placeholder {
     opacity: 1;
-  }
+}
 
 #root {
     position: fixed;
@@ -36,4 +36,12 @@ body {
 
 .tab .active {
     font-weight: 500;
+}
+
+.panel {
+    min-width: 350px;
+}
+
+.tile-subtitle {
+    min-height: 36px;
 }

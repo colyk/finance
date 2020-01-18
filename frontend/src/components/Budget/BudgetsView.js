@@ -61,7 +61,7 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
 
   return (
     <div>
-      {budget.name ? (
+      {budget.name && (
         <div className="columns">
           <div className={`column col-6 col-mx-auto panel ${loading ? 'loading' : ''}`}>
             <TitleField
@@ -107,8 +107,6 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
             </div>
           </div>
         </div>
-      ) : (
-        ''
       )}
     </div>
   );

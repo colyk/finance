@@ -1,16 +1,18 @@
 const db = require('../db');
 
 const categorySchema = new db.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    number: {
-        type: Number,
-        required: true,
-    }
-}, {
-    versionKey: false
+  user_id: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = db.model('categories', categorySchema);
