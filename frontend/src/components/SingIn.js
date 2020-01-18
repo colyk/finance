@@ -51,27 +51,38 @@ class SingIn extends React.Component {
       <div className="login-page">
         <div className="form">
           {this.state.error && <div className="toast toast-error mb-2">{this.state.error}</div>}
-          <form className="login-form" method="post" onSubmit={this.handleSubmit}>
-            <input
-              className="form-input"
-              type="text"
-              name="username"
-              placeholder="name"
-              onChange={this.handleChange}
-            />
-            <input
-              className="form-input"
-              type="password"
-              name="password"
-              placeholder="password"
-              onChange={this.handleChange}
-            />
+          <form className="login-form" onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="input-name">
+                Name
+              </label>
+              <input
+                className="form-input"
+                id="input-name"
+                type="text"
+                name="username"
+                placeholder="name"
+                onChange={this.handleChange}
+              />
+              <label className="form-label" htmlFor="input-password">
+                Password
+              </label>
+              <input
+                className="form-input"
+                type="password"
+                id="input-password"
+                name="password"
+                placeholder="password"
+                onChange={this.handleChange}
+              />
+            </div>
+
             <button className="btn btn-primary" type="submit">
               sign in
             </button>
-            <p>
-              Not registered?{' '}
-              <Link className="btn btn-link" to="/signup">
+            <p className="link text-gray text-center">
+              Not registered?
+              <Link className="btn btn-sm btn-link" to="/signup">
                 Create an account
               </Link>
             </p>
