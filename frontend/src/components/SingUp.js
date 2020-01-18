@@ -39,7 +39,6 @@ class SingUp extends React.Component {
           this.setState({
             error: res.data.error,
           });
-          sessionStorage.logged = false;
         } else {
           sessionStorage.logged = true;
           this.props.history.push('home');
@@ -52,18 +51,30 @@ class SingUp extends React.Component {
     return (
       <div className="login-page">
         <div className="form">
-          {this.state.error ? <div className="toast toast-error mb-2">{this.state.error}</div> : ''}
+          {this.state.error && <div className="toast toast-error mb-2">{this.state.error}</div>}
           <form className="register-form" method="post" onSubmit={this.handleSubmit}>
-            <input type="text" name="username" placeholder="name" onChange={this.handleChange} />
             <input
+              className="form-input"
+              type="text"
+              name="username"
+              placeholder="name"
+              onChange={this.handleChange}
+            />
+            <input
+              className="form-input"
               type="password"
               name="password"
               placeholder="password"
               onChange={this.handleChange}
             />
-            <button type="submit">sign up</button>
-            <p className="message">
-              Already registered? <Link to="/login">Sign In</Link>
+            <button className="btn btn-primary" type="submit">
+              sign up
+            </button>
+            <p>
+              Already registered?{' '}
+              <Link className="btn btn-link" to="/login">
+                Sign In
+              </Link>
             </p>
           </form>
         </div>

@@ -10,3 +10,9 @@
 .loading .twitter-picker {
     opacity: 0;
 }
+.chip {
+    cursor: pointer;
+    padding: 15px 40px;
+    font-weight: 500;
+    text-transform: capitalize;
+}

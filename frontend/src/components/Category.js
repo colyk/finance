@@ -21,7 +21,12 @@ const Category = ({ categories, fetchCategories }) => {
         </div>
         <div className="column my-2 col-5 col-mx-auto col-md-10">
           {categories.map(category => (
-            <Chip title={category.type} color={category.color} key={category._id} />
+            <Chip
+              title={category.type}
+              color={category.color}
+              key={category._id}
+              onCategorySelect={''}
+            />
           ))}
         </div>
       </div>
@@ -31,6 +36,7 @@ const Category = ({ categories, fetchCategories }) => {
 
 const CategoryForm = ({ onCategoryCreate }) => {
   const [type, setType] = useState('');
+  // https://mokole.com/palette.html
   const [color, setColor] = useState('#FF6900');
   const [loading, setLoading] = useState(false);
 
@@ -91,12 +97,34 @@ const CategoryForm = ({ onCategoryCreate }) => {
 };
 
 const Chip = ({ title, color }) => {
+  const style = { backgroundColor: color, color: contrastTextColor(color) };
+
   return (
-    <span className="chip m-2" style={{ padding: '0 40px', backgroundColor: color }}>
+    <span className="chip m-2" style={style}>
       {title}
     </span>
   );
 };
+
+function contrastTextColor(bgColor) {
+  var nThreshold = 105;
+  var components = getRGBComponents(bgColor);
+  var bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
+
+  return 255 - bgDelta < nThreshold ? '#000000' : '#ffffff';
+}
+
+function getRGBComponents(color) {
+  var r = color.substring(1, 3);
+  var g = color.substring(3, 5);
+  var b = color.substring(5, 7);
+
+  return {
+    R: parseInt(r, 16),
+    G: parseInt(g, 16),
+    B: parseInt(b, 16),
+  };
+}
 
 const mapStateToProps = state => {
   return {
