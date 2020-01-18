@@ -1,16 +1,17 @@
-.panel {
-    width: 320px;
+.c--category .panel {
+    min-width: 220px;
     margin: auto;
 }
 
-.loading input {
+.c--category .loading input {
     opacity: 0;
 }
 
-.loading .twitter-picker {
+.c--category .loading .twitter-picker {
     opacity: 0;
 }
-.chip {
+
+.c--category .chip {
     cursor: pointer;
     padding: 15px 40px;
     font-weight: 500;

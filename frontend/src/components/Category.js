@@ -14,7 +14,7 @@ const Category = ({ categories, fetchCategories }) => {
   }, [fetchCategories]);
 
   return (
-    <div className="container">
+    <div className="container c--category">
       <div className="columns m-2">
         <div className="column my-2 col-5 col-mx-auto col-md-10">
           <CategoryForm onCategoryCreate={fetchCategories} />

@@ -28,10 +28,10 @@ const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
     <Router>
       <div className="container">
         <div className="columns">
-          <div className="column col-11">
+          <div className="column col-11 col-md-10">
             <BudgetsTab />
           </div>
-          <div className="add-btn column col-1">
+          <div className="add-btn column col-1 col-md-2">
             <button
               className="btn btn-action s-circle tooltip tooltip-left"
               data-tooltip="Create budget"

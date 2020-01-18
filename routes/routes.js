@@ -1,8 +1,7 @@
 const User = require('../controllers/User');
 const Calendar = require('../controllers/Calendar');
 const Budget = require('../controllers/Budget');
-const Income = require('../controllers/Income');
-const Expense = require('../controllers/Expense');
+const Transaction = require('../controllers/Transaction');
 const Category = require('../controllers/Category');
 
 function addUserRoutes(app) {
@@ -11,10 +10,10 @@ function addUserRoutes(app) {
 }
 
 function addTransactionRoutes(app) {
-  app.post('/incomes', Income.createIncome);
-  app.post('/getallincomes', Income.getAllIncomes);
-  app.post('/expenses', Expense.createExpense);
-  app.post('/getallexpenses', Expense.getAllExpenses);
+  app.post('/transaction', Transaction.createTransaction);
+  app.get('/transaction', Transaction.getAllTransactions);
+  app.put('/transaction', Transaction.updateTransaction);
+  app.delete('/transaction', Transaction.deleteTransaction);
 }
 
 function addCategoryRoutes(app) {
@@ -25,8 +24,8 @@ function addCategoryRoutes(app) {
 function addBudgetRoutes(app) {
   app.get('/budget', Budget.getUserBudgets);
   app.post('/budget', Budget.createBudget);
-  app.delete('/budget', Budget.deleteBudget);
   app.put('/budget', Budget.updateBudget);
+  app.delete('/budget', Budget.deleteBudget);
 }
 
 function addCalendarRoutes(app) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import requests from '../requests';
+import requests from '../../requests';
 import Income from './Income';
 import Expense from './Expense';
 
@@ -10,33 +10,20 @@ class FinancialAnalysis extends React.Component {
       incomes: [],
       expenses: [],
     };
-    this.getAllExpenses();
-    this.getAllIncomes();
+    // this.getAllTransactions();
   }
 
-  getAllExpenses() {
+  getAllTransactions() {
     requests
-      .post('getallexpenses', {})
+      .get('/transaction')
       .then(res => {
         this.setState({
-          expenses: res.data.result
+          expenses: res.data.result,
         });
         console.log(res.data.result);
       })
       .catch(console.error);
-  };
-
-  getAllIncomes() {
-    requests
-      .post('getallincomes', {})
-      .then(res => {
-        this.setState({
-          incomes: res.data.result
-        });
-        console.log(res.data.result);
-      })
-      .catch(console.error);
-  };
+  }
 
   render() {
     return (
@@ -45,7 +32,7 @@ class FinancialAnalysis extends React.Component {
         <div>
           <div>
             <h3>Incomes</h3>
-            <table >
+            <table className="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Count</th>
@@ -53,13 +40,20 @@ class FinancialAnalysis extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.incomes.map((incomes) => <tr key={incomes._id}><td>{incomes.count}</td><td>{incomes.day}-{incomes.month}-{incomes.year}</td></tr>)}
+                {this.state.incomes.map(incomes => (
+                  <tr key={incomes._id}>
+                    <td>{incomes.count}</td>
+                    <td>
+                      {incomes.day}-{incomes.month}-{incomes.year}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
           <div>
             <h3>Expenses</h3>
-            <table >
+            <table>
               <thead>
                 <tr>
                   <th>Count</th>
@@ -69,13 +63,22 @@ class FinancialAnalysis extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.expenses.map((expenses) => <tr key={expenses._id}><td>{expenses.count}</td><td>{expenses.category}</td><td>{expenses.day}-{expenses.month}-{expenses.year}</td><td>{expenses.monthDay}</td></tr>)}
+                {this.state.expenses.map(expenses => (
+                  <tr key={expenses._id}>
+                    <td>{expenses.count}</td>
+                    <td>{expenses.category}</td>
+                    <td>
+                      {expenses.day}-{expenses.month}-{expenses.year}
+                    </td>
+                    <td>{expenses.monthDay}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
-        <Income/>
-        <Expense/>
+        <Income />
+        <Expense />
       </div>
     );
   }

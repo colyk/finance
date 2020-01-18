@@ -10,9 +10,8 @@ import {
 } from 'react-router-dom';
 import Calendar from './Calendar';
 import Budget from './Budget/Budget';
-import Trend from './Trend';
 import Category from './Category';
-import FinancialAnalysis from './FinancialAnalysis';
+import Transaction from './Transaction/Transaction';
 
 function Home({ history }) {
   if (!sessionStorage.logged) history.push('/login');
@@ -25,9 +24,8 @@ function Home({ history }) {
           <ul className="tab">
             <MenuLink to="/home/calendar" label="Calendar" />
             <MenuLink to="/home/budget" label="Budgets" />
-            <MenuLink to="/home/trend" label="Trend" />
             <MenuLink to="/home/category" label="Categories" />
-            <MenuLink to="/financialanalysis" label="Financial Analysis" />
+            <MenuLink to="/home/transaction" label="Transactions" />
           </ul>
         </header>
         <Switch>
@@ -37,14 +35,11 @@ function Home({ history }) {
           <Route exact path="/home/budget">
             <Budget />
           </Route>
-          <Route path="/home/trend">
-            <Trend />
-          </Route>
           <Route path="/home/category">
             <Category />
           </Route>
-          <Route path="/financialanalysis">
-            <FinancialAnalysis />
+          <Route path="/home/transaction">
+            <Transaction />
           </Route>
         </Switch>
       </div>
