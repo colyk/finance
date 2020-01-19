@@ -28,9 +28,10 @@ function DateRangePicker({ onChange, from, to, disabled = false }) {
         displayFormat="DD-MM-YYYY"
         focusedInput={focusedInput}
         onFocusChange={focusedInput => setFocusedInput(focusedInput)}
-        withFullScreenPortal={true}
+        withPortal={true}
         hideKeyboardShortcutsPanel
         disabled={disabled}
+        isOutsideRange={() => false}
       />
     </div>
   );

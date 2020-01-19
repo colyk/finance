@@ -16,8 +16,9 @@ function SingleDatePicker({ date, onChange, disabled = false }) {
       date={date}
       displayFormat="DD-MM-YYYY"
       hideKeyboardShortcutsPanel
-      withFullScreenPortal={window.innerWidth < 400}
+      withPortal={true}
       disabled={disabled}
+      isOutsideRange={() => false}
     />
   );
 }
