@@ -18,7 +18,7 @@ function Home({ history }) {
 
   return (
     <Router>
-      <Redirect to="/home/category" />
+      <Redirect to="/home/budget" />
       <div>
         <header className="navbar mb-1">
           <ul className="tab">

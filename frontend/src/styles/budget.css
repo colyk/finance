@@ -11,6 +11,10 @@
     opacity: 0;
 }
 
+.loading .form-input {
+    opacity: 0;
+}
+
 .DateInput_input::placeholder {
     color: #bcc3ce;
     opacity: 1;

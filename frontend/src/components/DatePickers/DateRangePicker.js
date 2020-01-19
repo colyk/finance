@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-dates/initialize';
 import { DateRangePicker as RDDateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
@@ -7,6 +7,10 @@ import 'react-dates/lib/css/_datepicker.css';
 function DateRangePicker({ onChange, from, to, disabled = false }) {
   const [startDate, setStartDate] = useState(from);
   const [endDate, setEndDate] = useState(to);
+  useEffect(() => {
+    setStartDate(from);
+    setEndDate(to);
+  }, [from, to]);
   const [focusedInput, setFocusedInput] = useState(null);
   const handleDatesChange = ({ startDate, endDate }) => {
     setStartDate(startDate);
