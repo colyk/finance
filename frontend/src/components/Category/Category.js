@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories } from './store/actions/index';
+import { fetchCategories } from '../store/actions/index';
 
 import { TwitterPicker } from 'react-color';
 
-import requests from '../requests';
+import requests from '../../requests';
 
-import '../styles/category.css';
+import '../../styles/category.css';
 
 const Category = ({ categories, fetchCategories }) => {
   const [selectedCategory, setCategory] = useState(null);
@@ -34,12 +34,7 @@ const Category = ({ categories, fetchCategories }) => {
         </div>
         <div className="column my-2 col-5 col-mx-auto col-md-10">
           {categories.map(category => (
-            <Chip
-              title={category.type}
-              color={category.color}
-              key={category._id}
-              onCategorySelect={setCategory}
-            />
+            <CategoryChip category={category} onCategorySelect={setCategory} key={category._id} />
           ))}
         </div>
       </div>
@@ -55,7 +50,7 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
 
   const onCreateClick = () => {
     setLoading(true);
-    const upperType = type.toUpperCase();
+    const upperType = type.toLowerCase();
     requests
       .post('/category', { type: upperType, color })
       .then(() => {
@@ -77,13 +72,15 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
           <div className="tile-content">
             <div className="tile-title text-bold">Category type</div>
             <div className="tile-subtitle my-2">
-              <input
-                className="form-input"
-                type="text"
-                value={type}
-                placeholder={'restaurant'}
-                onChange={e => setType(e.target.value)}
-              />
+              <div className="form-group">
+                <input
+                  className="form-input"
+                  type="text"
+                  value={type}
+                  placeholder={'restaurant'}
+                  onChange={e => setType(e.target.value)}
+                />
+              </div>
             </div>
             <div className="tile-title text-bold">Color</div>
             <div className="tile-subtitle my-2">
@@ -111,17 +108,32 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
 const CategoryEditForm = ({ category, onCategoryCreate }) => {
   const [newType, setNewType] = useState(category.type);
   const [newColor, setNewColor] = useState(category.color);
+  const [typeError, setTypeError] = useState('');
 
   useEffect(() => {
     setNewType(category.type);
     setNewColor(category.color);
+    setTypeError('');
   }, [category]);
 
   const [loading, setLoading] = useState(false);
 
+  const validateFields = () => {
+    let isCorrect = true;
+    if (!newType) {
+      setTypeError('Provide category type');
+      isCorrect = false;
+    } else setTypeError('');
+
+    return isCorrect;
+  };
+
   const onUpdateClick = () => {
+    const isCorrect = validateFields();
+    if (!isCorrect) return;
+
     setLoading(true);
-    const upperType = newType.toUpperCase();
+    const upperType = newType.toLowerCase();
     requests
       .put('/category', { oldType: category.type, type: upperType, color: newColor })
       .then(() => {
@@ -132,6 +144,9 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
   };
 
   const onRemoveClick = () => {
+    const isCorrect = validateFields();
+    if (!isCorrect) return;
+
     setLoading(true);
     requests
       .delete('/category', { params: { type: category.type } })
@@ -152,13 +167,16 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
           <div className="tile-content">
             <div className="tile-title text-bold">Category type</div>
             <div className="tile-subtitle my-2">
-              <input
-                className="form-input"
-                type="text"
-                value={newType}
-                placeholder={'restaurant'}
-                onChange={e => setNewType(e.target.value)}
-              />
+              <div className={`form-group ${typeError ? 'has-error' : ''}`}>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={newType}
+                  placeholder={'restaurant'}
+                  onChange={e => setNewType(e.target.value)}
+                />
+                <p className="form-input-hint">{typeError}</p>
+              </div>
             </div>
             <div className="tile-title text-bold">Color</div>
             <div className="tile-subtitle my-2">
@@ -186,33 +204,32 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
   );
 };
 
-const Chip = ({ title, color, onCategorySelect }) => {
-  const style = { backgroundColor: color, color: contrastTextColor(color) };
+const CategoryChip = ({ category, onCategorySelect }) => {
+  const style = {
+    backgroundColor: category.color,
+    color: contrastTextColor(category.color),
+  };
 
   return (
     <span className="chip m-2" style={style} onClick={e => onCategorySelect(e.target.textContent)}>
-      {title}
+      {category.type}
     </span>
   );
 };
 
 function contrastTextColor(bgColor) {
-  var nThreshold = 105;
-  var components = getRGBComponents(bgColor);
-  var bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
+  const nThreshold = 105;
+  const components = getRGBComponents(bgColor);
+  const bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
 
   return 255 - bgDelta < nThreshold ? '#000000' : '#ffffff';
 }
 
 function getRGBComponents(color) {
-  var r = color.substring(1, 3);
-  var g = color.substring(3, 5);
-  var b = color.substring(5, 7);
-
   return {
-    R: parseInt(r, 16),
-    G: parseInt(g, 16),
-    B: parseInt(b, 16),
+    R: parseInt(color.substring(1, 3), 16),
+    G: parseInt(color.substring(3, 5), 16),
+    B: parseInt(color.substring(5, 7), 16),
   };
 }
 

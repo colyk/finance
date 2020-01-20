@@ -59,7 +59,6 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
 
   const onCreateClick = e => {
     const isCorrect = validateFields();
-    console.log(isCorrect);
     if (!isCorrect) return;
 
     toggleLoading(true);

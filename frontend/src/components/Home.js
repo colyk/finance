@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 import Calendar from './Calendar';
 import Budget from './Budget/Budget';
-import Category from './Category';
+import Category from './Category/Category';
 import Transaction from './Transaction/Transaction';
 
 function Home({ history }) {
