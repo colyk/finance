@@ -9,15 +9,28 @@ import requests from '../requests';
 import '../styles/category.css';
 
 const Category = ({ categories, fetchCategories }) => {
+  const [selectedCategory, setCategory] = useState(null);
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+
+  const onCategoryCreate = () => {
+    fetchCategories();
+    setCategory(null);
+  };
 
   return (
     <div className="container c--category">
       <div className="columns m-2">
         <div className="column my-2 col-5 col-mx-auto col-md-10">
-          <CategoryForm onCategoryCreate={fetchCategories} />
+          {selectedCategory ? (
+            <CategoryEditForm
+              category={categories.find(({ type }) => type === selectedCategory)}
+              onCategoryCreate={onCategoryCreate}
+            />
+          ) : (
+            <CategoryCreateForm onCategoryCreate={onCategoryCreate} />
+          )}
         </div>
         <div className="column my-2 col-5 col-mx-auto col-md-10">
           {categories.map(category => (
@@ -25,7 +38,7 @@ const Category = ({ categories, fetchCategories }) => {
               title={category.type}
               color={category.color}
               key={category._id}
-              onCategorySelect={''}
+              onCategorySelect={setCategory}
             />
           ))}
         </div>
@@ -34,7 +47,7 @@ const Category = ({ categories, fetchCategories }) => {
   );
 };
 
-const CategoryForm = ({ onCategoryCreate }) => {
+const CategoryCreateForm = ({ onCategoryCreate }) => {
   const [type, setType] = useState('');
   // https://mokole.com/palette.html
   const [color, setColor] = useState('#FF6900');
@@ -42,15 +55,16 @@ const CategoryForm = ({ onCategoryCreate }) => {
 
   const onCreateClick = () => {
     setLoading(true);
+    const upperType = type.toUpperCase();
     requests
-      .post('/category', { type, color })
+      .post('/category', { type: upperType, color })
       .then(() => {
         onCategoryCreate();
         setType('');
         setColor('#FF6900');
         setLoading(false);
       })
-      .catch(console.error);
+      .catch(console.log);
   };
 
   return (
@@ -68,9 +82,7 @@ const CategoryForm = ({ onCategoryCreate }) => {
                 type="text"
                 value={type}
                 placeholder={'restaurant'}
-                onChange={e => {
-                  setType(e.target.value);
-                }}
+                onChange={e => setType(e.target.value)}
               />
             </div>
             <div className="tile-title text-bold">Color</div>
@@ -96,11 +108,89 @@ const CategoryForm = ({ onCategoryCreate }) => {
   );
 };
 
-const Chip = ({ title, color }) => {
+const CategoryEditForm = ({ category, onCategoryCreate }) => {
+  const [newType, setNewType] = useState(category.type);
+  const [newColor, setNewColor] = useState(category.color);
+
+  useEffect(() => {
+    setNewType(category.type);
+    setNewColor(category.color);
+  }, [category]);
+
+  const [loading, setLoading] = useState(false);
+
+  const onUpdateClick = () => {
+    setLoading(true);
+    const upperType = newType.toUpperCase();
+    requests
+      .put('/category', { oldType: category.type, type: upperType, color: newColor })
+      .then(() => {
+        setLoading(false);
+        onCategoryCreate();
+      })
+      .catch(console.log);
+  };
+
+  const onRemoveClick = () => {
+    setLoading(true);
+    requests
+      .delete('/category', { params: { type: category.type } })
+      .then(() => {
+        setLoading(false);
+        onCategoryCreate();
+      })
+      .catch(console.log);
+  };
+
+  return (
+    <div
+      className={`panel ${loading ? 'loading' : ''}`}
+      style={{ boxShadow: `inset 0px 8px 0px 0px ${newColor}` }}
+    >
+      <div className="panel-body mt-2">
+        <div className="tile tile-centered mt-2">
+          <div className="tile-content">
+            <div className="tile-title text-bold">Category type</div>
+            <div className="tile-subtitle my-2">
+              <input
+                className="form-input"
+                type="text"
+                value={newType}
+                placeholder={'restaurant'}
+                onChange={e => setNewType(e.target.value)}
+              />
+            </div>
+            <div className="tile-title text-bold">Color</div>
+            <div className="tile-subtitle my-2">
+              <TwitterPicker
+                width={'100%'}
+                triangle={'hide'}
+                color={newColor}
+                onChange={color => setNewColor(color.hex)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="panel-footer">
+        <div className="float-right">
+          <button className="btn btn-primary mr-2" onClick={onUpdateClick}>
+            Update
+          </button>
+          <button className="btn btn-error btn-error-secondary" onClick={onRemoveClick}>
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Chip = ({ title, color, onCategorySelect }) => {
   const style = { backgroundColor: color, color: contrastTextColor(color) };
 
   return (
-    <span className="chip m-2" style={style}>
+    <span className="chip m-2" style={style} onClick={e => onCategorySelect(e.target.textContent)}>
       {title}
     </span>
   );

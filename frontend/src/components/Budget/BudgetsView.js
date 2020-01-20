@@ -100,7 +100,7 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
                     Edit
                   </button>
                 )}
-                <button className="btn btn-error" onClick={onRemoveClick}>
+                <button className="btn btn-error btn-error-secondary" onClick={onRemoveClick}>
                   Remove
                 </button>
               </div>

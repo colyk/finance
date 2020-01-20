@@ -98,7 +98,7 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
                   placeholder="Year budget"
                   onChange={e => setName(e.target.value)}
                 />
-                <p class="form-input-hint">{nameError}</p>
+                <p className="form-input-hint">{nameError}</p>
               </div>
 
               <div className={`form-group ${dateError ? 'has-error' : ''}`}>
@@ -108,7 +108,7 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
                 <div id="budget-modal__date-range">
                   <DateRangePicker from={startDate} to={endDate} onChange={handleDatesChange} />
                 </div>
-                <p class="form-input-hint">{dateError}</p>
+                <p className="form-input-hint">{dateError}</p>
               </div>
 
               <div className={`form-group ${amountError ? 'has-error' : ''}`}>
@@ -123,7 +123,7 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
                   placeholder="0.00"
                   onChange={e => setAmount(e.target.value.replace(/\s/g, '').replace(/,/, '.'))}
                 />
-                <p class="form-input-hint">{amountError}</p>
+                <p className="form-input-hint">{amountError}</p>
               </div>
             </form>
           </div>

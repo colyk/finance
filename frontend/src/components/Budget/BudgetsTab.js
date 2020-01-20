@@ -3,6 +3,7 @@ import { Redirect, Link, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const BudgetsTab = ({ budgets }) => {
+  console.log('BudgetsTab');
   return (
     <ul className="tab">
       {budgets.length ? (

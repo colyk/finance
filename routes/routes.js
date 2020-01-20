@@ -10,15 +10,17 @@ function addUserRoutes(app) {
 }
 
 function addTransactionRoutes(app) {
-  app.post('/transaction', Transaction.createTransaction);
   app.get('/transaction', Transaction.getAllTransactions);
+  app.post('/transaction', Transaction.createTransaction);
   app.put('/transaction', Transaction.updateTransaction);
   app.delete('/transaction', Transaction.deleteTransaction);
 }
 
 function addCategoryRoutes(app) {
-  app.post('/category', Category.createCategory);
   app.get('/category', Category.getAllCategories);
+  app.post('/category', Category.createCategory);
+  app.put('/category', Category.updateCategory);
+  app.delete('/category', Category.deleteCategory);
 }
 
 function addBudgetRoutes(app) {
