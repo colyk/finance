@@ -1,20 +1,19 @@
 .login-page {
     height: 100%;
     width: 100%;
-    position: fixed;
-    min-width: 320px;
-    padding: 10% 0 0;
+    position: relative;
     background: #5f2c82;
     background: -webkit-linear-gradient(to right, #49a09d, #5f2c82);
     background: linear-gradient(to right, #49a09d, #5f2c82);
 }
 
 .form {
-    position: relative;
-    z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: rgb(252, 252, 252);
-    max-width: 360px;
-    margin: 0 auto 100px;
+    width: 360px;
     padding: 45px;
     padding-bottom: 20px;
     box-shadow: 0 0 20px 0 rgba(95, 44, 130, 0.2), 0 5px 5px 0 rgba(95, 44, 130, 0.24);
@@ -30,5 +29,6 @@
     cursor: pointer;
 }
 
-.form .link{margin-top: 25px;}
-
+.form .link {
+    margin-top: 25px;
+}
