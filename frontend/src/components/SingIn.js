@@ -34,16 +34,15 @@ class SingIn extends React.Component {
     requests
       .post('login', { user })
       .then(res => {
-        if ('error' in res.data) {
-          this.setState({
-            error: res.data.error,
-          });
-        } else {
-          sessionStorage.logged = true;
-          this.props.history.push('home');
-        }
+        sessionStorage.logged = true;
+        sessionStorage.api_key = res.data.api_key;
+        this.props.history.push('home');
       })
-      .catch(console.error);
+      .catch(res => {
+        this.setState({
+          error: res.response.data.error,
+        });
+      });
   };
 
   render() {

@@ -8,10 +8,14 @@ import {
   useRouteMatch,
   withRouter,
 } from 'react-router-dom';
+
+import Fade from 'react-reveal/Fade';
+
 import Calendar from './Calendar';
 import Budget from './Budget/Budget';
 import Category from './Category/Category';
 import Transaction from './Transaction/Transaction';
+import UserSettings from './UserSettings';
 
 function Home({ history }) {
   if (!sessionStorage.logged) history.push('/login');
@@ -21,12 +25,19 @@ function Home({ history }) {
       <Redirect to="/home/category" />
       <div>
         <header className="navbar mb-1">
-          <ul className="tab">
-            <MenuLink to="/home/calendar" label="Calendar" />
-            <MenuLink to="/home/budget" label="Budgets" />
-            <MenuLink to="/home/category" label="Categories" />
-            <MenuLink to="/home/transaction" label="Transactions" />
-          </ul>
+          <div class="navbar-section">
+            <ul className="tab">
+              <MenuLink to="/home/calendar" label="Calendar" />
+              <MenuLink to="/home/budget" label="Budgets" />
+              <MenuLink to="/home/category" label="Categories" />
+              <MenuLink to="/home/transaction" label="Transactions" />
+            </ul>
+          </div>
+          <div class="navbar-section">
+            <ul className="tab">
+              <MenuLink to="/home/user-settings" label="Settings" />
+            </ul>
+          </div>
         </header>
         <Switch>
           <Route exact path="/home/calendar">
@@ -40,6 +51,11 @@ function Home({ history }) {
           </Route>
           <Route path="/home/transaction">
             <Transaction />
+          </Route>
+          <Route path="/home/user-settings">
+            <Fade right>
+              <UserSettings />
+            </Fade>
           </Route>
         </Switch>
       </div>
