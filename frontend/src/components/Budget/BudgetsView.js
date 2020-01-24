@@ -26,6 +26,8 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
     return moment(date).format('DD-MM-YYYY');
   };
 
+  updateBudget({ name: budget.name, from: budget.from, to: budget.to, amount: budget.goal_amount });
+
   const onRemoveClick = () => {
     toggleLoading(true);
     requests
@@ -47,16 +49,18 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
   };
 
   const onUpdateClick = () => {
-    toggleLoading(true);
-
     putBudget(budget.name)
       .then(res => {
+        toggleLoading(true);
         fetchBudgets();
+        resetUpdatedBudget();
+        toggleLoading(false);
+        toggleEditable(false);
+        window.location.replace("/home/budget");
       })
-      .catch(console.log)
-      .finally(() => toggleLoading(false));
-    toggleEditable(false);
-    resetUpdatedBudget();
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   return (
@@ -96,10 +100,10 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
                     </button>
                   </span>
                 ) : (
-                  <button className="btn mr-2" onClick={onEditClick}>
-                    Edit
+                    <button className="btn mr-2" onClick={onEditClick}>
+                      Edit
                   </button>
-                )}
+                  )}
                 <button className="btn btn-error btn-error-secondary" onClick={onRemoveClick}>
                   Remove
                 </button>
@@ -118,6 +122,7 @@ const TitleField = ({ editable, title, label, updateBudget }) => {
       className="form-input"
       type="text"
       placeholder={title}
+      defaultValue={title}
       onChange={e => {
         updateBudget({ name: e.target.value });
       }}
@@ -131,8 +136,8 @@ const TitleField = ({ editable, title, label, updateBudget }) => {
       {editable ? (
         <Field Component={Component} label={label} />
       ) : (
-        <div className="panel-title h3">{title}</div>
-      )}
+          <div className="panel-title h3">{title}</div>
+        )}
     </div>
   );
 };
@@ -151,7 +156,7 @@ const DateRangeField = ({ editable, label, date, updateBudget }) => {
 };
 
 const AmountField = ({ editable, label, amount, updateBudget }) => {
-  amount = currencyIntl.format(amount);
+  let amountWithCurrency = currencyIntl.format(amount);
 
   let Component = null;
   if (editable)
@@ -159,13 +164,14 @@ const AmountField = ({ editable, label, amount, updateBudget }) => {
       <input
         className="form-input"
         type="text"
-        placeholder={amount}
+        placeholder={amountWithCurrency}
+        defaultValue={amount}
         onChange={e => {
           updateBudget({ amount: e.target.value });
         }}
       />
     );
-  else Component = () => <span>{amount}</span>;
+  else Component = () => <span>{amountWithCurrency}</span>;
 
   return <Field Component={Component} label={label} />;
 };

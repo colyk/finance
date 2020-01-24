@@ -17,7 +17,6 @@ export function resetUpdatedBudget() {
 export function putBudget(oldName) {
   return (dispatch, getState) => {
     const updatedBudget = getState().cBudgetReducer.updatedBudget;
-    console.log(updatedBudget);
     return requests.put('/budget', { ...updatedBudget, oldName });
     // .then((response) => { dispatch(updateBudgets(response.data.budgets)) })
     // .catch((error) => { throw error })

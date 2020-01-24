@@ -11,6 +11,8 @@ import BudgetAddModal from './BudgetAddModal';
 import BudgetsTab from './BudgetsTab';
 import BudgetsView from './BudgetsView';
 
+import Error from '../Error';
+
 import '../../styles/budget.css';
 
 moment.locale('en-gb');
@@ -25,6 +27,8 @@ const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
   };
 
   return (
+    <div>
+    <Error />
     <Router>
       <div className="container">
         <div className="columns">
@@ -47,7 +51,7 @@ const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
 
         <BudgetAddModal />
       </div>
-    </Router>
+    </Router></div>
   );
 };
 

@@ -1,4 +1,5 @@
 const Budget = require('../models/Budget');
+const { validationResult } = require('express-validator');
 
 getUserBudgets = (req, res) => {
   const userId = req.session.userId || req.query.api_key;
@@ -14,9 +15,14 @@ getUserBudgets = (req, res) => {
 }
 
 createBudget = (req, res) => {
+
   const userId = req.session.userId || req.query.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return res.status(422).json({ errors: errors.array() });
 
   const body = req.body;
   Budget.create({
@@ -53,13 +59,18 @@ deleteBudget = (req, res) => {
   })
 }
 
-
 updateBudget = (req, res) => {
+
   const userId = req.session.userId || req.query.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return res.status(422).json({ errors: errors.array() });
+
   const body = req.body
+
   if (!body.oldName)
     return res.status(400).json({ error: "Budget name is not defined" });
 

@@ -22,10 +22,10 @@ function Home({ history }) {
 
   return (
     <Router>
-      <Redirect to="/home/category" />
+      <Redirect to="/home/budget" />
       <div>
         <header className="navbar mb-1">
-          <div class="navbar-section">
+          <div className="navbar-section">
             <ul className="tab">
               <MenuLink to="/home/calendar" label="Calendar" />
               <MenuLink to="/home/budget" label="Budgets" />
@@ -33,7 +33,7 @@ function Home({ history }) {
               <MenuLink to="/home/transaction" label="Transactions" />
             </ul>
           </div>
-          <div class="navbar-section">
+          <div className="navbar-section">
             <ul className="tab">
               <MenuLink to="/home/user-settings" label="Settings" />
             </ul>

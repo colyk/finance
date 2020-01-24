@@ -4,6 +4,8 @@ const Budget = require('../controllers/Budget');
 const Transaction = require('../controllers/Transaction');
 const Category = require('../controllers/Category');
 
+const Validator = require('../controllers/Validator');
+
 function addUserRoutes(app) {
   app.post('/login', User.checkUser);
   app.post('/signup', User.createUser);
@@ -25,8 +27,8 @@ function addCategoryRoutes(app) {
 
 function addBudgetRoutes(app) {
   app.get('/budget', Budget.getUserBudgets);
-  app.post('/budget', Budget.createBudget);
-  app.put('/budget', Budget.updateBudget);
+  app.post('/budget', Validator.budgetValidation('post_budget'), Budget.createBudget);
+  app.put('/budget', Validator.budgetValidation('put_budget'), Budget.updateBudget);
   app.delete('/budget', Budget.deleteBudget);
 }
 
