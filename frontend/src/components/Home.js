@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,7 +9,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-import Fade from 'react-reveal/Fade';
+import Slide from 'react-reveal/Slide';
 
 import Calendar from './Calendar';
 import Budget from './Budget/Budget';
@@ -19,10 +19,11 @@ import UserSettings from './UserSettings';
 
 function Home({ history }) {
   if (!sessionStorage.logged) history.push('/login');
+  const [showUserSettings, toggleUserSettings] = useState(false);
 
   return (
     <Router>
-      <Redirect to="/home/budget" />
+      <Redirect to="/home/category" />
       <div>
         <header className="navbar mb-1">
           <div className="navbar-section">
@@ -35,40 +36,48 @@ function Home({ history }) {
           </div>
           <div className="navbar-section">
             <ul className="tab">
-              <MenuLink to="/home/user-settings" label="Settings" />
+              <li
+                className="tab-item btn btn-link mx-2"
+                onClick={() => {
+                  toggleUserSettings(!showUserSettings);
+                }}
+              >
+                <i className={`icon ${showUserSettings ? 'icon-cross' : 'icon-menu'}`}></i>
+              </li>
             </ul>
           </div>
         </header>
-        <Switch>
-          <Route exact path="/home/calendar">
-            <Calendar />
-          </Route>
-          <Route exact path="/home/budget">
-            <Budget />
-          </Route>
-          <Route path="/home/category">
-            <Category />
-          </Route>
-          <Route path="/home/transaction">
-            <Transaction />
-          </Route>
-          <Route path="/home/user-settings">
-            <Fade right>
-              <UserSettings />
-            </Fade>
-          </Route>
-        </Switch>
       </div>
+      <Slide collapse right when={showUserSettings}>
+        <UserSettings />
+      </Slide>
+      <Switch>
+        <Route path="/home/calendar">
+          <Calendar />
+        </Route>
+        <Route path="/home/budget">
+          <Budget />
+        </Route>
+        <Route path="/home/category">
+          <Category />
+        </Route>
+        <Route path="/home/transaction">
+          <Transaction />
+        </Route>
+        <Route path="/home/transaction">
+          <Transaction />
+        </Route>
+      </Switch>
     </Router>
   );
 }
 
-function MenuLink({ label, to }) {
+function MenuLink({ label = '', to, icon = '' }) {
   let match = useRouteMatch({ path: to });
 
   return (
-    <li className={`tab-item ${match ? 'active' : ''} mx-2`}>
-      <Link className="btn btn-link" to={to}>
+    <li className={`tab-item ${match && !icon ? 'active' : ''} mx-2 `}>
+      <Link className={`${icon} btn btn-link`} to={to}>
         {label}
       </Link>
     </li>
