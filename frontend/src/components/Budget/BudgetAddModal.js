@@ -6,7 +6,6 @@ import DateRangePicker from '../DatePickers/DateRangePicker';
 import requests from '../../requests';
 import { toggleAddBudgetModal } from '../store/actions/componentBudget';
 import { fetchBudgets } from '../store/actions/index';
-import Error  from '../Error';
 
 function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal }) {
   const [name, setName] = useState('');
@@ -18,8 +17,6 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
   const [nameError, setNameError] = useState('');
   const [dateError, setDateError] = useState('');
   const [amountError, setAmountError] = useState('');
-
-  const [activeComponentError, setActiveComponentError] = useState(false);
 
   const validateFields = () => {
     let isCorrect = true;
@@ -56,7 +53,6 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
   };
 
   const handleDatesChange = ({ startDate, endDate }) => {
-    setActiveComponentError(true);
     setStartDate(startDate);
     setEndDate(endDate);
   };
@@ -65,23 +61,22 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
     const isCorrect = validateFields();
     if (!isCorrect) return;
 
+    toggleLoading(true);
     requests
       .post('/budget', { from: startDate, to: endDate, amount, name })
       .then(res => {
-        toggleLoading(true);
+        toggleLoading(false);
         fetchBudgets();
         closeModal();
-        setActiveComponentError(false);
-        window.location.replace("/home/budget");
       })
       .catch(e => {
+        toggleLoading(false);
         console.log(e);
       });
   };
 
   return (
     <div>
-    {`${activeComponentError ? <Error /> : ''}`}
     <div className={`modal ${showAddBudgetModal ? 'active' : ''}`}>
       <div className="modal-overlay" onClick={closeModal} />
       <div className={`modal-container ${loading ? 'loading' : ''}`} role="document">

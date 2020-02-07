@@ -16,59 +16,63 @@ import Budget from './Budget/Budget';
 import Category from './Category/Category';
 import Transaction from './Transaction/Transaction';
 import UserSettings from './UserSettings';
+import Error from './Error';
 
 function Home({ history }) {
   if (!sessionStorage.logged) history.push('/login');
   const [showUserSettings, toggleUserSettings] = useState(false);
 
   return (
-    <Router>
-      <Redirect to="/home/category" />
-      <div>
-        <header className="navbar mb-1">
-          <div className="navbar-section">
-            <ul className="tab">
-              <MenuLink to="/home/calendar" label="Calendar" />
-              <MenuLink to="/home/budget" label="Budgets" />
-              <MenuLink to="/home/category" label="Categories" />
-              <MenuLink to="/home/transaction" label="Transactions" />
-            </ul>
-          </div>
-          <div className="navbar-section">
-            <ul className="tab">
-              <li
-                className="tab-item btn btn-link mx-2"
-                onClick={() => {
-                  toggleUserSettings(!showUserSettings);
-                }}
-              >
-                <i className={`icon ${showUserSettings ? 'icon-cross' : 'icon-menu'}`}></i>
-              </li>
-            </ul>
-          </div>
-        </header>
-      </div>
-      <Slide collapse right when={showUserSettings}>
-        <UserSettings />
-      </Slide>
-      <Switch>
-        <Route path="/home/calendar">
-          <Calendar />
-        </Route>
-        <Route path="/home/budget">
-          <Budget />
-        </Route>
-        <Route path="/home/category">
-          <Category />
-        </Route>
-        <Route path="/home/transaction">
-          <Transaction />
-        </Route>
-        <Route path="/home/transaction">
-          <Transaction />
-        </Route>
-      </Switch>
-    </Router>
+    <div>
+      <Error />
+      <Router>
+        <Redirect to="/home/budget" />
+        <div>
+          <header className="navbar mb-1">
+            <div className="navbar-section">
+              <ul className="tab">
+                <MenuLink to="/home/calendar" label="Calendar" />
+                <MenuLink to="/home/budget" label="Budgets" />
+                <MenuLink to="/home/category" label="Categories" />
+                <MenuLink to="/home/transaction" label="Transactions" />
+              </ul>
+            </div>
+            <div className="navbar-section">
+              <ul className="tab">
+                <li
+                  className="tab-item btn btn-link mx-2"
+                  onClick={() => {
+                    toggleUserSettings(!showUserSettings);
+                  }}
+                >
+                  <i className={`icon ${showUserSettings ? 'icon-cross' : 'icon-menu'}`}></i>
+                </li>
+              </ul>
+            </div>
+          </header>
+        </div>
+        <Slide collapse right when={showUserSettings}>
+          <UserSettings />
+        </Slide>
+        <Switch>
+          <Route path="/home/calendar">
+            <Calendar />
+          </Route>
+          <Route path="/home/budget">
+            <Budget />
+          </Route>
+          <Route path="/home/category">
+            <Category />
+          </Route>
+          <Route path="/home/transaction">
+            <Transaction />
+          </Route>
+          <Route path="/home/transaction">
+            <Transaction />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

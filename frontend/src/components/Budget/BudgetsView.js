@@ -26,8 +26,6 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
     return moment(date).format('DD-MM-YYYY');
   };
 
-  updateBudget({ name: budget.name, from: budget.from, to: budget.to, amount: budget.goal_amount });
-
   const onRemoveClick = () => {
     toggleLoading(true);
     requests
@@ -41,6 +39,7 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
 
   const onEditClick = () => {
     toggleEditable(true);
+    updateBudget({ name: budget.name, from: budget.from, to: budget.to, amount: budget.goal_amount });
   };
 
   const onCancelClick = () => {
@@ -49,18 +48,17 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
   };
 
   const onUpdateClick = () => {
+    toggleLoading(true);
     putBudget(budget.name)
       .then(res => {
-        toggleLoading(true);
         fetchBudgets();
         resetUpdatedBudget();
-        toggleLoading(false);
         toggleEditable(false);
-        window.location.replace("/home/budget");
       })
       .catch(e => {
         console.log(e);
-      });
+      })
+      .finally(() => toggleLoading(false));
   };
 
   return (

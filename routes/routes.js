@@ -27,8 +27,8 @@ function addCategoryRoutes(app) {
 
 function addBudgetRoutes(app) {
   app.get('/budget', Budget.getUserBudgets);
-  app.post('/budget', Validator.budgetValidation('post_budget'), Budget.createBudget);
-  app.put('/budget', Validator.budgetValidation('put_budget'), Budget.updateBudget);
+  app.post('/budget', Validator.budgetValidation(), Budget.createBudget);
+  app.put('/budget', Validator.budgetValidation(), Budget.updateBudget);
   app.delete('/budget', Budget.deleteBudget);
 }
 
