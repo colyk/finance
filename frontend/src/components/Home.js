@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  /*Redirect,*/
   Link,
   useRouteMatch,
   withRouter,
@@ -26,7 +26,7 @@ function Home({ history }) {
     <div>
       <Error />
       <Router>
-        <Redirect to="/home/budget" />
+        {/* <Redirect to="/home/transaction/1" /> */}
         <div>
           <header className="navbar mb-1">
             <div className="navbar-section">
@@ -63,9 +63,6 @@ function Home({ history }) {
           </Route>
           <Route path="/home/category">
             <Category />
-          </Route>
-          <Route path="/home/transaction">
-            <Transaction />
           </Route>
           <Route path="/home/transaction">
             <Transaction />

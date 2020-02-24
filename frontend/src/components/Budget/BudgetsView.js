@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { fetchBudgets } from '../store/actions/index';
-import { putBudget, updateBudget, resetUpdatedBudget } from '../store/actions/componentBudget';
+import { putBudget, updateBudget, resetUpdatedBudget } from '../store/actions/actionBudget';
 
 import moment from 'moment';
 

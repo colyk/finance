@@ -1,0 +1,92 @@
+.header-transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.table-transactions {
+    margin: 0 20px;
+}
+
+.popover {
+    height: 49px;
+}
+
+.popover>.icon-more-vert {
+    height: 100%;
+}
+
+.editing-transaction {
+    display: flex;
+    justify-content: space-around;
+}
+
+.table td, .table th {
+    border: none;
+}
+
+.table td.category-transaction, .table th.category-transaction {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.date-transaction {
+    display: flex;
+}
+
+.date-transaction>select {
+    margin-left: 20px;
+}
+
+.pagination {
+    width: 300px;
+    margin: 10px auto;
+}
+
+.pagination>.page-item>a:hover {
+    background: #5755d9;
+    color: #fff;
+}
+
+.transaction-select {
+    display: flex;
+}
+
+.transaction-select>.btn-action {
+    width: 5em;
+    margin: 0 20px;
+}
+
+.clear-date {
+    position: absolute;
+    right: 30px;
+}
+
+.popover-date {
+    padding: 0 10px;
+    height: 14px;
+}
+
+.view-date {
+    padding: 0 5px;
+}
+
+.table-transactions tbody, .table-transactions thead {
+    display: block;
+}
+
+.table-transactions tbody {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.table-transactions tbody td, .table-transactions thead th {
+    width: 400px;
+}
+
+.table-transactions .popover-transaction {
+    width: 30px;
+    padding: 0;
+}

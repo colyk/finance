@@ -1,0 +1,11 @@
+@media only screen and (max-width: 767px) {
+    .table-transactions {
+        margin: 0;
+    }
+    .header-transaction {
+        padding: 0 10px;
+    }
+    .category-transaction {
+        display: none;
+    }
+}

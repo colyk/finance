@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
 import requests from '../../requests';
-import { toggleAddBudgetModal } from '../store/actions/componentBudget';
+import { toggleAddBudgetModal } from '../store/actions/actionBudget';
 import { fetchBudgets } from '../store/actions/index';
 
 function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal }) {
@@ -65,14 +65,13 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
     requests
       .post('/budget', { from: startDate, to: endDate, amount, name })
       .then(res => {
-        toggleLoading(false);
         fetchBudgets();
         closeModal();
       })
       .catch(e => {
-        toggleLoading(false);
         console.log(e);
-      });
+      })
+      .finally(() => toggleLoading(false));
   };
 
   return (

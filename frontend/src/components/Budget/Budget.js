@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { toggleAddBudgetModal } from '../store/actions/componentBudget';
+import { toggleAddBudgetModal } from '../store/actions/actionBudget';
 import { fetchBudgets } from '../store/actions/index';
 
 import moment from 'moment';

@@ -13,7 +13,7 @@ function addUserRoutes(app) {
 
 function addTransactionRoutes(app) {
   app.get('/transaction', Transaction.getAllTransactions);
-  app.post('/transaction', Transaction.createTransaction);
+  app.post('/transaction', Validator.transactionValidation(), Transaction.createTransaction);
   app.put('/transaction', Transaction.updateTransaction);
   app.delete('/transaction', Transaction.deleteTransaction);
 }

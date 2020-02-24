@@ -1,87 +1,64 @@
-import React from 'react';
-import requests from '../../requests';
-import Income from './Income';
-import Expense from './Expense';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
-class FinancialAnalysis extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      incomes: [],
-      expenses: [],
-    };
-    // this.getAllTransactions();
-  }
+import { toggleAddTransactionModal, fetchTransactions } from '../store/actions/actionTransaction';
+import { fetchCategories } from '../store/actions/index';
 
-  getAllTransactions() {
-    requests
-      .get('/transaction')
-      .then(res => {
-        this.setState({
-          expenses: res.data.result,
-        });
-        console.log(res.data.result);
-      })
-      .catch(console.error);
-  }
+import TransactionHeader from './TransactionHeader';
+import TransactionsView from './TransactionsView';
+import TransactionListPagination from './TransactionListPagination';
+import TransactionAddModal from './TransactionAddModal';
 
-  render() {
-    return (
-      <div>
-        <h3>My financial analysis</h3>
-        <div>
-          <div>
-            <h3>Incomes</h3>
-            <table className="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>Count</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.incomes.map(incomes => (
-                  <tr key={incomes._id}>
-                    <td>{incomes.count}</td>
-                    <td>
-                      {incomes.day}-{incomes.month}-{incomes.year}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div>
-            <h3>Expenses</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Count</th>
-                  <th>Category</th>
-                  <th>Date</th>
-                  <th>MonthDay</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.expenses.map(expenses => (
-                  <tr key={expenses._id}>
-                    <td>{expenses.count}</td>
-                    <td>{expenses.category}</td>
-                    <td>
-                      {expenses.day}-{expenses.month}-{expenses.year}
-                    </td>
-                    <td>{expenses.monthDay}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <Income />
-        <Expense />
-      </div>
-    );
-  }
+import '../../styles/transaction.css';
+
+function Transaction({ transactionsCountPerPage, currentPage, transactionsCount, fetchTransactions, fetchCategories, toggleAddTransactionModal }) {
+
+  useEffect(() => {
+    fetchTransactions(currentPage, transactionsCountPerPage);
+  }, [fetchTransactions, currentPage, transactionsCountPerPage]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const onShowTransactionAddModalClick = () => {
+    toggleAddTransactionModal(true);
+  };
+
+  return (
+    <div>
+      <TransactionHeader
+        onShowTransactionAddModalClick={onShowTransactionAddModalClick}
+        transactionsCountPerPage={transactionsCountPerPage}
+        onSetCountPerPage={fetchTransactions}
+        currentPage={currentPage} />
+      <TransactionsView />
+      <TransactionListPagination
+        transactionsCount={transactionsCount}
+        transactionsCountPerPage={transactionsCountPerPage}
+        onSetPage={fetchTransactions}
+        currentPage={currentPage} />
+      <TransactionAddModal />
+    </div>
+  );
 }
 
-export default FinancialAnalysis;
+const mapStateToProps = (state) => {
+  return {
+    showAddTransactionModal: state.transactionReducer.showAddTransactionModal,
+    transactions: state.transactionReducer.transactions,
+    transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
+    transactionsCount: state.transactionReducer.transactionsCount,
+    currentPage: state.transactionReducer.currentPage
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
+    fetchTransactions: (currentPage, transactionsCountPerPage) => dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    fetchCategories: () => dispatch(fetchCategories())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap&subset=cyrillic,latin-ext');
 body {
   margin: 0;
+  font-family: adelle,proxima nova,helvetica neue,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;

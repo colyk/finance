@@ -16,6 +16,19 @@ budgetValidation = () => {
   ]
 }
 
+transactionValidation = () => {
+  return [
+    check('title').notEmpty().trim().escape().withMessage('Transaction title is empty'),
+    check('title').isLength({ min: 2, max: 50 }).withMessage('Transaction title length min: 2; max: 50'),
+
+    check('amount').isFloat().withMessage('Goal transaction amount is not numeric'),
+    check('amount').notEmpty().withMessage('Goal transaction amount is empty'),
+
+    check('category').notEmpty().trim().escape().withMessage('Select a category'),
+  ]
+}
+
 module.exports = {
-  budgetValidation
+  budgetValidation,
+  transactionValidation
 }
