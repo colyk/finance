@@ -1,56 +1,47 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 
-class Error extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: []
-    }
-    this.hideError = this.hideError.bind(this);
-  }
+import { setErrors } from './store/actions/index'
 
-  hideError(i) {
-    let temp = this.state.errors.slice();
+const Error = ({ errors, setErrors }) => {
+
+  const hideError = (i) => {
+    let temp = errors.slice();
     temp.splice(i, 1);
-    this.setState({ errors: temp });
+    setErrors(temp);
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.errors !== this.props.errors) {
-      this.setState((state, props) => {
-        return { errors: props.errors };
-      });
-    }
-  }
-
-  render() {
-    const errs = this.state.errors.map((error, i) =>
-      <div
-        className='toast toast-error error-child'
-        key={i}
-        onClick={() => this.hideError(i)}>
-        {error.msg}
-      </div>
-    )
-    return (
-      <div className="error">
-        {
-          <ReactCSSTransitionGroup
-            transitionName="example"
-            transitionEnterTimeout={1000}
-            transitionLeaveTimeout={100}>
-            {errs}
-          </ReactCSSTransitionGroup>
-        }
-      </div>
-    );
-  }
+  return (
+    <div className="error">
+      {
+        <ReactCSSTransitionGroup
+          transitionName="example"
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={100}>
+          {
+            errors.map((error, i) =>
+              <div
+                className='toast toast-error error-child'
+                key={i}
+                onClick={() => hideError(i)}>
+                {error.msg}
+              </div>)
+          }
+        </ReactCSSTransitionGroup>
+      }
+    </div>
+  );
 }
 
 const mapStateToProps = state => {
   return { errors: state.rootReducer.errors };
 };
 
-export default connect(mapStateToProps)(Error);
+function mapDispatchToProps(dispatch) {
+  return {
+    setErrors: (errors) => dispatch(setErrors(errors))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Error);
