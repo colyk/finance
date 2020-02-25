@@ -45,18 +45,20 @@ const Category = ({ categories, fetchCategories }) => {
 const CategoryCreateForm = ({ onCategoryCreate }) => {
   const [type, setType] = useState('');
   // https://mokole.com/palette.html
-  const [color, setColor] = useState('#FF6900');
+  const [color, setColor] = useState('#FFFFFF');
+  const [background, setBackground] = useState('#FF6900');
   const [loading, setLoading] = useState(false);
 
   const onCreateClick = () => {
     setLoading(true);
     const upperType = type.toLowerCase();
     requests
-      .post('/category', { type: upperType, color })
+      .post('/category', { type: upperType, color, background })
       .then(() => {
         onCategoryCreate();
         setType('');
         setColor('#FF6900');
+        setBackground('#FFFFFF');
         setLoading(false);
       })
       .catch(console.log);
@@ -88,7 +90,10 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
                 width={'100%'}
                 triangle={'hide'}
                 color={color}
-                onChange={color => setColor(color.hex)}
+                onChange={color => {
+                  setColor(contrastTextColor(color.hex));
+                  setBackground(color.hex);
+                }}
               />
             </div>
           </div>
@@ -108,11 +113,13 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
 const CategoryEditForm = ({ category, onCategoryCreate }) => {
   const [newType, setNewType] = useState(category.type);
   const [newColor, setNewColor] = useState(category.color);
+  const [newBackground, setNewBackground] = useState(category.background);
   const [typeError, setTypeError] = useState('');
 
   useEffect(() => {
     setNewType(category.type);
     setNewColor(category.color);
+    setNewBackground(category.background);
     setTypeError('');
   }, [category]);
 
@@ -135,7 +142,12 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
     setLoading(true);
     const upperType = newType.toLowerCase();
     requests
-      .put('/category', { oldType: category.type, type: upperType, color: newColor })
+      .put('/category', {
+        oldType: category.type,
+        type: upperType,
+        color: newColor,
+        background: newBackground,
+      })
       .then(() => {
         setLoading(false);
         onCategoryCreate();
@@ -184,7 +196,11 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
                 width={'100%'}
                 triangle={'hide'}
                 color={newColor}
-                onChange={color => setNewColor(color.hex)}
+                backgroundColor={newBackground}
+                onChange={color => {
+                  setNewColor(contrastTextColor(color.hex));
+                  setNewBackground(color.hex);
+                }}
               />
             </div>
           </div>
@@ -206,8 +222,8 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
 
 const CategoryChip = ({ category, onCategorySelect }) => {
   const style = {
-    backgroundColor: category.color,
-    color: contrastTextColor(category.color),
+    backgroundColor: category.background,
+    color: category.color,
   };
 
   return (

@@ -8,6 +8,27 @@
     margin: 0 20px;
 }
 
+.table-transactions tbody, .table-transactions thead {
+    display: block;
+}
+
+.table-transactions tbody {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 10px;
+}
+
+.table-transactions tbody td, .table-transactions thead th {
+    width: 400px;
+    border: none;
+}
+
+.table-transactions .popover-transaction {
+    width: 30px;
+    padding: 0;
+}
+
 .popover {
     height: 49px;
 }
@@ -19,10 +40,6 @@
 .editing-transaction {
     display: flex;
     justify-content: space-around;
-}
-
-.table td, .table th {
-    border: none;
 }
 
 .table td.category-transaction, .table th.category-transaction {
@@ -70,23 +87,4 @@
 
 .view-date {
     padding: 0 5px;
-}
-
-.table-transactions tbody, .table-transactions thead {
-    display: block;
-}
-
-.table-transactions tbody {
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.table-transactions tbody td, .table-transactions thead th {
-    width: 400px;
-}
-
-.table-transactions .popover-transaction {
-    width: 30px;
-    padding: 0;
 }

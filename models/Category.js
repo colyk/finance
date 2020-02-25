@@ -12,6 +12,10 @@ const categorySchema = new db.Schema({
   color: {
     type: String,
     required: true,
+  },
+  background: {
+    type: String,
+    required: true,
   }
 });
 
