@@ -7,8 +7,12 @@ import TransactionList from './TransactionList';
 import { fetchTransactions } from '../store/actions/actionTransaction';
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
-const TransactionsView = ({ transactions, transactionsCountPerPage, currentPage, fetchTransactions }) => {
-
+const TransactionsView = ({
+  transactions,
+  transactionsCountPerPage,
+  currentPage,
+  fetchTransactions,
+}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -36,7 +40,7 @@ const TransactionsView = ({ transactions, transactionsCountPerPage, currentPage,
         console.log(e);
       })
       .finally();
-  }
+  };
 
   return (
     <div className="table-transactions">
@@ -45,21 +49,32 @@ const TransactionsView = ({ transactions, transactionsCountPerPage, currentPage,
           <thead>
             <tr className="active">
               <th>Title</th>
-              <th className="category-transaction">Category</th>
+              <th className="category-transaction">Categories</th>
               <th>Amount</th>
               <th>
-                <div className="date-transaction">Date
-                  <div className={startDate && endDate ? 'view-date' : ''}>{startDate ? ('[' + formatDate(startDate)) : ''}{endDate ? '-' + formatDate(endDate) + ']' : ''}</div>
+                <div className="date-transaction">
+                  Date
+                  <div className={startDate && endDate ? 'view-date' : ''}>
+                    {startDate ? '[' + formatDate(startDate) : ''}
+                    {endDate ? '-' + formatDate(endDate) + ']' : ''}
+                  </div>
                   <div className="popover popover-left popover-date">
                     <i className="icon icon-edit btn btn-link"></i>
                     <div className="popover-container">
                       <div className="card">
                         <div className="card-header">
                           Choose date
-                        <i className="icon icon-cross btn btn-error clear-date" onClick={cleaningDatesChange}></i>
+                          <i
+                            className="icon icon-cross btn btn-error clear-date"
+                            onClick={cleaningDatesChange}
+                          ></i>
                         </div>
                         <div className="card-body">
-                          <DateRangePicker from={startDate} to={endDate} onChange={handleDatesChange} />
+                          <DateRangePicker
+                            from={startDate}
+                            to={endDate}
+                            onChange={handleDatesChange}
+                          />
                         </div>
                       </div>
                     </div>
@@ -70,13 +85,12 @@ const TransactionsView = ({ transactions, transactionsCountPerPage, currentPage,
             </tr>
           </thead>
           <tbody>
-            {
-              transactions.length ? (
-                <TransactionList transactions={transactions} onRemoveClick={deleteTransaction} />
-              ) : null
-            }
+            {transactions.length ? (
+              <TransactionList transactions={transactions} onRemoveClick={deleteTransaction} />
+            ) : null}
           </tbody>
-        </table>) : null}
+        </table>
+      ) : null}
     </div>
   );
 };
@@ -85,13 +99,14 @@ const mapStateToProps = state => {
   return {
     transactions: state.transactionReducer.transactions,
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
-    currentPage: state.transactionReducer.currentPage
-  }
+    currentPage: state.transactionReducer.currentPage,
+  };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchTransactions: (currentPage, transactionsCountPerPage) => dispatch(fetchTransactions(currentPage, transactionsCountPerPage))
+    fetchTransactions: (currentPage, transactionsCountPerPage) =>
+      dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
   };
 }
 

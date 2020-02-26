@@ -14,7 +14,7 @@ createTransaction = (req, res) => {
     user_id: req.session.userId,
     title: body.title,
     amount: body.amount,
-    category: body.category,
+    categories: body.selectedCategories,
     year: body.year,
     month: body.month + 1, //January is 0
     day: body.day,

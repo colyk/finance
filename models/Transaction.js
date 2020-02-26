@@ -10,26 +10,27 @@ const transactionSchema = new db.Schema({
   },
   amount: {
     type: Number,
-    required: true,
+    required: true
   },
-  category: {
-    type: String,
+  categories: {
+    type: [db.Schema.Types.Mixed],
+    required: true
   },
   year: {
     type: Number,
-    required: true,
+    required: true
   },
   month: {
     type: Number,
-    required: true,
+    required: true
   },
   day: {
     type: Number,
-    required: true,
+    required: true
   },
   monthDay: {
     type: Number,
-    required: true,
+    required: true
   }
 }, {
   timestamps: true

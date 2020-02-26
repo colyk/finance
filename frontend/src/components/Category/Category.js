@@ -89,7 +89,7 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
               <TwitterPicker
                 width={'100%'}
                 triangle={'hide'}
-                color={color}
+                color={background}
                 onChange={color => {
                   setColor(contrastTextColor(color.hex));
                   setBackground(color.hex);
@@ -195,8 +195,7 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
               <TwitterPicker
                 width={'100%'}
                 triangle={'hide'}
-                color={newColor}
-                backgroundColor={newBackground}
+                color={newBackground}
                 onChange={color => {
                   setNewColor(contrastTextColor(color.hex));
                   setNewBackground(color.hex);
