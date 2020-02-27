@@ -142,7 +142,7 @@ function TransactionAddModal({
               <select
                 className="form-select"
                 id="select-category"
-                onChange={e => onCategorySelect(e.target.value, '#ff6900', '#ffffff')}
+                onChange={e => onCategorySelect(e.target.value, '#eef0f3', '#000000')}
                 disabled={selectedCategoryCount >= 3 ? true : false}
               >
                 <option value="">Choose a category</option>

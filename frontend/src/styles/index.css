@@ -66,6 +66,20 @@ body {
 .error .error-child {
   margin-bottom: 2px;
   cursor: pointer;
+  animation-name: fadeIn;
+  animation-duration: 1.25s;
+  animation-fill-mode: forwards;
+  visibility: hidden;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .example-enter {

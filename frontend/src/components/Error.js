@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 
 import { setErrors } from './store/actions/index'
@@ -15,20 +14,13 @@ const Error = ({ errors, setErrors }) => {
   return (
     <div className="error">
       {
-        <ReactCSSTransitionGroup
-          transitionName="example"
-          transitionEnterTimeout={1000}
-          transitionLeaveTimeout={100}>
-          {
-            errors.map((error, i) =>
-              <div
-                className='toast toast-error error-child'
-                key={i}
-                onClick={() => hideError(i)}>
-                {error.msg}
-              </div>)
-          }
-        </ReactCSSTransitionGroup>
+        errors.map((error, i) =>
+          <div
+            className='toast toast-error error-child'
+            key={i}
+            onClick={() => hideError(i)}>
+            {error.msg}
+          </div>)
       }
     </div>
   );
