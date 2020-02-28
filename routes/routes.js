@@ -3,12 +3,17 @@ const Calendar = require('../controllers/Calendar');
 const Budget = require('../controllers/Budget');
 const Transaction = require('../controllers/Transaction');
 const Category = require('../controllers/Category');
+const Analytic = require('../controllers/Analytic');
 
 const Validator = require('../controllers/Validator');
 
 function addUserRoutes(app) {
   app.post('/login', User.checkUser);
   app.post('/signup', User.createUser);
+}
+
+function addAnalyticRoutes(app) {
+  app.get('/analytic', Analytic.getAnalytics);
 }
 
 function addTransactionRoutes(app) {
@@ -43,4 +48,5 @@ module.exports = function (app) {
   addCategoryRoutes(app);
   addCalendarRoutes(app);
   addBudgetRoutes(app);
+  addAnalyticRoutes(app);
 };
