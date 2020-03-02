@@ -12,6 +12,10 @@ const transactionSchema = new db.Schema({
     type: Number,
     required: true
   },
+  type: {
+    type: String,
+    required: true
+  },
   categories: {
     type: [db.Schema.Types.Mixed],
     required: true

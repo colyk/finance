@@ -14,6 +14,7 @@ createTransaction = (req, res) => {
     user_id: req.session.userId,
     title: body.title,
     amount: body.amount,
+    type: body.type,
     categories: body.selectedCategories,
     year: body.year,
     month: body.month + 1, //January is 0
@@ -22,7 +23,7 @@ createTransaction = (req, res) => {
   }, (err) => {
     if (err) {
       console.log(err)
-      return res.status(400).json({ message: 'Transaction not created' });
+      return res.status(400).json({ error: 'Transaction not created' });
     }
     return res.status(200).json({});
   });

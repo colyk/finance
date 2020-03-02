@@ -24,6 +24,7 @@ function TransactionAddModal({
   const [month, setMonth] = useState(moment()._d.getMonth());
   const [year, setYear] = useState(moment()._d.getFullYear());
   const [monthDay, setMonthDay] = useState(moment()._d.getDay());
+  const [type, setType] = useState('expense');
 
   const handleDatesChange = date => {
     setDate(date.target.value);
@@ -36,6 +37,7 @@ function TransactionAddModal({
   const closeModal = () => {
     setTitle('');
     setAmount('');
+    setType('expense');
     setSelectedCategories([]);
     setSelectedCategoryCount(0);
     toggleLoading(false);
@@ -45,7 +47,7 @@ function TransactionAddModal({
   const createTransaction = () => {
     toggleLoading(true);
     requests
-      .post('/transaction', { title, amount, selectedCategories, day, month, year, monthDay })
+      .post('/transaction', { title, amount, selectedCategories, day, month, year, monthDay, type })
       .then(res => {
         fetchTransactions(currentPage, transactionsCountPerPage);
         closeModal();
@@ -158,6 +160,24 @@ function TransactionAddModal({
                     ))
                   : null}
               </select>
+            </div>
+            <div className="form-group">
+              <label className="form-radio form-inline">
+                <input
+                  type="radio"
+                  checked={type === 'expense' ? true : false}
+                  onChange={() => setType('expense')}
+                />
+                <i className="form-icon"></i> Expense
+              </label>
+              <label className="form-radio form-inline">
+                <input
+                  type="radio"
+                  checked={type === 'income' ? true : false}
+                  onChange={() => setType('income')}
+                />
+                <i className="form-icon"></i> Income
+              </label>
             </div>
           </div>
         </div>

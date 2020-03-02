@@ -7,8 +7,13 @@ const TransactionList = props => {
   };
 
   return props.transactions.map(
-    ({ _id, title, categories, amount, year, month, day, monthDay }) => (
-      <tr key={_id}>
+    ({ _id, title, categories, amount, year, month, day, monthDay, type }) => (
+      <tr
+        key={_id}
+        className={
+          type === 'expense' ? 'expense-border' : type === 'income' ? 'income-border' : null
+        }
+      >
         <td>{title}</td>
         <td className="category-transaction">
           {categories.map((category, index) => (
