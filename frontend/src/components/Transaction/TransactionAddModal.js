@@ -58,9 +58,10 @@ function TransactionAddModal({
       .finally(() => toggleLoading(false));
   };
 
-  const onCategorySelect = (type, background, color) => {
+  const onCategorySelect = (type, array) => {
     if (type === '') return;
-    let category = { type: type, background: background, color: color };
+    let item = array.find(category => category.type === type);
+    let category = { type: type, background: item.background, color: item.color };
     let categories = selectedCategories;
     categories.push(category);
     setSelectedCategories(categories);
@@ -126,38 +127,38 @@ function TransactionAddModal({
                 Categories
                 {selectedCategoryCount > 0
                   ? selectedCategories.map((category, index) => (
-                      <div
-                        className="chip"
-                        style={{ backgroundColor: category.background, color: category.color }}
-                        key={index}
-                      >
-                        {category.type}
-                        <button
-                          className="btn btn-clear"
-                          aria-label="Close"
-                          onClick={() => deleteCategory(index)}
-                        ></button>
-                      </div>
-                    ))
+                    <div
+                      className="chip"
+                      style={{ backgroundColor: category.background, color: category.color }}
+                      key={index}
+                    >
+                      {category.type}
+                      <button
+                        className="btn btn-clear"
+                        aria-label="Close"
+                        onClick={() => deleteCategory(index)}
+                      ></button>
+                    </div>
+                  ))
                   : null}
               </label>
               <select
                 className="form-select"
                 id="select-category"
-                onChange={e => onCategorySelect(e.target.value, '#eef0f3', '#000000')}
+                onChange={e => onCategorySelect(e.target.value, categories)}
                 disabled={selectedCategoryCount >= 3 ? true : false}
               >
                 <option value="">Choose a category</option>
                 {categories
                   ? categories.map((category, index) => (
-                      <option
-                        value={category.type}
-                        style={{ backgroundColor: category.background, color: category.color }}
-                        key={index}
-                      >
-                        {category.type}
-                      </option>
-                    ))
+                    <option
+                      value={category.type}
+                      style={{ backgroundColor: category.background, color: category.color }}
+                      key={index}
+                    >
+                      {category.type}
+                    </option>
+                  ))
                   : null}
               </select>
             </div>
