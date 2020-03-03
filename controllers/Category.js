@@ -1,12 +1,13 @@
 const Category = require('../models/Category');
 
 createCategory = (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
   const body = req.body;
   Category.create({
-    user_id: req.session.userId,
+    user_id: userId,
     type: body.type,
     color: body.color,
     background: body.background
@@ -20,22 +21,24 @@ createCategory = (req, res) => {
 }
 
 getAllCategories = async (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  categories = await Category.find({ user_id: req.session.userId });
+  categories = await Category.find({ user_id: userId });
   return res.status(200).json({ categories });
 }
 
 deleteCategory = (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
   const query = req.query;
   if (!query.type)
     return res.status(400).json({ error: "Category type is not defined" });
 
-  Category.findOneAndDelete({ user_id: req.session.userId, type: query.type }, (err) => {
+  Category.findOneAndDelete({ user_id: userId, type: query.type }, (err) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'Category was not deleted' });
@@ -46,14 +49,15 @@ deleteCategory = (req, res) => {
 }
 
 updateCategory = (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
   const body = req.body
   if (!body.oldType)
     return res.status(400).json({ error: "Category type is not defined" });
 
-  Category.findOne({ user_id: req.session.userId, type: body.oldType }, async function (err, doc) {
+  Category.findOne({ user_id: userId, type: body.oldType }, async function (err, doc) {
     if (err || !doc) {
       console.log(err);
       return res.status(400).json({ error: 'Category was not updated' });

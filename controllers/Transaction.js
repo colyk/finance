@@ -2,7 +2,8 @@ const Transaction = require('../models/Transaction');
 const { validationResult } = require('express-validator');
 
 createTransaction = (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
   const errors = validationResult(req);
@@ -11,7 +12,7 @@ createTransaction = (req, res) => {
 
   const body = req.body;
   Transaction.create({
-    user_id: req.session.userId,
+    user_id: userId,
     title: body.title,
     amount: body.amount,
     type: body.type,
@@ -30,17 +31,18 @@ createTransaction = (req, res) => {
 }
 
 getAllTransactions = async (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  const count = await Transaction.count({ user_id: req.session.userId });
+  const count = await Transaction.count({ user_id: userId });
   const transactionsCountPerPage = parseInt(req.query.count);
   let page = parseInt(req.query.page);
 
   if (page < 1 || count <= transactionsCountPerPage) page = 1;
   if (page > Math.ceil(count / transactionsCountPerPage)) page--;
 
-  const transactions = await Transaction.find({ user_id: req.session.userId })
+  const transactions = await Transaction.find({ user_id: userId })
     .skip((transactionsCountPerPage * page) - transactionsCountPerPage)
     .sort({ updatedAt: -1 })
     .limit(transactionsCountPerPage);
@@ -48,7 +50,8 @@ getAllTransactions = async (req, res) => {
 }
 
 updateTransaction = async (req, res) => {
-  if (!req.session.userId)
+  const userId = req.session.userId || req.query.api_key;
+  if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
   return res.status(400).json({ error: "Not implemented" });
@@ -63,7 +66,7 @@ deleteTransaction = (req, res) => {
   if (!query._id)
     return res.status(400).json({ error: "Id is not defined" });
 
-  Transaction.findOneAndDelete({ _id: query._id },
+  Transaction.findOneAndDelete({ _id: query._id, user_id: userId},
     (err) => {
       if (err) {
         console.log(err);

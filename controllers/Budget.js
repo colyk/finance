@@ -15,7 +15,6 @@ getUserBudgets = (req, res) => {
 }
 
 createBudget = (req, res) => {
-
   const userId = req.session.userId || req.query.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
@@ -60,7 +59,6 @@ deleteBudget = (req, res) => {
 }
 
 updateBudget = (req, res) => {
-
   const userId = req.session.userId || req.query.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
