@@ -43,10 +43,12 @@ const Category = ({ categories, fetchCategories }) => {
 };
 
 const CategoryCreateForm = ({ onCategoryCreate }) => {
+  const DEFAULT_COLOR = '#ffffff';
+  const DEFAULT_BACKGROUND = '#ff6900';
+
   const [type, setType] = useState('');
-  // https://mokole.com/palette.html
-  const [color, setColor] = useState('#FFFFFF');
-  const [background, setBackground] = useState('#FF6900');
+  const [color, setColor] = useState(DEFAULT_COLOR);
+  const [background, setBackground] = useState(DEFAULT_BACKGROUND);
   const [loading, setLoading] = useState(false);
 
   const onCreateClick = () => {
@@ -57,8 +59,8 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
       .then(() => {
         onCategoryCreate();
         setType('');
-        setColor('#FF6900');
-        setBackground('#FFFFFF');
+        setColor(DEFAULT_COLOR);
+        setBackground(DEFAULT_BACKGROUND);
         setLoading(false);
       })
       .catch(console.log);

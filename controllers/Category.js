@@ -59,12 +59,9 @@ updateCategory = (req, res) => {
       return res.status(400).json({ error: 'Category was not updated' });
     }
 
-    if (doc.type)
-      doc.type = body.type;
-    if (doc.color)
-      doc.color = body.color;
-    if (doc.background)
-      doc.background = body.background;
+    doc.type = body.type;
+    doc.color = body.color;
+    doc.background = body.background;
     await doc.save();
     return res.status(200).json();
   });
