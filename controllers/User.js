@@ -7,21 +7,29 @@ checkUser = (req, res) => {
   if (!body)
     return res.status(400).json({ error: "You must provide a user" });
 
-  if (!body.user.username || !body.user.password)
+  if ((!body.user.username || !body.user.password) && !body.api_key)
     return res.status(422).json({ error: "Inputs are empty" });
 
-  User.findOne({ username: body.user.username }, (err, user) => {
-    if (err || !user)
-      return res.status(422).json({ error: "User not found" });
-
-    bcrypt.compare(body.user.password, user.password, function (err, result) {
-      if (err)
-        return res.status(422).json({ error: "Invalid password" });
-
-      req.session.userId = user._id;
+  if (body.api_key)
+    User.findOne({ username: body.api_key }, (err, user) => {
+      if (err || !user)
+        return res.status(422).json({ error: "User not found" });
       return res.status(200).json({ api_key: user._id });
     });
-  });
+
+  else
+    User.findOne({ username: body.user.username }, (err, user) => {
+      if (err || !user)
+        return res.status(422).json({ error: "User not found" });
+
+      bcrypt.compare(body.user.password, user.password, function (err, result) {
+        if (err)
+          return res.status(422).json({ error: "Invalid password" });
+
+        req.session.userId = user._id;
+        return res.status(200).json({ api_key: user._id });
+      });
+    });
 }
 
 createUser = (req, res) => {
