@@ -3,19 +3,20 @@ const bcrypt = require('bcrypt');
 
 checkUser = (req, res) => {
   const body = req.body;
-
   if (!body)
     return res.status(400).json({ error: "You must provide a user" });
 
-  if ((!body.user.username || !body.user.password) && !body.api_key)
+  if (!body.user && !body.api_key)
     return res.status(422).json({ error: "Inputs are empty" });
 
-  if (body.api_key)
-    User.findOne({ username: body.api_key }, (err, user) => {
+  if (body.api_key) {
+    console.log(`Log in by api key.`)
+    User.findOne({ _id: body.api_key }, (err, user) => {
       if (err || !user)
         return res.status(422).json({ error: "User not found" });
       return res.status(200).json({ api_key: user._id });
     });
+  }
 
   else
     User.findOne({ username: body.user.username }, (err, user) => {

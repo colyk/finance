@@ -39,6 +39,7 @@ class SingIn extends React.Component {
         this.props.history.push('home');
       })
       .catch(res => {
+        console.log(res);
         this.setState({
           error: res.response.data.error,
         });
