@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import requests from '../../requests';
-import moment from 'moment';
+import { formatDate } from '../utils';
 
 import TransactionList from './TransactionList';
 import { fetchTransactions } from '../store/actions/actionTransaction';
@@ -24,10 +24,6 @@ const TransactionsView = ({
   const cleaningDatesChange = () => {
     setStartDate(null);
     setEndDate(null);
-  };
-
-  const formatDate = date => {
-    return moment(date).format('DD.MM.YYYY');
   };
 
   const deleteTransaction = id => {
@@ -55,8 +51,8 @@ const TransactionsView = ({
                 <div className="date-transaction">
                   Date
                   <div className={startDate && endDate ? 'view-date' : ''}>
-                    {startDate ? '[' + formatDate(startDate) : ''}
-                    {endDate ? '-' + formatDate(endDate) + ']' : ''}
+                    {startDate ? '[' + formatDate(startDate, 'DD.MM.YYYY') : ''}
+                    {endDate ? '-' + formatDate(endDate, 'DD.MM.YYYY') + ']' : ''}
                   </div>
                   <div className="popover popover-left popover-date">
                     <i className="icon icon-edit btn btn-link"></i>

@@ -6,6 +6,8 @@ import moment from 'moment';
 import { toggleAddTransactionModal, fetchTransactions } from '../store/actions/actionTransaction';
 import SingleDatePicker from '../DatePickers/SingleDatePicker';
 
+moment.locale('en-gb');
+
 function TransactionAddModal({
   showAddTransactionModal,
   transactionsCountPerPage,
@@ -58,19 +60,17 @@ function TransactionAddModal({
       .finally(() => toggleLoading(false));
   };
 
-  const onCategorySelect = (type, array) => {
-    if (type === '') return;
-    let item = array.find(category => category.type === type);
+  const onCategorySelect = (type, categories) => {
+    if (!type) return;
+    let item = categories.find(category => category.type === type);
     let category = { type: type, background: item.background, color: item.color };
-    let categories = selectedCategories;
-    categories.push(category);
-    setSelectedCategories(categories);
+    selectedCategories.push(category);
+    setSelectedCategories(selectedCategories);
     setSelectedCategoryCount(selectedCategoryCount + 1);
   };
 
   const deleteCategory = index => {
-    let categories = selectedCategories;
-    categories.splice(index, 1);
+    selectedCategories.splice(index, 1);
     setSelectedCategoryCount(selectedCategoryCount - 1);
   };
 
@@ -125,48 +125,44 @@ function TransactionAddModal({
             <div className="form-group">
               <label className="form-label" htmlFor="select-category">
                 Categories
-                {selectedCategoryCount > 0
-                  ? selectedCategories.map((category, index) => (
-                    <div
-                      className="chip"
-                      style={{ backgroundColor: category.background, color: category.color }}
-                      key={index}
-                    >
-                      {category.type}
-                      <button
-                        className="btn btn-clear"
-                        aria-label="Close"
-                        onClick={() => deleteCategory(index)}
-                      ></button>
-                    </div>
-                  ))
-                  : null}
+                {selectedCategories.length > 0 && selectedCategories.map((category, index) => (
+                  <div
+                    className="chip"
+                    style={{ backgroundColor: category.background, color: category.color }}
+                    key={index}
+                  >
+                    {category.type}
+                    <button
+                      className="btn btn-clear"
+                      aria-label="Close"
+                      onClick={() => deleteCategory(index)}
+                    ></button>
+                  </div>
+                ))}
               </label>
               <select
                 className="form-select"
                 id="select-category"
                 onChange={e => onCategorySelect(e.target.value, categories)}
-                disabled={selectedCategoryCount >= 3 ? true : false}
+                disabled={selectedCategories.length >= 3}
               >
                 <option value="">Choose a category</option>
-                {categories
-                  ? categories.map((category, index) => (
-                    <option
-                      value={category.type}
-                      style={{ backgroundColor: category.background, color: category.color }}
-                      key={index}
-                    >
-                      {category.type}
-                    </option>
-                  ))
-                  : null}
+                {categories && categories.map((category, index) => (
+                  <option
+                    value={category.type}
+                    style={{ backgroundColor: category.background, color: category.color }}
+                    key={index}
+                  >
+                    {category.type}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group">
               <label className="form-radio form-inline">
                 <input
                   type="radio"
-                  checked={type === 'expense' ? true : false}
+                  checked={type === 'expense'}
                   onChange={() => setType('expense')}
                 />
                 <i className="form-icon"></i> Expense
@@ -174,7 +170,7 @@ function TransactionAddModal({
               <label className="form-radio form-inline">
                 <input
                   type="radio"
-                  checked={type === 'income' ? true : false}
+                  checked={type === 'income'}
                   onChange={() => setType('income')}
                 />
                 <i className="form-icon"></i> Income
