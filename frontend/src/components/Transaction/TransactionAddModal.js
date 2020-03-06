@@ -49,7 +49,17 @@ function TransactionAddModal({
   const createTransaction = () => {
     toggleLoading(true);
     requests
-      .post('/transaction', { title, amount, selectedCategories, day, month, year, monthDay, type })
+      .post('/transaction', {
+        title,
+        amount,
+        selectedCategories,
+        date,
+        day,
+        month,
+        year,
+        monthDay,
+        type,
+      })
       .then(res => {
         fetchTransactions(currentPage, transactionsCountPerPage);
         closeModal();
@@ -125,20 +135,21 @@ function TransactionAddModal({
             <div className="form-group">
               <label className="form-label" htmlFor="select-category">
                 Categories
-                {selectedCategories.length > 0 && selectedCategories.map((category, index) => (
-                  <div
-                    className="chip"
-                    style={{ backgroundColor: category.background, color: category.color }}
-                    key={index}
-                  >
-                    {category.type}
-                    <button
-                      className="btn btn-clear"
-                      aria-label="Close"
-                      onClick={() => deleteCategory(index)}
-                    ></button>
-                  </div>
-                ))}
+                {selectedCategories.length > 0 &&
+                  selectedCategories.map((category, index) => (
+                    <div
+                      className="chip"
+                      style={{ backgroundColor: category.background, color: category.color }}
+                      key={index}
+                    >
+                      {category.type}
+                      <button
+                        className="btn btn-clear"
+                        aria-label="Close"
+                        onClick={() => deleteCategory(index)}
+                      ></button>
+                    </div>
+                  ))}
               </label>
               <select
                 className="form-select"
@@ -147,15 +158,16 @@ function TransactionAddModal({
                 disabled={selectedCategories.length >= 3}
               >
                 <option value="">Choose a category</option>
-                {categories && categories.map((category, index) => (
-                  <option
-                    value={category.type}
-                    style={{ backgroundColor: category.background, color: category.color }}
-                    key={index}
-                  >
-                    {category.type}
-                  </option>
-                ))}
+                {categories &&
+                  categories.map((category, index) => (
+                    <option
+                      value={category.type}
+                      style={{ backgroundColor: category.background, color: category.color }}
+                      key={index}
+                    >
+                      {category.type}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="form-group">

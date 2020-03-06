@@ -15,6 +15,7 @@ createTransaction = (req, res) => {
     user_id: userId,
     title: body.title,
     amount: body.amount,
+    createdAt: body.date,
     type: body.type,
     categories: body.selectedCategories,
     year: body.year,

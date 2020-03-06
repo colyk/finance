@@ -1,4 +1,4 @@
-import { SHOW_MODAL, GET_TRANSACTIONS } from "../constants/action-types";
+import { SHOW_MODAL, GET_TRANSACTIONS } from '../constants/action-types';
 import requests from '../../../requests';
 
 export function toggleAddTransactionModal(payload) {
@@ -12,7 +12,7 @@ export function getTransactions(payload, count, currentPage, countPerPage) {
 export function fetchTransactions(currentPage, countPerPage) {
   return dispatch => {
     return requests
-      .get('/transaction', { page: currentPage, count: countPerPage })
+      .get('/transaction?page=' + currentPage + '&count=' + countPerPage)
       .then(res => {
         dispatch(getTransactions(res.data.transactions, res.data.count, currentPage, countPerPage));
       })
