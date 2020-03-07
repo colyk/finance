@@ -9,3 +9,5 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_ERRORS = 'SET_ERRORS';
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
+
+export const GET_ANALYTICS = 'GET_ANALYTICS';
