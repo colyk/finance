@@ -75,11 +75,14 @@
 }
 
 .pagination {
-    width: 300px;
-    margin: 10px auto;
+    justify-content: center;
 }
 
-.pagination>.page-item>a:hover {
+.pagination>.page-item>button {
+    border: none;
+}
+
+.pagination>.page-item>button:hover {
     background: #5755d9;
     color: #fff;
 }
