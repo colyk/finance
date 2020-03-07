@@ -99,3 +99,26 @@ body {
   opacity: 0.01;
   transition: opacity 100ms ease-in;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #e4d4e4a1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
+
+::-webkit-scrollbar-track, 
+::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  visibility: hidden;
+}
+
+::-webkit-scrollbar-track:hover, 
+::-webkit-scrollbar-thumb:hover {
+  visibility: visible;
+}
