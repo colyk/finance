@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Calendar as RCalendar, momentLocalizer } from 'react-big-calendar';
-import 'moment/locale/en-gb';
-import moment from 'moment';
+import { formatDate, _moment } from './utils';
 import requests from '../requests';
 
 import '../styles/calendar.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-moment.locale('en-gb');
-const localizer = momentLocalizer(moment);
+const localizer = momentLocalizer(_moment);
 
 class Calendar extends Component {
   constructor(props) {
@@ -67,7 +65,7 @@ class Calendar extends Component {
   };
 
   onSelectEvent = event => {
-    let date = moment(event.start).format('LL');
+    let date = formatDate(event.start, 'LL');
     let title = event.title;
     console.log(date, title);
   };

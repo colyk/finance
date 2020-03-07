@@ -19,14 +19,12 @@ export default function ExpensesBarChart(props) {
     });
   });
 
-  const amountWithCurrency = amount => currencyIntl.format(amount);
-
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="day" fontSize={10} />
-        <YAxis tickFormatter={amountWithCurrency} fontSize={10} />
+        <YAxis tickFormatter={currencyIntl} fontSize={10} />
         <Tooltip content={<CustomTooltip data={data} />} />
         <Bar dataKey="amount" fill="#8884d8" />
       </BarChart>
@@ -35,8 +33,6 @@ export default function ExpensesBarChart(props) {
 }
 
 const CustomTooltip = ({ active, payload }) => {
-  const amountWithCurrency = amount => currencyIntl.format(amount);
-
   return active && payload.length ? (
     <div className="custom-tooltip">
       <div>{payload[0].payload.title}</div>
@@ -44,7 +40,7 @@ const CustomTooltip = ({ active, payload }) => {
         {formatDate(payload[0].payload.date, 'DD.MM.YYYY')} (
         {formatDate(payload[0].payload.date, 'dddd')})
       </div>
-      <div>{amountWithCurrency(payload[0].value)}</div>
+      <div>{currencyIntl(payload[0].value)}</div>
       <div>
         {payload[0].payload.categories &&
           payload[0].payload.categories.map((category, index) => (

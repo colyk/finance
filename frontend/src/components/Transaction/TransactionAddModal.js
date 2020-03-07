@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import requests from '../../requests';
-import moment from 'moment';
 
 import { toggleAddTransactionModal, fetchTransactions } from '../store/actions/actionTransaction';
 import SingleDatePicker from '../DatePickers/SingleDatePicker';
-
-moment.locale('en-gb');
+import { nowMoment } from '../utils';
 
 function TransactionAddModal({
   showAddTransactionModal,
@@ -21,11 +19,11 @@ function TransactionAddModal({
   const [amount, setAmount] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
-  const [date, setDate] = useState(moment());
-  const [day, setDay] = useState(moment()._d.getDate());
-  const [month, setMonth] = useState(moment()._d.getMonth());
-  const [year, setYear] = useState(moment()._d.getFullYear());
-  const [monthDay, setMonthDay] = useState(moment()._d.getDay());
+  const [date, setDate] = useState(nowMoment);
+  const [day, setDay] = useState(nowMoment._d.getDate());
+  const [month, setMonth] = useState(nowMoment._d.getMonth());
+  const [year, setYear] = useState(nowMoment._d.getFullYear());
+  const [monthDay, setMonthDay] = useState(nowMoment._d.getDay());
   const [type, setType] = useState('expense');
 
   const handleDatesChange = date => {

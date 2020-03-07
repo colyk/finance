@@ -5,10 +5,8 @@ import { connect } from 'react-redux';
 import { fetchBudgets } from '../store/actions/index';
 import { putBudget, updateBudget, resetUpdatedBudget } from '../store/actions/actionBudget';
 
-import moment from 'moment';
-
 import requests from '../../requests';
-import { currencyIntl } from '../utils';
+import { currencyIntl, formatDate, formatMoment } from '../utils';
 
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
@@ -21,10 +19,6 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
   const initBudget = budgets ? budgets.find(b => b.name === budgetName) : {};
 
   useEffect(() => setBudget(initBudget || {}), [initBudget]); // trigger changing state after `[initBudget]` changes
-
-  const formatDate = date => {
-    return moment(date).format('DD-MM-YYYY');
-  };
 
   const onRemoveClick = () => {
     toggleLoading(true);
@@ -39,7 +33,12 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
 
   const onEditClick = () => {
     toggleEditable(true);
-    updateBudget({ name: budget.name, from: budget.from, to: budget.to, amount: budget.goal_amount });
+    updateBudget({
+      name: budget.name,
+      from: budget.from,
+      to: budget.to,
+      amount: budget.goal_amount,
+    });
   };
 
   const onCancelClick = () => {
@@ -77,7 +76,10 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
                 editable={editable}
                 label={'Date range'}
                 updateBudget={updateBudget}
-                date={{ from: formatDate(budget.from), to: formatDate(budget.to) }}
+                date={{
+                  from: formatDate(budget.from, 'DD-MM-YYYY'),
+                  to: formatDate(budget.to, 'DD-MM-YYYY'),
+                }}
               />
               <AmountField
                 editable={editable}
@@ -98,10 +100,10 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
                     </button>
                   </span>
                 ) : (
-                    <button className="btn mr-2" onClick={onEditClick}>
-                      Edit
+                  <button className="btn mr-2" onClick={onEditClick}>
+                    Edit
                   </button>
-                  )}
+                )}
                 <button className="btn btn-error btn-error-secondary" onClick={onRemoveClick}>
                   Remove
                 </button>
@@ -134,8 +136,8 @@ const TitleField = ({ editable, title, label, updateBudget }) => {
       {editable ? (
         <Field Component={Component} label={label} />
       ) : (
-          <div className="panel-title h3">{title}</div>
-        )}
+        <div className="panel-title h3">{title}</div>
+      )}
     </div>
   );
 };
@@ -144,8 +146,8 @@ const DateRangeField = ({ editable, label, date, updateBudget }) => {
   const Component = () => (
     <DateRangePicker
       disabled={!editable}
-      from={moment(date.from, 'DD-MM-YYYY')}
-      to={moment(date.to, 'DD-MM-YYYY')}
+      from={formatMoment(date.from, 'DD-MM-YYYY')}
+      to={formatMoment(date.to, 'DD-MM-YYYY')}
       onChange={data => updateBudget({ from: data.startDate, to: data.endDate })}
     />
   );
@@ -154,22 +156,20 @@ const DateRangeField = ({ editable, label, date, updateBudget }) => {
 };
 
 const AmountField = ({ editable, label, amount, updateBudget }) => {
-  let amountWithCurrency = currencyIntl.format(amount);
-
   let Component = null;
   if (editable)
     Component = () => (
       <input
         className="form-input"
         type="text"
-        placeholder={amountWithCurrency}
+        placeholder={currencyIntl(amount)}
         defaultValue={amount}
         onChange={e => {
           updateBudget({ amount: e.target.value });
         }}
       />
     );
-  else Component = () => <span>{amountWithCurrency}</span>;
+  else Component = () => <span>{currencyIntl(amount)}</span>;
 
   return <Field Component={Component} label={label} />;
 };

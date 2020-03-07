@@ -14,8 +14,6 @@ function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transaction
     fetchAnalytics(month);
   }, [fetchAnalytics, month]);
 
-  const amountWithCurrency = amount => currencyIntl.format(amount);
-
   return (
     <div className="container grid-md">
       <div className="columns">
@@ -23,11 +21,11 @@ function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transaction
           <div className="columns">
             <div className="column col-xs-4">
               <div>Monthly expense:</div>
-              <div>{amountWithCurrency(monthlyExpenses)}</div>
+              <div>{currencyIntl(monthlyExpenses)}</div>
             </div>
             <div className="column col-xs-4">
               <div>Monthly income:</div>
-              <div>{amountWithCurrency(monthlyIncomes)}</div>
+              <div>{currencyIntl(monthlyIncomes)}</div>
             </div>
             <div className="column col-xs-4">
               <div>Title:</div>

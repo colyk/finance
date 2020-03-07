@@ -6,15 +6,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { toggleAddBudgetModal } from '../store/actions/actionBudget';
 import { fetchBudgets } from '../store/actions/index';
 
-import moment from 'moment';
-
 import BudgetAddModal from './BudgetAddModal';
 import BudgetsTab from './BudgetsTab';
 import BudgetsView from './BudgetsView';
 
 import '../../styles/budget.css';
-
-moment.locale('en-gb');
 
 const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
   useEffect(() => {
@@ -45,7 +41,6 @@ const Budget = ({ fetchBudgets, toggleAddBudgetModal }) => {
         <Switch>
           <Route path="/:budgetName" children={<BudgetsView />} />
         </Switch>
-
         <BudgetAddModal />
       </div>
     </Router>
