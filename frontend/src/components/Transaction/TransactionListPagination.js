@@ -3,8 +3,9 @@ import React from 'react';
 const ListPagination = props => {
   if (props.transactionsCount <= props.transactionsCountPerPage) return null;
 
-  const currentPage = parseInt(props.currentPage);
+  let currentPage = parseInt(props.currentPage);
   const PageCount = Math.ceil(props.transactionsCount / props.transactionsCountPerPage);
+  if(currentPage > PageCount) --currentPage;
 
   const range = [];
   for (let i = 1; i <= PageCount; i++) range.push(i);

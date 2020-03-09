@@ -2,10 +2,10 @@ import React from 'react';
 
 function UserSettings() {
   return (
-    <div className="container mt-2" style={{ height: '630px' }}>
+    <div className="container mt-2 user-settings">
       <div className="modal-overlay"></div>
       <div className="columns">
-        <div className="col-8 col-mx-auto">
+        <div className="col-8 col-lg-10 col-xs-11 col-mx-auto">
           <div className="panel p-2">
             <div className="panel-header text-center">
               <div className="panel-title h3">User settings</div>

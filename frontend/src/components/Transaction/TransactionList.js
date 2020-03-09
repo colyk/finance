@@ -8,7 +8,7 @@ const TransactionList = props => {
       className={type === 'expense' ? 'expense-border' : type === 'income' ? 'income-border' : null}
     >
       <td>{title}</td>
-      <td className="category-transaction">
+      <td className="hide-sm">
         {categories &&
           categories.map((category, index) => <CategoryChip category={category} key={index} />)}
       </td>

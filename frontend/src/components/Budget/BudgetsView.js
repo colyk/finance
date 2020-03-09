@@ -64,7 +64,7 @@ const BudgetsView = ({ budgets, putBudget, fetchBudgets, updateBudget, resetUpda
     <div>
       {budget.name && (
         <div className="columns">
-          <div className={`column col-6 col-mx-auto panel ${loading ? 'loading' : ''}`}>
+          <div className={`column col-6 col-lg-8 col-md-10 col-sm-11 col-mx-auto panel ${loading ? 'loading' : ''}`}>
             <TitleField
               editable={editable}
               title={budget.name}

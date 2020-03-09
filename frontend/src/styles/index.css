@@ -14,9 +14,8 @@ body {
 }
 
 #root {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+  max-width: 1366px;
+  margin: 0 auto;
 }
 
 .navbar {
@@ -51,10 +50,6 @@ body {
   font-weight: 500;
 }
 
-.panel {
-  min-width: 350px;
-}
-
 .tile-subtitle {
   min-height: 36px;
 }
@@ -72,6 +67,7 @@ body {
   min-width: 200px;
   text-align: center;
   transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
   z-index: 500;
 }
 
@@ -110,6 +106,10 @@ body {
 .example-leave.example-leave-active {
   opacity: 0.01;
   transition: opacity 100ms ease-in;
+}
+
+.user-settings {
+  height: 100vh;
 }
 
 ::-webkit-scrollbar {

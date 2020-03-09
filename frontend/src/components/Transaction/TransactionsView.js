@@ -45,7 +45,7 @@ const TransactionsView = ({
           <thead>
             <tr className="active">
               <th>Title</th>
-              <th className="category-transaction">Categories</th>
+              <th className="hide-sm">Categories</th>
               <th>Amount</th>
               <th>
                 <div className="date-transaction">

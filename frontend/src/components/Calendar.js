@@ -15,6 +15,7 @@ class Calendar extends Component {
     this.state = {
       events: [],
       workDays: null,
+      selectedEvent: null
     };
 
     this.onNavigate(new Date());
@@ -67,21 +68,33 @@ class Calendar extends Component {
   onSelectEvent = event => {
     let date = formatDate(event.start, 'LL');
     let title = event.title;
+    this.setState({ selectedEvent: title + ' - ' + date });
     console.log(date, title);
   };
+
+  onCloseModal = () => this.setState({ selectedEvent: null });
 
   render() {
     return (
       <div className="planer">
         {this.state.workDays ? (
           <div className="planer__info">
-            <p>Work days: {this.state.workDays} </p>
-            <p>Work hours: {this.state.workDays * 8} </p>
+            <div>Work days: {this.state.workDays} </div>
+            <div>Work hours: {this.state.workDays * 8} </div>
           </div>
         ) : (
-          <div className="planer__info" />
-        )}
-
+            <div className="planer__info" ></div>
+          )}
+        {this.state.selectedEvent ? (
+          <div class="modal modal-sm active">
+            <a href="#close" class="modal-overlay" aria-label="Close" onClick={() => this.onCloseModal()}></a>
+            <div class="modal-container p-0">
+              <div className="toast toast-primary">
+                <button className="btn btn-clear float-right" aria-label="Close" onClick={() => this.onCloseModal()}></button>
+                {this.state.selectedEvent}
+              </div>
+            </div>
+          </div>) : null}
         <div className="calendar">
           <RCalendar
             localizer={localizer}
@@ -90,7 +103,7 @@ class Calendar extends Component {
             events={this.state.events}
             onNavigate={this.onNavigate}
             onSelectEvent={this.onSelectEvent}
-            style={{ height: '95vh' }}
+            style={{ height: '70vh' }}
             views={['month']}
             popup={true}
           />

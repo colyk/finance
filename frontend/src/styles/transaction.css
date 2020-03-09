@@ -17,13 +17,13 @@
 }
 
 .table-transactions tbody {
-    max-height: 400px;
+    height: 65vh;
     overflow: auto;
     border-radius: 10px;
 }
 
-.table-transactions tbody td,
-.table-transactions thead th {
+.table-transactions tbody tr td,
+.table-transactions thead tr th {
     width: 400px;
     border: none;
 }
@@ -57,13 +57,6 @@
 .editing-transaction {
     display: flex;
     justify-content: space-around;
-}
-
-.table td.category-transaction,
-.table th.category-transaction {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
 }
 
 .date-transaction {
