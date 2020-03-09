@@ -15,7 +15,7 @@ class Calendar extends Component {
     this.state = {
       events: [],
       workDays: null,
-      selectedEvent: null
+      selectedEvent: null,
     };
 
     this.onNavigate(new Date());
@@ -83,18 +83,27 @@ class Calendar extends Component {
             <div>Work hours: {this.state.workDays * 8} </div>
           </div>
         ) : (
-            <div className="planer__info" ></div>
-          )}
+          <div className="planer__info"></div>
+        )}
         {this.state.selectedEvent ? (
-          <div class="modal modal-sm active">
-            <a href="#close" class="modal-overlay" aria-label="Close" onClick={() => this.onCloseModal()}></a>
-            <div class="modal-container p-0">
+          <div className="modal modal-sm active">
+            <div
+              className="modal-overlay"
+              aria-label="Close"
+              onClick={() => this.onCloseModal()}
+            ></div>
+            <div className="modal-container p-0">
               <div className="toast toast-primary">
-                <button className="btn btn-clear float-right" aria-label="Close" onClick={() => this.onCloseModal()}></button>
+                <button
+                  className="btn btn-clear float-right"
+                  aria-label="Close"
+                  onClick={() => this.onCloseModal()}
+                ></button>
                 {this.state.selectedEvent}
               </div>
             </div>
-          </div>) : null}
+          </div>
+        ) : null}
         <div className="calendar">
           <RCalendar
             localizer={localizer}
