@@ -22,37 +22,42 @@ import Error from './Error';
 function Home({ history }) {
   if (!sessionStorage.logged) history.push('/login');
   const [showUserSettings, toggleUserSettings] = useState(false);
+  const [showMenu, toggleMenu] = useState(false);
 
   return (
     <div>
       <Error />
       <Router>
-        <Redirect to="/home/transaction" />
-        <div>
-          <header className="navbar mb-1">
-            <div className="navbar-section">
+        <Redirect to="/home/calendar" />
+        <header>
+          <nav className="navbar">
+            <div className="navbar-section navbar-menu" id={showMenu ? 'show' : 'hide'}>
               <ul className="tab">
-                <MenuLink to="/home/calendar" label="Calendar" />
-                <MenuLink to="/home/budget" label="Budgets" />
-                <MenuLink to="/home/category" label="Categories" />
-                <MenuLink to="/home/transaction" label="Transactions" />
-                <MenuLink to="/home/analytic" label="Analytics" />
+                <MenuLink to="/home/calendar" label="Calendar" toggleMenu={toggleMenu} />
+                <MenuLink to="/home/budget" label="Budgets" toggleMenu={toggleMenu} />
+                <MenuLink to="/home/category" label="Categories" toggleMenu={toggleMenu} />
+                <MenuLink to="/home/transaction" label="Transactions" toggleMenu={toggleMenu} />
+                <MenuLink to="/home/analytic" label="Analytics" toggleMenu={toggleMenu} />
               </ul>
             </div>
             <div className="navbar-section">
               <ul className="tab">
                 <li
                   className="tab-item btn btn-link mx-2"
-                  onClick={() => {
-                    toggleUserSettings(!showUserSettings);
-                  }}
+                  onClick={() => toggleUserSettings(!showUserSettings)}
                 >
-                  <i className={`icon ${showUserSettings ? 'icon-cross' : 'icon-menu'}`}></i>
+                  <i className={`icon ${showUserSettings ? 'icon-cross' : 'icon-people'}`}></i>
+                </li>
+                <li
+                  className="tab-item btn btn-link mx-2 navbar-toggler"
+                  onClick={() => toggleMenu(!showMenu)}
+                >
+                  <i className={`icon ${showMenu ? 'icon-cross' : 'icon-menu'}`}></i>
                 </li>
               </ul>
             </div>
-          </header>
-        </div>
+          </nav>
+        </header>
         <Slide collapse right when={showUserSettings}>
           <UserSettings />
         </Slide>
@@ -78,12 +83,12 @@ function Home({ history }) {
   );
 }
 
-function MenuLink({ label = '', to, icon = '' }) {
+function MenuLink({ label = '', to, icon = '', toggleMenu }) {
   let match = useRouteMatch({ path: to });
 
   return (
     <li className={`tab-item ${match && !icon ? 'active' : ''} mx-2 `}>
-      <Link className={`${icon} btn btn-link`} to={to}>
+      <Link className={`${icon} btn btn-link`} to={to} onClick={() => toggleMenu(false)}>
         {label}
       </Link>
     </li>

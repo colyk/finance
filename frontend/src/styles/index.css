@@ -23,6 +23,18 @@ body {
   background-color: #e2e2f3;
 }
 
+.navbar-menu {
+  display: block;
+}
+
+.navbar-toggler {
+  display: none;
+}
+
+#show, #hide {
+  flex: 5;
+}
+
 .form_income {
   position: absolute;
   top: 100px;

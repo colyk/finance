@@ -1,9 +1,38 @@
 @media only screen and (max-width: 767px) {
-    .table-transactions, .header-transaction {
-        padding: 0 5px;
-    }
+  .table-transactions, .header-transaction {
+    padding: 0 5px;
+  }
     
-    .category-transaction {
-        display: none;
-    }
+  .category-transaction {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .navbar-menu {
+    display: none;
+  }
+
+  .navbar-toggler {
+    display: block;
+  }
+
+  #show {
+    display: block;
+    position: absolute;
+    background-color: #e2e2f3;
+    top: 7vh;
+    width: 100%;
+    border-top: 1px solid #5755d9;
+    z-index: 100;
+  }
+
+  #show>ul li {
+    width: 100%;
+  }
+
+  #hide {
+    display: none;
+  }
+
 }
