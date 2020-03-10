@@ -20,15 +20,33 @@ export default function ExpensesBarChart(props) {
   });
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="day" fontSize={10} />
-        <YAxis tickFormatter={currencyIntl} fontSize={10} />
-        <Tooltip content={<CustomTooltip data={data} />} />
-        <Bar dataKey="amount" fill="#8884d8" />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="expenses-trend">
+      <div className="monthly-expense-header">
+        <h5>Monthly expense</h5>
+        <div className="form-group">
+          <select
+            className="form-select"
+            onChange={e => props.setMonth(parseInt(e.target.value))}
+            defaultValue={nowMoment._d.getMonth()}
+          >
+            {nowMoment._locale._months.map((month, index) => (
+              <option disabled={nowMoment._d.getMonth() < index} key={index} value={index}>
+                {month}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="day" fontSize={10} />
+          <YAxis tickFormatter={currencyIntl} fontSize={10} />
+          <Tooltip content={<CustomTooltip data={data} />} />
+          <Bar dataKey="amount" fill="#8884d8" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 

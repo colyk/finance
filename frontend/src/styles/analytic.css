@@ -20,6 +20,12 @@
   margin-top: 10px;
 }
 
+.monthly-expense-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .recharts-wrapper {
   margin: 0 auto;
 }

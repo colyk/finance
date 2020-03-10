@@ -19,7 +19,7 @@ createTransaction = (req, res) => {
     type: body.type,
     categories: body.selectedCategories,
     year: body.year,
-    month: body.month + 1, //January is 0
+    month: body.month, //January is 0
     day: body.day,
     monthDay: body.monthDay //Sanday is 0 and Monday is 1
   }, (err) => {

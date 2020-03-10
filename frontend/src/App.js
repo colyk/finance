@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import 'spectre.css';
 import '../node_modules/spectre.css/dist/spectre-icons.css';
-import './styles/index.css';
 
 import SingIn from './components/SingIn';
 import SingUp from './components/SingUp';

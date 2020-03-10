@@ -76,67 +76,68 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
 
   return (
     <div>
-    <div className={`modal ${showAddBudgetModal ? 'active' : ''}`}>
-      <div className="modal-overlay" onClick={closeModal} />
-      <div className={`modal-container ${loading ? 'loading' : ''}`} role="document">
-        <div className="modal-header">
-          <div className="modal-title h5">Budget creating form</div>
-        </div>
-        <div className="modal-body">
-          <div className="content">
-            <form>
-              <div className={`form-group ${nameError ? 'has-error' : ''}`}>
-                <label className="form-label" htmlFor="budget-modal__name">
-                  Budget title
-                </label>
-                <input
-                  className="form-input"
-                  id="budget-modal__name"
-                  type="text"
-                  value={name}
-                  placeholder="Year budget"
-                  onChange={e => setName(e.target.value)}
-                />
-                <p className="form-input-hint">{nameError}</p>
-              </div>
-
-              <div className={`form-group ${dateError ? 'has-error' : ''}`}>
-                <label className="form-label" htmlFor="budget-modal__date-range">
-                  Date range
-                </label>
-                <div id="budget-modal__date-range">
-                  <DateRangePicker from={startDate} to={endDate} onChange={handleDatesChange} />
+      <div className={`modal ${showAddBudgetModal ? 'active' : ''}`}>
+        <div className="modal-overlay" onClick={closeModal} />
+        <div className={`modal-container ${loading ? 'loading' : ''}`} role="document">
+          <div className="modal-header">
+            <div className="modal-title h5">Budget creating form</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+              <form>
+                <div className={`form-group ${nameError ? 'has-error' : ''}`}>
+                  <label className="form-label" htmlFor="budget-modal__name">
+                    Budget title
+                  </label>
+                  <input
+                    className="form-input"
+                    id="budget-modal__name"
+                    type="text"
+                    value={name}
+                    placeholder="Title"
+                    onChange={e => setName(e.target.value)}
+                  />
+                  <p className="form-input-hint">{nameError}</p>
                 </div>
-                <p className="form-input-hint">{dateError}</p>
-              </div>
 
-              <div className={`form-group ${amountError ? 'has-error' : ''}`}>
-                <label className="form-label" htmlFor="budget-modal__amount">
-                  Goal budget amount
-                </label>
-                <input
-                  className="form-input"
-                  id="budget-modal__amount"
-                  type="text"
-                  value={amount}
-                  placeholder="0.00"
-                  onChange={e => setAmount(e.target.value.replace(/\s/g, '').replace(/,/, '.'))}
-                />
-                <p className="form-input-hint">{amountError}</p>
-              </div>
-            </form>
+                <div className={`form-group ${dateError ? 'has-error' : ''}`}>
+                  <label className="form-label" htmlFor="budget-modal__date-range">
+                    Date range
+                  </label>
+                  <div id="budget-modal__date-range">
+                    <DateRangePicker from={startDate} to={endDate} onChange={handleDatesChange} />
+                  </div>
+                  <p className="form-input-hint">{dateError}</p>
+                </div>
+
+                <div className={`form-group ${amountError ? 'has-error' : ''}`}>
+                  <label className="form-label" htmlFor="budget-modal__amount">
+                    Goal budget amount
+                  </label>
+                  <input
+                    className="form-input"
+                    id="budget-modal__amount"
+                    type="text"
+                    value={amount}
+                    placeholder="0.00"
+                    onChange={e => setAmount(e.target.value.replace(/\s/g, '').replace(/,/, '.'))}
+                  />
+                  <p className="form-input-hint">{amountError}</p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button className="btn mr-2" onClick={closeModal}>
+              Close
+            </button>
+            <button className={`btn btn-primary`} onClick={onCreateClick}>
+              Create budget
+            </button>
           </div>
         </div>
-        <div className="modal-footer">
-          <button className="btn mr-2" onClick={closeModal}>
-            Close
-          </button>
-          <button className={`btn btn-primary`} onClick={onCreateClick}>
-            Create budget
-          </button>
-        </div>
       </div>
-    </div></div>
+    </div>
   );
 }
 

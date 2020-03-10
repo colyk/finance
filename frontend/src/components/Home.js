@@ -28,7 +28,7 @@ function Home({ history }) {
     <div>
       <Error />
       <Router>
-        <Redirect to="/home/calendar" />
+        <Redirect to="/home/analytic" />
         <header>
           <nav className="navbar">
             <div className="navbar-section navbar-menu" id={showMenu ? 'show' : 'hide'}>

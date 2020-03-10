@@ -108,6 +108,10 @@ body {
   transition: opacity 100ms ease-in;
 }
 
+.SingleDatePicker_picker, .DateRangePicker_picker {
+  z-index: 400;
+}
+
 .user-settings {
   height: 100vh;
 }

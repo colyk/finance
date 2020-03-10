@@ -8,7 +8,7 @@ import ExpensesBarChart from './Trends/ExpensesBarChart';
 import '../styles/analytic.css';
 
 function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transactionsCurrentMonth }) {
-  const [month] = useState(nowMoment._d.getMonth() + 1);
+  const [month, setMonth] = useState(nowMoment._d.getMonth());
 
   useEffect(() => {
     fetchAnalytics(month);
@@ -35,9 +35,8 @@ function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transaction
         </div>
       </div>
       <div className="columns">
-        <div className="column col-xs-12 expenses-trend">
-          <h5>Monthly expense</h5>
-          <ExpensesBarChart transactions={transactionsCurrentMonth} />
+        <div className="column col-xs-12">
+          <ExpensesBarChart transactions={transactionsCurrentMonth} setMonth={setMonth} />
         </div>
       </div>
     </div>
