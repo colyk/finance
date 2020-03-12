@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import requests from '../../requests';
 
-import { toggleAddTransactionModal, fetchTransactions } from '../store/actions/actionTransaction';
+import {
+  toggleAddTransactionModal,
+  fetchTransactions,
+  resetUpdateTransactions,
+} from '../store/actions/actionTransaction';
 import SingleDatePicker from '../DatePickers/SingleDatePicker';
-import { nowMoment } from '../utils';
+import { nowMoment, formatMoment } from '../utils';
 
 function TransactionAddModal({
   showAddTransactionModal,
@@ -13,26 +17,26 @@ function TransactionAddModal({
   categories,
   fetchTransactions,
   toggleAddTransactionModal,
+  editingTransaction,
+  resetUpdateTransactions,
 }) {
   const [loading, toggleLoading] = useState(false);
+  const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
   const [date, setDate] = useState(nowMoment);
-  const [day, setDay] = useState(nowMoment._d.getDate());
-  const [month, setMonth] = useState(nowMoment._d.getMonth());
-  const [year, setYear] = useState(nowMoment._d.getFullYear());
-  const [monthDay, setMonthDay] = useState(nowMoment._d.getDay());
   const [type, setType] = useState('expense');
 
-  const handleDatesChange = date => {
-    setDate(date.target.value);
-    setDay(date.target.value._d.getDate());
-    setMonth(date.target.value._d.getMonth());
-    setYear(date.target.value._d.getFullYear());
-    setMonthDay(date.target.value._d.getDay());
-  };
+  useEffect(() => {
+    if (editingTransaction) {
+      setTitle(editingTransaction.title);
+      setAmount(editingTransaction.amount);
+      setSelectedCategories(editingTransaction.categories);
+      setDate(formatMoment(editingTransaction.date));
+      setType(editingTransaction.type);
+    }
+  }, [editingTransaction]);
 
   const closeModal = () => {
     setTitle('');
@@ -40,14 +44,54 @@ function TransactionAddModal({
     setType('expense');
     setSelectedCategories([]);
     setSelectedCategoryCount(0);
+    setDate(nowMoment);
     toggleLoading(false);
     toggleAddTransactionModal(false);
+    if (editingTransaction) resetUpdateTransactions();
   };
 
   const createTransaction = () => {
     toggleLoading(true);
+
+    const day = date._d.getDate();
+    const month = date._d.getMonth();
+    const year = date._d.getFullYear();
+    const monthDay = date._d.getDay();
+
     requests
       .post('/transaction', {
+        title,
+        amount,
+        selectedCategories,
+        date,
+        day,
+        month,
+        year,
+        monthDay,
+        type,
+      })
+      .then(res => {
+        fetchTransactions(currentPage, transactionsCountPerPage);
+        closeModal();
+      })
+      .catch(e => {
+        console.log(e);
+      })
+      .finally(() => toggleLoading(false));
+  };
+
+  const updateTransaction = () => {
+    toggleLoading(true);
+
+    const id = editingTransaction._id;
+    const day = date._d.getDate();
+    const month = date._d.getMonth();
+    const year = date._d.getFullYear();
+    const monthDay = date._d.getDay();
+
+    requests
+      .put('/transaction', {
+        id,
         title,
         amount,
         selectedCategories,
@@ -92,7 +136,9 @@ function TransactionAddModal({
             aria-label="Close"
             onClick={closeModal}
           ></button>
-          <div className="modal-title h5">Transaction creating</div>
+          <div className="modal-title h5">
+            {editingTransaction ? 'Transaction editing' : 'Transaction creating'}
+          </div>
         </div>
         <div className="modal-body">
           <div className="content">
@@ -128,7 +174,7 @@ function TransactionAddModal({
               <label className="form-label" htmlFor="input-date">
                 Date
               </label>
-              <SingleDatePicker date={date} onChange={handleDatesChange} />
+              <SingleDatePicker date={date} onChange={e => setDate(e.target.value)} />
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="select-category">
@@ -192,9 +238,15 @@ function TransactionAddModal({
           <button className="btn mr-2" onClick={closeModal}>
             Close
           </button>
-          <button className="btn btn-primary" onClick={createTransaction}>
-            Create transaction
-          </button>
+          {editingTransaction ? (
+            <button className="btn btn-primary" onClick={updateTransaction}>
+              Edit transaction
+            </button>
+          ) : (
+            <button className="btn btn-primary" onClick={createTransaction}>
+              Create transaction
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -204,9 +256,11 @@ function TransactionAddModal({
 const mapStateToProps = state => {
   return {
     categories: state.rootReducer.categories,
+    transactions: state.transactionReducer.transactions,
     showAddTransactionModal: state.transactionReducer.showAddTransactionModal,
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
     currentPage: state.transactionReducer.currentPage,
+    editingTransaction: state.transactionReducer.editingTransaction,
   };
 };
 
@@ -215,6 +269,7 @@ function mapDispatchToProps(dispatch) {
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
     fetchTransactions: (currentPage, transactionsCountPerPage) =>
       dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    resetUpdateTransactions: () => dispatch(resetUpdateTransactions()),
   };
 }
 

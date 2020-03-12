@@ -16,7 +16,7 @@ const transactionSchema = new db.Schema({
     type: String,
     required: true
   },
-  createdAt: {
+  date: {
     type: Date,
     required: true
   },

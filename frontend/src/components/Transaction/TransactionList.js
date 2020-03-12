@@ -2,7 +2,7 @@ import React from 'react';
 import { currencyIntl, formatDate } from '../utils';
 
 const TransactionList = props => {
-  return props.transactions.map(({ _id, title, categories, amount, type, updatedAt }) => (
+  return props.transactions.map(({ _id, title, categories, amount, type, date }) => (
     <tr
       key={_id}
       className={type === 'expense' ? 'expense-border' : type === 'income' ? 'income-border' : null}
@@ -13,7 +13,7 @@ const TransactionList = props => {
           categories.map((category, index) => <CategoryChip category={category} key={index} />)}
       </td>
       <td>{currencyIntl(amount)}</td>
-      <td>{formatDate(updatedAt, 'DD.MM.YYYY')}</td>
+      <td>{formatDate(date, 'DD.MM.YYYY')}</td>
       <td className="popover popover-left popover-transaction">
         <i className="icon icon-more-vert btn btn-link"></i>
         <div className="popover-container">
@@ -26,14 +26,13 @@ const TransactionList = props => {
                 ))}
             </div>
             <div className="card-body">
-              {currencyIntl(amount)} - {formatDate(updatedAt, 'DD.MM.YYYY')} (
-              {formatDate(updatedAt, 'dddd')})
+              {currencyIntl(amount)} - {formatDate(date, 'DD.MM.YYYY')} ({formatDate(date, 'dddd')})
             </div>
             <div className="card-footer editing-transaction">
-              <div>
+              <div onClick={() => props.onEditClick(_id)}>
                 <i className="icon icon-edit btn btn-primary"></i>
               </div>
-              <div key={_id} onClick={() => props.onRemoveClick(_id)}>
+              <div onClick={() => props.onRemoveClick(_id)}>
                 <i className="icon icon-cross btn btn-error"></i>
               </div>
             </div>

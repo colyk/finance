@@ -1,31 +1,47 @@
-import { SHOW_MODAL, GET_TRANSACTIONS } from "../constants/action-types";
+import {
+  SHOW_MODAL,
+  GET_TRANSACTIONS,
+  UPDATE_TRANSACTIONS,
+  RESET_UPDATED_TRANSACTIONS,
+} from '../constants/action-types';
 
 const initialState = {
   showAddTransactionModal: false,
   transactions: [],
   transactionsCountPerPage: 10,
   transactionsCount: null,
-  currentPage: 1
-}
+  currentPage: 1,
+  editingTransaction: null,
+};
 
-function transactionReducer(state = initialState, { type, payload, count, currentPage, countPerPage }) {
-  if (type === SHOW_MODAL)
+function transactionReducer(state = initialState, action) {
+  if (action.type === SHOW_MODAL)
     return Object.assign({}, state, {
-      showAddTransactionModal: payload,
-      categories: state.categories
+      showAddTransactionModal: action.payload,
+      categories: state.categories,
     });
 
-  if (type === GET_TRANSACTIONS)
+  if (action.type === GET_TRANSACTIONS)
     return {
       ...state,
       showAddTransactionModal: state.showAddTransactionModal,
-      transactions: payload,
-      transactionsCount: count,
-      currentPage: currentPage,
-      transactionsCountPerPage: countPerPage
+      transactions: action.payload.transactions,
+      transactionsCount: action.payload.count,
+      currentPage: action.payload.currentPage,
+      transactionsCountPerPage: action.payload.countPerPage,
     };
 
+  if (action.type === UPDATE_TRANSACTIONS)
+    return {
+      ...state,
+      showAddTransactionModal: state.showAddTransactionModal,
+      editingTransaction: action.payload,
+    };
+
+  if (action.type === RESET_UPDATED_TRANSACTIONS)
+    return Object.assign({}, state, { editingTransaction: initialState.editingTransaction });
+
   return state;
-};
+}
 
 export default transactionReducer;

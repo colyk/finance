@@ -4,7 +4,11 @@ import requests from '../../requests';
 import { formatDate } from '../utils';
 
 import TransactionList from './TransactionList';
-import { fetchTransactions } from '../store/actions/actionTransaction';
+import {
+  fetchTransactions,
+  toggleAddTransactionModal,
+  updateTransactions,
+} from '../store/actions/actionTransaction';
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
 const TransactionsView = ({
@@ -12,6 +16,8 @@ const TransactionsView = ({
   transactionsCountPerPage,
   currentPage,
   fetchTransactions,
+  toggleAddTransactionModal,
+  updateTransactions,
 }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -24,6 +30,11 @@ const TransactionsView = ({
   const cleaningDatesChange = () => {
     setStartDate(null);
     setEndDate(null);
+  };
+
+  const onEditClick = id => {
+    toggleAddTransactionModal(true);
+    updateTransactions(transactions.find(transaction => transaction._id === id));
   };
 
   const deleteTransaction = id => {
@@ -82,7 +93,11 @@ const TransactionsView = ({
           </thead>
           <tbody>
             {transactions.length ? (
-              <TransactionList transactions={transactions} onRemoveClick={deleteTransaction} />
+              <TransactionList
+                transactions={transactions}
+                onRemoveClick={deleteTransaction}
+                onEditClick={onEditClick}
+              />
             ) : null}
           </tbody>
         </table>
@@ -103,6 +118,8 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchTransactions: (currentPage, transactionsCountPerPage) =>
       dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
+    updateTransactions: payload => dispatch(updateTransactions(payload)),
   };
 }
 

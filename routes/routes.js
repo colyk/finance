@@ -19,7 +19,7 @@ function addAnalyticRoutes(app) {
 function addTransactionRoutes(app) {
   app.get('/transaction', Transaction.getAllTransactions);
   app.post('/transaction', Validator.transactionValidation(), Transaction.createTransaction);
-  app.put('/transaction', Transaction.updateTransaction);
+  app.put('/transaction', Validator.transactionValidation(), Transaction.updateTransaction);
   app.delete('/transaction', Transaction.deleteTransaction);
 }
 

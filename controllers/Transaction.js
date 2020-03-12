@@ -15,7 +15,7 @@ createTransaction = (req, res) => {
     user_id: userId,
     title: body.title,
     amount: body.amount,
-    createdAt: body.date,
+    date: body.date,
     type: body.type,
     categories: body.selectedCategories,
     year: body.year,
@@ -45,7 +45,7 @@ getAllTransactions = async (req, res) => {
 
   const transactions = await Transaction.find({ user_id: userId })
     .skip((transactionsCountPerPage * page) - transactionsCountPerPage)
-    .sort({ updatedAt: -1 })
+    .sort({ date: -1 })
     .limit(transactionsCountPerPage);
   return res.status(200).json({ transactions, count });
 }
@@ -55,7 +55,33 @@ updateTransaction = async (req, res) => {
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  return res.status(400).json({ error: "Not implemented" });
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return res.status(422).json({ errors: errors.array() });
+
+  const body = req.body
+  if (!body.id)
+    return res.status(400).json({ error: "Transaction name is not defined" });
+
+  Transaction.findOne({ user_id: userId, _id: body.id }, async function (err, result) {
+    if (err || !result) {
+      console.log(err);
+      return res.status(400).json({ error: 'Transaction was not updated' });
+    }
+
+    result.title = body.title;
+    result.amount = body.amount;
+    result.date = body.date;
+    result.type = body.type;
+    result.categories = body.selectedCategories;
+    result.year = body.year;
+    result.month = body.month;
+    result.day = body.day;
+    result.monthDay = body.monthDay;
+
+    await result.save();
+    return res.status(200).json();
+  });
 }
 
 deleteTransaction = (req, res) => {
@@ -67,7 +93,7 @@ deleteTransaction = (req, res) => {
   if (!query._id)
     return res.status(400).json({ error: "Id is not defined" });
 
-  Transaction.findOneAndDelete({ _id: query._id, user_id: userId},
+  Transaction.findOneAndDelete({ _id: query._id, user_id: userId },
     (err) => {
       if (err) {
         console.log(err);
