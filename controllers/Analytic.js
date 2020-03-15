@@ -6,19 +6,20 @@ getAnalytics = async (req, res) => {
 	if (!userId)
 		return res.status(400).json({ error: "User is not logged in" });
 
-	const month = parseInt(req.query.month);
+	const from = parseInt(req.query.from);
+	const to = parseInt(req.query.to);
 
+	dateRange = { date: { $gte: new Date(from), $lte: new Date(to) } };
 	await Transaction.aggregate([{
 		$facet: {
 			"monthlyExpenses": [
-				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["expense"] } }, { month: { $in: [month] } }] } },
+				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["expense"] } }, dateRange] } },
 				{ $group: { _id: null, sum: { $sum: "$amount" } } }],
 			"monthlyIncomes": [
-				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["income"] } }, { month: { $in: [month] } }] } },
+				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["income"] } }, dateRange] } },
 				{ $group: { _id: null, sum: { $sum: "$amount" } } }],
 			"transactionsCurrentMonth": [
-				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["expense"] } }, { month: { $in: [month] } }] } },
-				{ $sort: { day: 1 } }]
+				{ $match: { $and: [{ user_id: userId }, { type: { $in: ["expense"] } }, dateRange] } }]
 		}
 	}], (err, result) => {
 		if (err)

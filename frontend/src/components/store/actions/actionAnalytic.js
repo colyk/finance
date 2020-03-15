@@ -6,10 +6,10 @@ export function getAnalytics(payload) {
   return { type: GET_ANALYTICS, payload };
 }
 
-export function fetchAnalytics(month) {
+export function fetchAnalytics(dateRange) {
   return dispatch => {
     return requests
-      .get('/analytic?month=' + month)
+      .get('/analytic?from=' + dateRange.from + '&to=' + dateRange.to)
       .then(res => {
         dispatch(getAnalytics(res.data));
       })

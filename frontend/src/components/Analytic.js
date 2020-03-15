@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { currencyIntl, nowMoment } from './utils';
+import { currencyIntl, _moment } from './utils';
 import { fetchAnalytics } from './store/actions/actionAnalytic';
 import ExpensesBarChart from './Trends/ExpensesBarChart';
 
 import '../styles/analytic.css';
 
 function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transactionsCurrentMonth }) {
-  const [month, setMonth] = useState(nowMoment._d.getMonth());
+  const [dateRange, setdateRange] = useState({
+    from: _moment().startOf('month'),
+    to: _moment().endOf('month'),
+  });
 
   useEffect(() => {
-    fetchAnalytics(month);
-  }, [fetchAnalytics, month]);
+    fetchAnalytics(dateRange);
+  }, [fetchAnalytics, dateRange]);
 
   return (
     <div className="container grid-md">
@@ -36,7 +39,11 @@ function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transaction
       </div>
       <div className="columns">
         <div className="column col-xs-12">
-          <ExpensesBarChart transactions={transactionsCurrentMonth} setMonth={setMonth} />
+          <ExpensesBarChart
+            transactions={transactionsCurrentMonth}
+            setdateRange={setdateRange}
+            chooseMonth={dateRange.from}
+          />
         </div>
       </div>
     </div>
@@ -53,7 +60,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchAnalytics: month => dispatch(fetchAnalytics(month)),
+    fetchAnalytics: dateRange => dispatch(fetchAnalytics(dateRange)),
   };
 }
 

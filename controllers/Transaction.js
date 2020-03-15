@@ -49,7 +49,7 @@ getAllTransactions = async (req, res) => {
   const count = await Transaction.count(find);
   if (page > Math.ceil(count / transactionsCountPerPage)) page--;
   if (page < 1 || count <= transactionsCountPerPage) page = 1;
-  console.log(page)
+
   const transactions = await Transaction.find(find)
     .skip((transactionsCountPerPage * page) - transactionsCountPerPage)
     .sort({ date: -1 })

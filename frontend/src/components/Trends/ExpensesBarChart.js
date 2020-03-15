@@ -1,10 +1,10 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { currencyIntl, formatDate, nowMoment } from '../utils';
+import { currencyIntl, formatDate, nowMoment, _moment } from '../utils';
 
 export default function ExpensesBarChart(props) {
   let data = [];
-  for (let i = 1; i <= nowMoment.daysInMonth(); i++) {
+  for (let i = 1; i <= props.chooseMonth.daysInMonth(); i++) {
     data.push({ day: i, amount: null, title: null, categories: [], date: null });
   }
 
@@ -15,7 +15,7 @@ export default function ExpensesBarChart(props) {
       amount: amount,
       title: transaction.title,
       categories: transaction.categories,
-      date: transaction.createdAt,
+      date: transaction.date,
     });
   });
 
@@ -26,7 +26,16 @@ export default function ExpensesBarChart(props) {
         <div className="form-group">
           <select
             className="form-select"
-            onChange={e => props.setMonth(parseInt(e.target.value))}
+            onChange={e =>
+              props.setdateRange({
+                from: _moment()
+                  .startOf('month')
+                  .set('month', e.target.value),
+                to: _moment()
+                  .endOf('month')
+                  .set('month', e.target.value),
+              })
+            }
             defaultValue={nowMoment._d.getMonth()}
           >
             {nowMoment._locale._months.map((month, index) => (
