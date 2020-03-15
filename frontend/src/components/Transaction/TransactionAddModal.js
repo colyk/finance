@@ -19,7 +19,7 @@ function TransactionAddModal({
   toggleAddTransactionModal,
   editingTransaction,
   resetUpdateTransactions,
-  dateRange
+  dateRange,
 }) {
   const [loading, toggleLoading] = useState(false);
   const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
@@ -54,21 +54,12 @@ function TransactionAddModal({
   const createTransaction = () => {
     toggleLoading(true);
 
-    const day = date._d.getDate();
-    const month = date._d.getMonth();
-    const year = date._d.getFullYear();
-    const monthDay = date._d.getDay();
-
     requests
       .post('/transaction', {
         title,
         amount,
         selectedCategories,
         date,
-        day,
-        month,
-        year,
-        monthDay,
         type,
       })
       .then(res => {
@@ -85,10 +76,6 @@ function TransactionAddModal({
     toggleLoading(true);
 
     const id = editingTransaction._id;
-    const day = date._d.getDate();
-    const month = date._d.getMonth();
-    const year = date._d.getFullYear();
-    const monthDay = date._d.getDay();
 
     requests
       .put('/transaction', {
@@ -97,10 +84,6 @@ function TransactionAddModal({
         amount,
         selectedCategories,
         date,
-        day,
-        month,
-        year,
-        monthDay,
         type,
       })
       .then(res => {
@@ -262,7 +245,7 @@ const mapStateToProps = state => {
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
     currentPage: state.transactionReducer.currentPage,
     editingTransaction: state.transactionReducer.editingTransaction,
-    dateRange: state.transactionReducer.dateRange
+    dateRange: state.transactionReducer.dateRange,
   };
 };
 

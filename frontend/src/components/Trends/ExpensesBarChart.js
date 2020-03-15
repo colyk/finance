@@ -9,9 +9,11 @@ export default function ExpensesBarChart(props) {
   }
 
   props.transactions.forEach(transaction => {
-    let amount = data[transaction.day - 1].amount + transaction.amount;
-    data.splice(transaction.day - 1, 1, {
-      day: transaction.day,
+    let day = parseInt(formatDate(transaction.date, 'DD'));
+    let amount = data[day - 1].amount + transaction.amount;
+
+    data.splice(day - 1, 1, {
+      day: day,
       amount: amount,
       title: transaction.title,
       categories: transaction.categories,

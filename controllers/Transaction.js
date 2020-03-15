@@ -17,11 +17,7 @@ createTransaction = (req, res) => {
     amount: body.amount,
     date: body.date,
     type: body.type,
-    categories: body.selectedCategories,
-    year: body.year,
-    month: body.month, //January is 0
-    day: body.day,
-    monthDay: body.monthDay //Sanday is 0 and Monday is 1
+    categories: body.selectedCategories
   }, (err) => {
     if (err) {
       console.log(err)
@@ -81,10 +77,6 @@ updateTransaction = async (req, res) => {
     result.date = body.date;
     result.type = body.type;
     result.categories = body.selectedCategories;
-    result.year = body.year;
-    result.month = body.month;
-    result.day = body.day;
-    result.monthDay = body.monthDay;
 
     await result.save();
     return res.status(200).json();
