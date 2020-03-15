@@ -7,6 +7,9 @@ const Analytic = require('../controllers/Analytic');
 
 const Validator = require('../controllers/Validator');
 
+// POST, UPDATE - uses req.body
+// GET, DELETE - uses req.query
+
 function addUserRoutes(app) {
   app.post('/login', User.checkUser);
   app.post('/signup', User.createUser);

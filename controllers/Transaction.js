@@ -2,7 +2,7 @@ const Transaction = require('../models/Transaction');
 const { validationResult } = require('express-validator');
 
 createTransaction = (req, res) => {
-  const userId = req.session.userId || req.query.api_key;
+  const userId = req.session.userId || req.body.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
@@ -58,7 +58,7 @@ getAllTransactions = async (req, res) => {
 }
 
 updateTransaction = async (req, res) => {
-  const userId = req.session.userId || req.query.api_key;
+  const userId = req.session.userId || req.body.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
