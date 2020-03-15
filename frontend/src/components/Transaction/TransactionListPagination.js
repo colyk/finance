@@ -10,7 +10,7 @@ const ListPagination = props => {
   const range = [];
   for (let i = 1; i <= PageCount; i++) range.push(i);
 
-  const onClickPage = page => props.onSetPage(page, props.transactionsCountPerPage);
+  const onClickPage = page => props.onSetPage(page, props.transactionsCountPerPage, props.dateRange);
 
   return (
     <nav>

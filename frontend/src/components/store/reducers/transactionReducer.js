@@ -12,6 +12,10 @@ const initialState = {
   transactionsCount: null,
   currentPage: 1,
   editingTransaction: null,
+  dateRange: {
+    from: null,
+    to: null
+  }
 };
 
 function transactionReducer(state = initialState, action) {
@@ -29,6 +33,10 @@ function transactionReducer(state = initialState, action) {
       transactionsCount: action.payload.count,
       currentPage: action.payload.currentPage,
       transactionsCountPerPage: action.payload.countPerPage,
+      dateRange: {
+        from: action.payload.dateRange.from,
+        to: action.payload.dateRange.to
+      }
     };
 
   if (action.type === UPDATE_TRANSACTIONS)

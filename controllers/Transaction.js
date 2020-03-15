@@ -36,14 +36,21 @@ getAllTransactions = async (req, res) => {
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  const count = await Transaction.count({ user_id: userId });
   const transactionsCountPerPage = parseInt(req.query.count);
   let page = parseInt(req.query.page);
+  const from = req.query.from;
+  const to = req.query.to;
 
-  if (page < 1 || count <= transactionsCountPerPage) page = 1;
+  let find = { user_id: userId };
+  if (from !== 'null' && to === 'null') find = { user_id: userId, date: { '$gte': from } };
+  if (from === 'null' && to !== 'null') find = { user_id: userId, date: { '$lte': to } };
+  if (from !== 'null' && to !== 'null') find = { user_id: userId, date: { '$gte': from, '$lte': to } };
+
+  const count = await Transaction.count(find);
   if (page > Math.ceil(count / transactionsCountPerPage)) page--;
-
-  const transactions = await Transaction.find({ user_id: userId })
+  if (page < 1 || count <= transactionsCountPerPage) page = 1;
+  console.log(page)
+  const transactions = await Transaction.find(find)
     .skip((transactionsCountPerPage * page) - transactionsCountPerPage)
     .sort({ date: -1 })
     .limit(transactionsCountPerPage);

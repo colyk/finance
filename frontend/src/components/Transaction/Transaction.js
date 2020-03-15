@@ -11,10 +11,10 @@ import TransactionAddModal from './TransactionAddModal';
 
 import '../../styles/transaction.css';
 
-function Transaction({ transactionsCountPerPage, currentPage, transactionsCount, fetchTransactions, fetchCategories, toggleAddTransactionModal }) {
+function Transaction({ transactionsCountPerPage, currentPage, transactionsCount, fetchTransactions, fetchCategories, toggleAddTransactionModal, dateRange }) {
 
   useEffect(() => {
-    fetchTransactions(currentPage, transactionsCountPerPage);
+    fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
   }, [fetchTransactions, currentPage, transactionsCountPerPage]);
 
   useEffect(() => {
@@ -31,13 +31,15 @@ function Transaction({ transactionsCountPerPage, currentPage, transactionsCount,
         onShowTransactionAddModalClick={onShowTransactionAddModalClick}
         transactionsCountPerPage={transactionsCountPerPage}
         onSetCountPerPage={fetchTransactions}
-        currentPage={currentPage} />
+        currentPage={currentPage}
+        dateRange={dateRange} />
       <TransactionsView />
       <TransactionListPagination
         transactionsCount={transactionsCount}
         transactionsCountPerPage={transactionsCountPerPage}
         onSetPage={fetchTransactions}
-        currentPage={currentPage} />
+        currentPage={currentPage}
+        dateRange={dateRange} />
       <TransactionAddModal />
     </div>
   );
@@ -49,14 +51,15 @@ const mapStateToProps = (state) => {
     transactions: state.transactionReducer.transactions,
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
     transactionsCount: state.transactionReducer.transactionsCount,
-    currentPage: state.transactionReducer.currentPage
+    currentPage: state.transactionReducer.currentPage,
+    dateRange: state.transactionReducer.dateRange
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
-    fetchTransactions: (currentPage, transactionsCountPerPage) => dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) => dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
     fetchCategories: () => dispatch(fetchCategories())
   };
 }

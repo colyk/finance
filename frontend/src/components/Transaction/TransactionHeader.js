@@ -2,7 +2,7 @@ import React from 'react'
 
 const TransactionHeader = props => {
 
-  const setCountPerPage = count => props.onSetCountPerPage(props.currentPage, count);
+  const setCountPerPage = count => props.onSetCountPerPage(props.currentPage, count, props.dateRange);
   const transactionsPerPage = [5, 10, 15, 20, 25];
 
   return (

@@ -22,10 +22,10 @@ export function resetUpdateTransactions() {
   return { type: RESET_UPDATED_TRANSACTIONS };
 }
 
-export function fetchTransactions(currentPage, countPerPage) {
+export function fetchTransactions(currentPage, countPerPage, dateRange) {
   return dispatch => {
     return requests
-      .get('/transaction?page=' + currentPage + '&count=' + countPerPage)
+      .get('/transaction?page=' + currentPage + '&count=' + countPerPage + '&from=' + dateRange.from + '&to=' + dateRange.to)
       .then(res => {
         dispatch(
           getTransactions({
@@ -33,6 +33,10 @@ export function fetchTransactions(currentPage, countPerPage) {
             count: res.data.count,
             currentPage: currentPage,
             countPerPage: countPerPage,
+            dateRange: {
+              from: dateRange.from,
+              to: dateRange.to,
+            }
           })
         );
       })

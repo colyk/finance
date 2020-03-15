@@ -19,6 +19,7 @@ function TransactionAddModal({
   toggleAddTransactionModal,
   editingTransaction,
   resetUpdateTransactions,
+  dateRange
 }) {
   const [loading, toggleLoading] = useState(false);
   const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
@@ -71,7 +72,7 @@ function TransactionAddModal({
         type,
       })
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage);
+        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
         closeModal();
       })
       .catch(e => {
@@ -103,7 +104,7 @@ function TransactionAddModal({
         type,
       })
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage);
+        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
         closeModal();
       })
       .catch(e => {
@@ -261,14 +262,15 @@ const mapStateToProps = state => {
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
     currentPage: state.transactionReducer.currentPage,
     editingTransaction: state.transactionReducer.editingTransaction,
+    dateRange: state.transactionReducer.dateRange
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
-    fetchTransactions: (currentPage, transactionsCountPerPage) =>
-      dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) =>
+      dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
     resetUpdateTransactions: () => dispatch(resetUpdateTransactions()),
   };
 }

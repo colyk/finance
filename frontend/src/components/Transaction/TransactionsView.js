@@ -18,18 +18,22 @@ const TransactionsView = ({
   fetchTransactions,
   toggleAddTransactionModal,
   updateTransactions,
+  dateRange
 }) => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(dateRange.from);
+  const [endDate, setEndDate] = useState(dateRange.to);
+  const [loading, toggleLoading] = useState(false);
 
   const handleDatesChange = ({ startDate, endDate }) => {
     setStartDate(startDate);
     setEndDate(endDate);
+    fetchTransactions(currentPage, transactionsCountPerPage, { from: startDate, to: endDate });
   };
 
   const cleaningDatesChange = () => {
     setStartDate(null);
     setEndDate(null);
+    fetchTransactions(currentPage, transactionsCountPerPage, { from: null, to: null });
   };
 
   const onEditClick = id => {
@@ -38,21 +42,22 @@ const TransactionsView = ({
   };
 
   const deleteTransaction = id => {
+    toggleLoading(true);
     requests
       .delete('/transaction', { params: { _id: id } })
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage);
+        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
       })
       .catch(e => {
         console.log(e);
       })
-      .finally();
+      .finally(() => toggleLoading(false));
   };
 
   return (
-    <div className="table-transactions">
+    <div className={`table-transactions ${loading ? 'loading' : ''}`}>
       {transactions ? (
-        <table className="table table-striped table-hover">
+        <table className={`table table-striped table-hover ${loading ? 'd-hide' : ''}`}>
           <thead>
             <tr className="active">
               <th>Title</th>
@@ -111,13 +116,14 @@ const mapStateToProps = state => {
     transactions: state.transactionReducer.transactions,
     transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
     currentPage: state.transactionReducer.currentPage,
+    dateRange: state.transactionReducer.dateRange
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchTransactions: (currentPage, transactionsCountPerPage) =>
-      dispatch(fetchTransactions(currentPage, transactionsCountPerPage)),
+    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) =>
+      dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
     updateTransactions: payload => dispatch(updateTransactions(payload)),
   };
