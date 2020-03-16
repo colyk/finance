@@ -9,8 +9,7 @@ createCategory = (req, res) => {
   Category.create({
     user_id: userId,
     type: body.type,
-    color: body.color,
-    background: body.background
+    color: body.color
   }, (err) => {
     if (err) {
       console.log(err)
@@ -65,7 +64,6 @@ updateCategory = (req, res) => {
 
     doc.type = body.type;
     doc.color = body.color;
-    doc.background = body.background;
     await doc.save();
     return res.status(200).json();
   });

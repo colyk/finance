@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../store/actions/index';
-
+import { contrastTextColor } from '../utils';
 import { TwitterPicker } from 'react-color';
+import CategoryChip from '../CategoryChip';
 
 import requests from '../../requests';
 
@@ -29,12 +30,12 @@ const Category = ({ categories, fetchCategories }) => {
               onCategoryCreate={onCategoryCreate}
             />
           ) : (
-            <CategoryCreateForm onCategoryCreate={onCategoryCreate} />
-          )}
+              <CategoryCreateForm onCategoryCreate={onCategoryCreate} />
+            )}
         </div>
         <div className="column my-2 col-5 col-mx-auto col-md-10">
-          {categories.map(category => (
-            <CategoryChip category={category} onCategorySelect={setCategory} key={category._id} />
+          {categories.map((category, index) => (
+            <CategoryChip id={category._id} onSpanClick={setCategory} key={index} />
           ))}
         </div>
       </div>
@@ -43,24 +44,21 @@ const Category = ({ categories, fetchCategories }) => {
 };
 
 const CategoryCreateForm = ({ onCategoryCreate }) => {
-  const DEFAULT_COLOR = '#ffffff';
-  const DEFAULT_BACKGROUND = '#ff6900';
+  const DEFAULT_COLOR = '#ff6900';
 
   const [type, setType] = useState('');
   const [color, setColor] = useState(DEFAULT_COLOR);
-  const [background, setBackground] = useState(DEFAULT_BACKGROUND);
   const [loading, setLoading] = useState(false);
 
   const onCreateClick = () => {
     setLoading(true);
     const upperType = type.toLowerCase();
     requests
-      .post('/category', { type: upperType, color, background })
+      .post('/category', { type: upperType, color })
       .then(() => {
         onCategoryCreate();
         setType('');
         setColor(DEFAULT_COLOR);
-        setBackground(DEFAULT_BACKGROUND);
         setLoading(false);
       })
       .catch(console.log);
@@ -69,7 +67,7 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
   return (
     <div
       className={`panel ${loading ? 'loading' : ''}`}
-      style={{ boxShadow: `inset 0px 8px 0px 0px ${color}` }}
+      style={{ boxShadow: `inset 0px 8px 0px 0px ${contrastTextColor(color)}` }}
     >
       <div className="panel-body mt-2">
         <div className="tile tile-centered mt-2">
@@ -91,10 +89,9 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
               <TwitterPicker
                 width={'100%'}
                 triangle={'hide'}
-                color={background}
+                color={color}
                 onChange={color => {
-                  setColor(contrastTextColor(color.hex));
-                  setBackground(color.hex);
+                  setColor(color.hex);
                 }}
               />
             </div>
@@ -115,13 +112,11 @@ const CategoryCreateForm = ({ onCategoryCreate }) => {
 const CategoryEditForm = ({ category, onCategoryCreate }) => {
   const [newType, setNewType] = useState(category.type);
   const [newColor, setNewColor] = useState(category.color);
-  const [newBackground, setNewBackground] = useState(category.background);
   const [typeError, setTypeError] = useState('');
 
   useEffect(() => {
     setNewType(category.type);
     setNewColor(category.color);
-    setNewBackground(category.background);
     setTypeError('');
   }, [category]);
 
@@ -147,8 +142,7 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
       .put('/category', {
         oldType: category.type,
         type: upperType,
-        color: newColor,
-        background: newBackground,
+        color: newColor
       })
       .then(() => {
         setLoading(false);
@@ -174,7 +168,7 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
   return (
     <div
       className={`panel ${loading ? 'loading' : ''}`}
-      style={{ boxShadow: `inset 0px 8px 0px 0px ${newColor}` }}
+      style={{ boxShadow: `inset 0px 8px 0px 0px ${contrastTextColor(newColor)}` }}
     >
       <div className="panel-body mt-2">
         <div className="tile tile-centered mt-2">
@@ -197,10 +191,9 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
               <TwitterPicker
                 width={'100%'}
                 triangle={'hide'}
-                color={newBackground}
+                color={newColor}
                 onChange={color => {
-                  setNewColor(contrastTextColor(color.hex));
-                  setNewBackground(color.hex);
+                  setNewColor(color.hex);
                 }}
               />
             </div>
@@ -220,11 +213,11 @@ const CategoryEditForm = ({ category, onCategoryCreate }) => {
     </div>
   );
 };
-
+/*
 const CategoryChip = ({ category, onCategorySelect }) => {
   const style = {
-    backgroundColor: category.background,
-    color: category.color,
+    backgroundColor: category.color,
+    color: contrastTextColor(category.color)
   };
 
   return (
@@ -232,23 +225,7 @@ const CategoryChip = ({ category, onCategorySelect }) => {
       {category.type}
     </span>
   );
-};
-
-function contrastTextColor(bgColor) {
-  const nThreshold = 105;
-  const components = getRGBComponents(bgColor);
-  const bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
-
-  return 255 - bgDelta < nThreshold ? '#000000' : '#ffffff';
-}
-
-function getRGBComponents(color) {
-  return {
-    R: parseInt(color.substring(1, 3), 16),
-    G: parseInt(color.substring(3, 5), 16),
-    B: parseInt(color.substring(5, 7), 16),
-  };
-}
+};*/
 
 const mapStateToProps = state => {
   return {

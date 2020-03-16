@@ -8,6 +8,7 @@ import {
   resetUpdateTransactions,
 } from '../store/actions/actionTransaction';
 import SingleDatePicker from '../DatePickers/SingleDatePicker';
+import CategoryChip from '../CategoryChip';
 import { nowMoment, formatMoment } from '../utils';
 
 function TransactionAddModal({
@@ -99,8 +100,7 @@ function TransactionAddModal({
   const onCategorySelect = (type, categories) => {
     if (!type) return;
     let item = categories.find(category => category.type === type);
-    let category = { type: type, background: item.background, color: item.color };
-    selectedCategories.push(category);
+    selectedCategories.push({ _id: item._id });
     setSelectedCategories(selectedCategories);
     setSelectedCategoryCount(selectedCategoryCount + 1);
   };
@@ -165,18 +165,11 @@ function TransactionAddModal({
                 Categories
                 {selectedCategories.length > 0 &&
                   selectedCategories.map((category, index) => (
-                    <div
-                      className="chip"
-                      style={{ backgroundColor: category.background, color: category.color }}
+                    <CategoryChip
+                      id={category._id}
                       key={index}
-                    >
-                      {category.type}
-                      <button
-                        className="btn btn-clear"
-                        aria-label="Close"
-                        onClick={() => deleteCategory(index)}
-                      ></button>
-                    </div>
+                      onButtonClick={() => deleteCategory(index)}
+                    />
                   ))}
               </label>
               <select
@@ -188,11 +181,7 @@ function TransactionAddModal({
                 <option value="">Choose a category</option>
                 {categories &&
                   categories.map((category, index) => (
-                    <option
-                      value={category.type}
-                      style={{ backgroundColor: category.background, color: category.color }}
-                      key={index}
-                    >
+                    <option value={category.type} key={index}>
                       {category.type}
                     </option>
                   ))}

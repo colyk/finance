@@ -1,4 +1,5 @@
 import React from 'react';
+import CategoryChip from '../CategoryChip';
 import { currencyIntl, formatDate } from '../utils';
 
 const TransactionList = props => {
@@ -10,7 +11,7 @@ const TransactionList = props => {
       <td>{title}</td>
       <td className="hide-sm">
         {categories &&
-          categories.map((category, index) => <CategoryChip category={category} key={index} />)}
+          categories.map((category, index) => <CategoryChip id={category._id} key={index} />)}
       </td>
       <td>{currencyIntl(amount)}</td>
       <td>{formatDate(date, 'DD.MM.YYYY')}</td>
@@ -21,9 +22,7 @@ const TransactionList = props => {
             <div className="card-header">
               {title}
               {categories &&
-                categories.map((category, index) => (
-                  <CategoryChip category={category} key={index} />
-                ))}
+                categories.map((category, index) => <CategoryChip id={category._id} key={index} />)}
             </div>
             <div className="card-body">
               {currencyIntl(amount)} - {formatDate(date, 'DD.MM.YYYY')} ({formatDate(date, 'dddd')})
@@ -41,20 +40,6 @@ const TransactionList = props => {
       </td>
     </tr>
   ));
-};
-
-const CategoryChip = ({ category }) => {
-  const style = {
-    backgroundColor: category.background,
-    color: category.color,
-  };
-
-  return (
-    <span className="chip" style={style}>
-      {' '}
-      {category.type}
-    </span>
-  );
 };
 
 export default TransactionList;

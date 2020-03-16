@@ -7,15 +7,11 @@ const categorySchema = new db.Schema({
   },
   type: {
     type: String,
-    required: true,
+    required: true
   },
   color: {
     type: String,
-    required: true,
-  },
-  background: {
-    type: String,
-    required: true,
+    required: true
   }
 });
 

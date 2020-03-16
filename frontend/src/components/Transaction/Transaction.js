@@ -14,12 +14,12 @@ import '../../styles/transaction.css';
 function Transaction({ transactionsCountPerPage, currentPage, transactionsCount, fetchTransactions, fetchCategories, toggleAddTransactionModal, dateRange }) {
 
   useEffect(() => {
-    fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
-  }, [fetchTransactions, currentPage, transactionsCountPerPage]);
-
-  useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+  
+  useEffect(() => {
+    fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
+  }, [fetchTransactions, currentPage, transactionsCountPerPage]);
 
   const onShowTransactionAddModalClick = () => {
     toggleAddTransactionModal(true);

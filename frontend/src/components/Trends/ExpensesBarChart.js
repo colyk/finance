@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CategoryChip from '../CategoryChip';
 import { currencyIntl, formatDate, nowMoment, _moment } from '../utils';
 
 export default function ExpensesBarChart(props) {
@@ -73,23 +74,9 @@ const CustomTooltip = ({ active, payload }) => {
       <div>
         {payload[0].payload.categories &&
           payload[0].payload.categories.map((category, index) => (
-            <CategoryChip category={category} key={index} />
+            <CategoryChip id={category._id} key={index} />
           ))}
       </div>
     </div>
   ) : null;
-};
-
-const CategoryChip = ({ category }) => {
-  const style = {
-    backgroundColor: category.background,
-    color: category.color,
-  };
-
-  return (
-    <span className="chip" style={style}>
-      {' '}
-      {category.type}
-    </span>
-  );
 };
