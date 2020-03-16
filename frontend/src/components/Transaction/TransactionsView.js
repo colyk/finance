@@ -8,6 +8,7 @@ import {
   fetchTransactions,
   toggleAddTransactionModal,
   updateTransactions,
+  setDateRange,
 } from '../store/actions/actionTransaction';
 import DateRangePicker from '../DatePickers/DateRangePicker';
 
@@ -17,6 +18,7 @@ const TransactionsView = ({
   toggleAddTransactionModal,
   updateTransactions,
   dateRange,
+  setDateRange,
 }) => {
   const [startDate, setStartDate] = useState(dateRange.from);
   const [endDate, setEndDate] = useState(dateRange.to);
@@ -25,13 +27,13 @@ const TransactionsView = ({
   const handleDatesChange = ({ startDate, endDate }) => {
     setStartDate(startDate);
     setEndDate(endDate);
-    fetchTransactions();
+    setDateRange({ from: startDate, to: endDate });
   };
 
   const cleaningDatesChange = () => {
     setStartDate(null);
     setEndDate(null);
-    fetchTransactions();
+    setDateRange({ from: startDate, to: endDate });
   };
 
   const onEditClick = id => {
@@ -121,6 +123,7 @@ function mapDispatchToProps(dispatch) {
     fetchTransactions: () => dispatch(fetchTransactions()),
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
     updateTransactions: payload => dispatch(updateTransactions(payload)),
+    setDateRange: dateRange => dispatch(setDateRange({ dateRange })),
   };
 }
 

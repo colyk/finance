@@ -4,6 +4,7 @@ import {
   UPDATE_TRANSACTIONS,
   SET_PAGINATION_META,
   RESET_UPDATED_TRANSACTIONS,
+  SET_DATE_RANGE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -33,6 +34,12 @@ function transactionReducer(state = initialState, action) {
     };
 
   if (action.type === SET_PAGINATION_META)
+    return {
+      ...state,
+      ...action.payload,
+    };
+
+  if (action.type === SET_DATE_RANGE)
     return {
       ...state,
       ...action.payload,

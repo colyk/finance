@@ -232,7 +232,6 @@ const mapStateToProps = state => {
     categories: state.rootReducer.categories,
     showAddTransactionModal: state.transactionReducer.showAddTransactionModal,
     editingTransaction: state.transactionReducer.editingTransaction,
-    dateRange: state.transactionReducer.dateRange,
   };
 };
 

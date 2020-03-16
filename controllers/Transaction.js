@@ -18,7 +18,9 @@ createTransaction = (req, res) => {
       console.log(err)
       return res.status(400).json({ error: 'Transaction not created' });
     }
-    Budget.findOne({ user_id: userId, _id: body.budget_id }, async function (_, budget) {
+    Budget.findOne({ user_id: userId, _id: body.budget_id }, async function (err, budget) {
+      if (err || !budget)
+        return;
       budget.incomes.push(transaction._id);
       await budget.save();
     });
@@ -37,9 +39,9 @@ getAllTransactions = async (req, res) => {
   const to = req.query.to;
 
   let find = { user_id: userId };
-  if (from !== 'null' && to === 'null') find = { user_id: userId, date: { '$gte': from } };
-  if (from === 'null' && to !== 'null') find = { user_id: userId, date: { '$lte': to } };
-  if (from !== 'null' && to !== 'null') find = { user_id: userId, date: { '$gte': from, '$lte': to } };
+  if (from && !to) find = { user_id: userId, date: { '$gte': from } };
+  if (!from && to) find = { user_id: userId, date: { '$lte': to } };
+  if (from && to) find = { user_id: userId, date: { '$gte': from, '$lte': to } };
 
   const count = await Transaction.count(find);
   if (page > Math.ceil(count / transactionsCountPerPage)) page--;

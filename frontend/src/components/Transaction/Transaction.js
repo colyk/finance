@@ -11,7 +11,7 @@ import TransactionAddModal from './TransactionAddModal';
 
 import '../../styles/transaction.css';
 
-function Transaction({ countPerPage, currentPage, fetchTransactions, fetchCategories }) {
+function Transaction({ countPerPage, currentPage, dateRange, fetchTransactions, fetchCategories }) {
   useEffect(() => {
     fetchTransactions();
   }, [fetchTransactions, currentPage, countPerPage]);
@@ -22,7 +22,7 @@ function Transaction({ countPerPage, currentPage, fetchTransactions, fetchCatego
 
   useEffect(() => {
     fetchTransactions();
-  }, [fetchTransactions, currentPage, countPerPage]);
+  }, [fetchTransactions, currentPage, countPerPage, dateRange.from, dateRange.to]);
 
   return (
     <div>
@@ -38,6 +38,7 @@ const mapStateToProps = state => {
   return {
     countPerPage: state.transactionReducer.countPerPage,
     currentPage: state.transactionReducer.currentPage,
+    dateRange: state.transactionReducer.dateRange,
   };
 };
 

@@ -4,9 +4,9 @@ import {
   UPDATE_TRANSACTIONS,
   SET_PAGINATION_META,
   RESET_UPDATED_TRANSACTIONS,
+  SET_DATE_RANGE,
 } from '../constants/actionTypes';
 import requests from '../../../requests';
-import analyticReducer from '../reducers/analyticReducer';
 
 export function toggleAddTransactionModal(payload) {
   return { type: SHOW_TRANSACTION_MODAL, payload };
@@ -14,6 +14,10 @@ export function toggleAddTransactionModal(payload) {
 
 export function setPaginationMeta(payload) {
   return { type: SET_PAGINATION_META, payload };
+}
+
+export function setDateRange(payload) {
+  return { type: SET_DATE_RANGE, payload };
 }
 
 export function getTransactions(payload) {
@@ -31,12 +35,12 @@ export function resetUpdateTransactions() {
 export function fetchTransactions() {
   return (dispatch, getState) => {
     const reducer = getState().transactionReducer;
-    const dateRange = analyticReducer.dateRange || {};
+    const dateRange = reducer.dateRange;
     const params = {
       page: reducer.currentPage,
       count: reducer.countPerPage,
-      from: dateRange.from,
-      to: dateRange.to,
+      from: (dateRange.from || null) && dateRange.from.valueOf(),
+      to: (dateRange.to || null) && dateRange.to.valueOf(),
     };
     return requests
       .get('/transaction', { params })
