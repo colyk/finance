@@ -78,7 +78,7 @@ function BudgetAddModal({ showAddBudgetModal, fetchBudgets, toggleAddBudgetModal
     <div>
       <div className={`modal ${showAddBudgetModal ? 'active' : ''}`}>
         <div className="modal-overlay" onClick={closeModal} />
-        <div className={`modal-container ${loading ? 'loading' : ''}`} role="document">
+        <div className={`modal-container ${loading ? 'loading' : ''}`}>
           <div className="modal-header">
             <div className="modal-title h5">Budget creating form</div>
           </div>

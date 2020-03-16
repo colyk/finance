@@ -1,6 +1,6 @@
 import requests from '../../../requests';
 
-import { GET_ANALYTICS } from '../constants/action-types';
+import { GET_ANALYTICS } from '../constants/actionTypes';
 
 export function getAnalytics(payload) {
   return { type: GET_ANALYTICS, payload };

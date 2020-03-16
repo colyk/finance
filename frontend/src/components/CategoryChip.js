@@ -4,6 +4,7 @@ import { contrastTextColor } from './utils';
 
 function CategoryChip({ categories, id, onSpanClick, onButtonClick }) {
   const item = categories.find(category => category._id === id);
+  if (!item) return null;
   const style = {
     backgroundColor: item.color,
     color: contrastTextColor(item.color),

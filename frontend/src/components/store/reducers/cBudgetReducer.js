@@ -1,4 +1,8 @@
-import { SHOW_MODAL, UPDATE_BUDGET, RESET_UPDATED_BUDGET } from '../constants/action-types';
+import {
+  SHOW_ADD_BUDGET_MODAL,
+  UPDATE_BUDGET,
+  RESET_UPDATED_BUDGET,
+} from '../constants/actionTypes';
 
 const initialState = {
   showAddBudgetModal: false,
@@ -6,7 +10,7 @@ const initialState = {
 };
 
 function cBudgetReducer(state = initialState, { type, payload }) {
-  if (type === SHOW_MODAL)
+  if (type === SHOW_ADD_BUDGET_MODAL)
     return Object.assign({}, state, {
       showAddBudgetModal: payload,
     });

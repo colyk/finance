@@ -1,9 +1,13 @@
-import { SHOW_MODAL, UPDATE_BUDGET, RESET_UPDATED_BUDGET } from '../constants/action-types';
+import {
+  SHOW_ADD_BUDGET_MODAL,
+  UPDATE_BUDGET,
+  RESET_UPDATED_BUDGET,
+} from '../constants/actionTypes';
 
 import requests from '../../../requests';
 
 export function toggleAddBudgetModal(payload) {
-  return { type: SHOW_MODAL, payload };
+  return { type: SHOW_ADD_BUDGET_MODAL, payload };
 }
 
 export function updateBudget(payload) {
@@ -18,7 +22,5 @@ export function putBudget(oldName) {
   return (dispatch, getState) => {
     const updatedBudget = getState().cBudgetReducer.updatedBudget;
     return requests.put('/budget', { ...updatedBudget, oldName });
-    // .then((response) => { dispatch(updateBudgets(response.data.budgets)) })
-    // .catch((error) => { throw error })
   };
 }

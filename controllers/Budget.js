@@ -1,16 +1,22 @@
 const Budget = require('../models/Budget');
+const Transaction = require('../models/Transaction');
 const { validationResult } = require('express-validator');
 
-getUserBudgets = (req, res) => {
+getUserBudgets = async (req, res) => {
   const userId = req.session.userId || req.query.api_key;
   if (!userId)
     return res.status(400).json({ error: "User is not logged in" });
 
-  Budget.find({ user_id: userId }, (err, budgets) => {
+  Budget.find({ user_id: userId }, async (err, budgets) => {
     if (err || !budgets)
       return res.status(200).json({ error: "User has not any budgets" });
 
-    return res.status(200).json({ budgets });
+    for (let i = 0; i < budgets.length; i++) {
+      let transactions = await Transaction.find().where('_id').in(budgets[i].incomes);
+      budgets[i].incomes = transactions;
+    }
+
+    res.status(200).json({ budgets });
   });
 }
 

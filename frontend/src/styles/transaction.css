@@ -19,7 +19,6 @@
 .table-transactions tbody {
     height: 65vh;
     overflow: auto;
-    border-radius: 10px;
 }
 
 .table-transactions tbody tr td,

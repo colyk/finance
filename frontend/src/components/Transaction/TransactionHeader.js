@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
+import { connect } from 'react-redux';
+import { toggleAddTransactionModal, setPaginationMeta } from '../store/actions/actionTransaction';
 
 const TransactionHeader = props => {
-
-  const setCountPerPage = count => props.onSetCountPerPage(props.currentPage, count, props.dateRange);
   const transactionsPerPage = [5, 10, 15, 20, 25];
 
   return (
@@ -10,25 +10,34 @@ const TransactionHeader = props => {
       <button
         className="btn btn-action s-circle tooltip tooltip-left"
         data-tooltip="Add transaction"
-        onClick={props.onShowTransactionAddModalClick}>
+        onClick={props.showAddTransactionModal}
+      >
         <i className="icon icon-plus"></i>
       </button>
       <div className="transaction-select">
         <select
           className="form-select"
-          data-tooltip="Transations per page"
+          data-tooltip="Transactions per page"
           id="select-page-count"
-          onChange={e => setCountPerPage(e.target.value)}
-          value={props.transactionsCountPerPage}>
-          {
-            transactionsPerPage.map(i => (
-              <option key={i} value={i}>{i}</option>
-            ))
-          }
+          onChange={e => props.setCountPerPage(parseInt(e.target.value))}
+          value={props.countPerPage}
+        >
+          {transactionsPerPage.map(i => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
         </select>
       </div>
     </div>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    showAddTransactionModal: () => dispatch(toggleAddTransactionModal(true)),
+    setCountPerPage: countPerPage => dispatch(setPaginationMeta({ countPerPage })),
+  };
 }
 
-export default TransactionHeader;
+export default connect(null, mapDispatchToProps)(TransactionHeader);

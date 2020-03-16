@@ -1,4 +1,5 @@
 const Transaction = require('../models/Transaction');
+const Budget = require('../models/Budget');
 const { validationResult } = require('express-validator');
 
 createTransaction = (req, res) => {
@@ -11,18 +12,16 @@ createTransaction = (req, res) => {
     return res.status(422).json({ errors: errors.array() });
 
   const body = req.body;
-  Transaction.create({
-    user_id: userId,
-    title: body.title,
-    amount: body.amount,
-    date: body.date,
-    type: body.type,
-    categories: body.selectedCategories
-  }, (err) => {
+  Transaction.create({ ...body, user_id: userId }, (err, transaction) => {
+
     if (err) {
       console.log(err)
       return res.status(400).json({ error: 'Transaction not created' });
     }
+    Budget.findOne({ user_id: userId, _id: body.budget_id }, async function (_, budget) {
+      budget.incomes.push(transaction._id);
+      await budget.save();
+    });
     return res.status(200).json({});
   });
 }
@@ -76,7 +75,7 @@ updateTransaction = async (req, res) => {
     result.amount = body.amount;
     result.date = body.date;
     result.type = body.type;
-    result.categories = body.selectedCategories;
+    result.categories = body.categories;
 
     await result.save();
     return res.status(200).json();

@@ -1,4 +1,4 @@
-import { GET_ANALYTICS } from '../constants/action-types';
+import { GET_ANALYTICS } from '../constants/actionTypes';
 
 const initialState = {
   monthlyExpenses: null,

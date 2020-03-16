@@ -13,12 +13,10 @@ import DateRangePicker from '../DatePickers/DateRangePicker';
 
 const TransactionsView = ({
   transactions,
-  transactionsCountPerPage,
-  currentPage,
   fetchTransactions,
   toggleAddTransactionModal,
   updateTransactions,
-  dateRange
+  dateRange,
 }) => {
   const [startDate, setStartDate] = useState(dateRange.from);
   const [endDate, setEndDate] = useState(dateRange.to);
@@ -27,13 +25,13 @@ const TransactionsView = ({
   const handleDatesChange = ({ startDate, endDate }) => {
     setStartDate(startDate);
     setEndDate(endDate);
-    fetchTransactions(currentPage, transactionsCountPerPage, { from: startDate, to: endDate });
+    fetchTransactions();
   };
 
   const cleaningDatesChange = () => {
     setStartDate(null);
     setEndDate(null);
-    fetchTransactions(currentPage, transactionsCountPerPage, { from: null, to: null });
+    fetchTransactions();
   };
 
   const onEditClick = id => {
@@ -46,7 +44,7 @@ const TransactionsView = ({
     requests
       .delete('/transaction', { params: { _id: id } })
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
+        fetchTransactions();
       })
       .catch(e => {
         console.log(e);
@@ -114,16 +112,13 @@ const TransactionsView = ({
 const mapStateToProps = state => {
   return {
     transactions: state.transactionReducer.transactions,
-    transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
-    currentPage: state.transactionReducer.currentPage,
-    dateRange: state.transactionReducer.dateRange
+    dateRange: state.transactionReducer.dateRange,
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) =>
-      dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
+    fetchTransactions: () => dispatch(fetchTransactions()),
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
     updateTransactions: payload => dispatch(updateTransactions(payload)),
   };

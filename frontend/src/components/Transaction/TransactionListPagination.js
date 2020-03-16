@@ -1,16 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { setPaginationMeta } from '../store/actions/actionTransaction';
 
-const ListPagination = props => {
-  if (props.transactionsCount <= props.transactionsCountPerPage) return null;
+const ListPagination = ({ currentPage, countPerPage, allTransactionsCount, setCurrentPage }) => {
+  if (allTransactionsCount <= countPerPage) return null;
 
-  let currentPage = parseInt(props.currentPage);
-  const PageCount = Math.ceil(props.transactionsCount / props.transactionsCountPerPage);
-  if(currentPage > PageCount) --currentPage;
+  const PageCount = Math.ceil(allTransactionsCount / countPerPage);
+  if (currentPage > PageCount) --currentPage;
 
   const range = [];
   for (let i = 1; i <= PageCount; i++) range.push(i);
 
-  const onClickPage = page => props.onSetPage(page, props.transactionsCountPerPage, props.dateRange);
+  const onClickPage = page => {
+    setCurrentPage(page);
+  };
 
   return (
     <nav>
@@ -48,4 +51,16 @@ const ListPagination = props => {
   );
 };
 
-export default ListPagination;
+const mapStateToProps = state => {
+  return {
+    allTransactionsCount: state.transactionReducer.allTransactionsCount,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setCurrentPage: currentPage => dispatch(setPaginationMeta({ currentPage })),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListPagination);

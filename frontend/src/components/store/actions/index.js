@@ -1,4 +1,4 @@
-import { SET_BUDGETS, SET_CATEGORIES, SET_ERRORS } from '../constants/action-types';
+import { SET_BUDGETS, SET_CATEGORIES, SET_ERRORS } from '../constants/actionTypes';
 
 import requests from '../../../requests';
 
@@ -9,7 +9,6 @@ export function updateBudgets(payload) {
 export function updateCategories(payload) {
   return { type: SET_CATEGORIES, payload };
 }
-
 
 export function setErrors(payload) {
   return { type: SET_ERRORS, payload };

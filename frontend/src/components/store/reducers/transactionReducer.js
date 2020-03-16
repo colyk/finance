@@ -1,25 +1,26 @@
 import {
-  SHOW_MODAL,
+  SHOW_TRANSACTION_MODAL,
   GET_TRANSACTIONS,
   UPDATE_TRANSACTIONS,
+  SET_PAGINATION_META,
   RESET_UPDATED_TRANSACTIONS,
-} from '../constants/action-types';
+} from '../constants/actionTypes';
 
 const initialState = {
   showAddTransactionModal: false,
   transactions: [],
-  transactionsCountPerPage: 10,
-  transactionsCount: null,
+  countPerPage: 10,
   currentPage: 1,
+  allTransactionsCount: 0,
   editingTransaction: null,
   dateRange: {
     from: null,
-    to: null
-  }
+    to: null,
+  },
 };
 
 function transactionReducer(state = initialState, action) {
-  if (action.type === SHOW_MODAL)
+  if (action.type === SHOW_TRANSACTION_MODAL)
     return Object.assign({}, state, {
       showAddTransactionModal: action.payload,
       categories: state.categories,
@@ -28,15 +29,13 @@ function transactionReducer(state = initialState, action) {
   if (action.type === GET_TRANSACTIONS)
     return {
       ...state,
-      showAddTransactionModal: state.showAddTransactionModal,
-      transactions: action.payload.transactions,
-      transactionsCount: action.payload.count,
-      currentPage: action.payload.currentPage,
-      transactionsCountPerPage: action.payload.countPerPage,
-      dateRange: {
-        from: action.payload.dateRange.from,
-        to: action.payload.dateRange.to
-      }
+      ...action.payload,
+    };
+
+  if (action.type === SET_PAGINATION_META)
+    return {
+      ...state,
+      ...action.payload,
     };
 
   if (action.type === UPDATE_TRANSACTIONS)

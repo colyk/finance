@@ -13,17 +13,14 @@ import { nowMoment, formatMoment } from '../utils';
 
 function TransactionAddModal({
   showAddTransactionModal,
-  transactionsCountPerPage,
-  currentPage,
   categories,
   fetchTransactions,
   toggleAddTransactionModal,
   editingTransaction,
   resetUpdateTransactions,
-  dateRange,
+  onTransactionPost,
 }) {
   const [loading, toggleLoading] = useState(false);
-  const [selectedCategoryCount, setSelectedCategoryCount] = useState(0);
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -45,27 +42,27 @@ function TransactionAddModal({
     setAmount('');
     setType('expense');
     setSelectedCategories([]);
-    setSelectedCategoryCount(0);
     setDate(nowMoment);
     toggleLoading(false);
-    toggleAddTransactionModal(false);
     if (editingTransaction) resetUpdateTransactions();
+    toggleAddTransactionModal(false);
   };
 
   const createTransaction = () => {
     toggleLoading(true);
-
+    const data = {
+      categories: selectedCategories,
+      title,
+      amount,
+      date,
+      type,
+    };
+    if (onTransactionPost) onTransactionPost(data);
     requests
-      .post('/transaction', {
-        title,
-        amount,
-        selectedCategories,
-        date,
-        type,
-      })
+      .post('/transaction', data)
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
-        closeModal();
+        fetchTransactions();
+        closeModal(res);
       })
       .catch(e => {
         console.log(e);
@@ -83,12 +80,12 @@ function TransactionAddModal({
         id,
         title,
         amount,
-        selectedCategories,
+        categories: selectedCategories,
         date,
         type,
       })
       .then(res => {
-        fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
+        fetchTransactions();
         closeModal();
       })
       .catch(e => {
@@ -97,17 +94,17 @@ function TransactionAddModal({
       .finally(() => toggleLoading(false));
   };
 
-  const onCategorySelect = (type, categories) => {
+  const onCategorySelect = e => {
+    const type = e.target.value;
     if (!type) return;
-    let item = categories.find(category => category.type === type);
-    selectedCategories.push({ _id: item._id });
-    setSelectedCategories(selectedCategories);
-    setSelectedCategoryCount(selectedCategoryCount + 1);
+
+    const category = categories.find(category => category.type === type);
+    setSelectedCategories([...selectedCategories, { _id: category._id }]);
+    Array.from(e.target.options).map(el => (el.selected = false));
   };
 
   const deleteCategory = index => {
-    selectedCategories.splice(index, 1);
-    setSelectedCategoryCount(selectedCategoryCount - 1);
+    setSelectedCategories(selectedCategories.filter((_, idx) => idx !== index));
   };
 
   return (
@@ -162,7 +159,7 @@ function TransactionAddModal({
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="select-category">
-                Categories
+                Categories:
                 {selectedCategories.length > 0 &&
                   selectedCategories.map((category, index) => (
                     <CategoryChip
@@ -175,16 +172,20 @@ function TransactionAddModal({
               <select
                 className="form-select"
                 id="select-category"
-                onChange={e => onCategorySelect(e.target.value, categories)}
+                onChange={e => onCategorySelect(e)}
                 disabled={selectedCategories.length >= 3}
               >
                 <option value="">Choose a category</option>
-                {categories &&
-                  categories.map((category, index) => (
-                    <option value={category.type} key={index}>
-                      {category.type}
-                    </option>
-                  ))}
+
+                {categories.map((category, index) => (
+                  <option
+                    value={category.type}
+                    disabled={selectedCategories.includes(category)}
+                    key={index}
+                  >
+                    {category.type}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group">
@@ -229,10 +230,7 @@ function TransactionAddModal({
 const mapStateToProps = state => {
   return {
     categories: state.rootReducer.categories,
-    transactions: state.transactionReducer.transactions,
     showAddTransactionModal: state.transactionReducer.showAddTransactionModal,
-    transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
-    currentPage: state.transactionReducer.currentPage,
     editingTransaction: state.transactionReducer.editingTransaction,
     dateRange: state.transactionReducer.dateRange,
   };
@@ -241,8 +239,8 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
   return {
     toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
-    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) =>
-      dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
+
+    fetchTransactions: () => dispatch(fetchTransactions()),
     resetUpdateTransactions: () => dispatch(resetUpdateTransactions()),
   };
 }

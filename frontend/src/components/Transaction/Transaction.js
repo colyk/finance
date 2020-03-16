@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { toggleAddTransactionModal, fetchTransactions } from '../store/actions/actionTransaction';
+import { fetchTransactions } from '../store/actions/actionTransaction';
 import { fetchCategories } from '../store/actions/index';
 
 import TransactionHeader from './TransactionHeader';
@@ -11,56 +11,40 @@ import TransactionAddModal from './TransactionAddModal';
 
 import '../../styles/transaction.css';
 
-function Transaction({ transactionsCountPerPage, currentPage, transactionsCount, fetchTransactions, fetchCategories, toggleAddTransactionModal, dateRange }) {
+function Transaction({ countPerPage, currentPage, fetchTransactions, fetchCategories }) {
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions, currentPage, countPerPage]);
 
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
-  
-  useEffect(() => {
-    fetchTransactions(currentPage, transactionsCountPerPage, dateRange);
-  }, [fetchTransactions, currentPage, transactionsCountPerPage]);
 
-  const onShowTransactionAddModalClick = () => {
-    toggleAddTransactionModal(true);
-  };
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions, currentPage, countPerPage]);
 
   return (
     <div>
-      <TransactionHeader
-        onShowTransactionAddModalClick={onShowTransactionAddModalClick}
-        transactionsCountPerPage={transactionsCountPerPage}
-        onSetCountPerPage={fetchTransactions}
-        currentPage={currentPage}
-        dateRange={dateRange} />
+      <TransactionHeader countPerPage={countPerPage} currentPage={currentPage} />
       <TransactionsView />
-      <TransactionListPagination
-        transactionsCount={transactionsCount}
-        transactionsCountPerPage={transactionsCountPerPage}
-        onSetPage={fetchTransactions}
-        currentPage={currentPage}
-        dateRange={dateRange} />
+      <TransactionListPagination countPerPage={countPerPage} currentPage={currentPage} />
       <TransactionAddModal />
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    showAddTransactionModal: state.transactionReducer.showAddTransactionModal,
-    transactions: state.transactionReducer.transactions,
-    transactionsCountPerPage: state.transactionReducer.transactionsCountPerPage,
-    transactionsCount: state.transactionReducer.transactionsCount,
+    countPerPage: state.transactionReducer.countPerPage,
     currentPage: state.transactionReducer.currentPage,
-    dateRange: state.transactionReducer.dateRange
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleAddTransactionModal: visible => dispatch(toggleAddTransactionModal(visible)),
-    fetchTransactions: (currentPage, transactionsCountPerPage, dateRange) => dispatch(fetchTransactions(currentPage, transactionsCountPerPage, dateRange)),
-    fetchCategories: () => dispatch(fetchCategories())
+    fetchTransactions: () => dispatch(fetchTransactions()),
+    fetchCategories: () => dispatch(fetchCategories()),
   };
 }
 

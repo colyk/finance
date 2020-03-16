@@ -1,9 +1,9 @@
-import { SET_BUDGETS, SET_CATEGORIES, SET_ERRORS } from '../constants/action-types';
+import { SET_BUDGETS, SET_CATEGORIES, SET_ERRORS } from '../constants/actionTypes';
 
 const initialState = {
   budgets: [],
   categories: [],
-  errors: []
+  errors: [],
 };
 
 function rootReducer(state = initialState, { type, payload = [] }) {

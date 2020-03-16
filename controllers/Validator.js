@@ -24,7 +24,7 @@ transactionValidation = () => {
     check('amount').isFloat().withMessage('Goal transaction amount is not numeric'),
     check('amount').notEmpty().withMessage('Goal transaction amount is empty'),
 
-    check('selectedCategories').notEmpty().withMessage('Select a category')
+    check('categories').notEmpty().withMessage('Select a category')
   ]
 }
 
