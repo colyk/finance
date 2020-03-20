@@ -17,6 +17,15 @@ export const contrastTextColor = color => {
   return 255 - bgDelta < nThreshold ? '#000000' : '#ffffff';
 };
 
+export const getRandomColor = () => {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (let i = 0; i < 6; ++i) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 function getRGBComponents(color) {
   return {
     R: parseInt(color.substring(1, 3), 16),

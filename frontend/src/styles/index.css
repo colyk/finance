@@ -116,6 +116,10 @@ body {
   height: 100vh;
 }
 
+option:disabled {
+  color: rgb(200, 200, 200);
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

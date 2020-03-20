@@ -32,7 +32,7 @@ function TransactionAddModal({
       setTitle(editingTransaction.title);
       setAmount(editingTransaction.amount);
       setSelectedCategories(editingTransaction.categories);
-      setDate(formatMoment(editingTransaction.date));
+      setDate(formatMoment(editingTransaction.date, ''));
       setType(editingTransaction.type);
     }
   }, [editingTransaction]);
@@ -60,9 +60,9 @@ function TransactionAddModal({
     if (onTransactionPost) onTransactionPost(data);
     requests
       .post('/transaction', data)
-      .then(res => {
+      .then(() => {
         fetchTransactions();
-        closeModal(res);
+        closeModal();
       })
       .catch(e => {
         console.log(e);
@@ -180,7 +180,7 @@ function TransactionAddModal({
                 {categories.map((category, index) => (
                   <option
                     value={category.type}
-                    disabled={selectedCategories.includes(category)}
+                    disabled={selectedCategories.map(cat => cat._id).includes(category._id)}
                     key={index}
                   >
                     {category.type}

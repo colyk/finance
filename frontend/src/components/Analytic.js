@@ -3,19 +3,27 @@ import { connect } from 'react-redux';
 
 import { currencyIntl, _moment } from './utils';
 import { fetchAnalytics } from './store/actions/actionAnalytic';
+import { fetchCategories } from './store/actions/index';
 import ExpensesBarChart from './Trends/ExpensesBarChart';
 
 import '../styles/analytic.css';
 
-function Analytic({ fetchAnalytics, monthlyExpenses, monthlyIncomes, transactionsCurrentMonth }) {
+function Analytic({
+  fetchAnalytics,
+  fetchCategories,
+  monthlyExpenses,
+  monthlyIncomes,
+  transactionsCurrentMonth,
+}) {
   const [dateRange, setdateRange] = useState({
     from: _moment().startOf('month'),
     to: _moment().endOf('month'),
   });
 
   useEffect(() => {
+    fetchCategories();
     fetchAnalytics(dateRange);
-  }, [fetchAnalytics, dateRange]);
+  }, [fetchCategories, fetchAnalytics, dateRange]);
 
   return (
     <div className="container grid-md">
@@ -61,6 +69,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchAnalytics: dateRange => dispatch(fetchAnalytics(dateRange)),
+    fetchCategories: () => dispatch(fetchCategories()),
   };
 }
 

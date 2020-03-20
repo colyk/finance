@@ -1,25 +1,30 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CategoryChip from '../CategoryChip';
-import { currencyIntl, formatDate, nowMoment, _moment } from '../utils';
+import { currencyIntl, formatDate, nowMoment, _moment, getRandomColor } from '../utils';
 
 export default function ExpensesBarChart(props) {
+  let bars = ['amount1'];
   let data = [];
+
   for (let i = 1; i <= props.chooseMonth.daysInMonth(); i++) {
-    data.push({ day: i, amount: null, title: null, categories: [], date: null });
+    data.push({ day: i, amount1: null, date: null });
   }
 
   props.transactions.forEach(transaction => {
     let day = parseInt(formatDate(transaction.date, 'DD'));
-    let amount = data[day - 1].amount + transaction.amount;
+    let bar = data[day - 1] || { day };
+    let barLength = bars.length + 1;
+    let amountItem = bars[barLength - 2];
 
-    data.splice(day - 1, 1, {
-      day: day,
-      amount: amount,
-      title: transaction.title,
-      categories: transaction.categories,
-      date: transaction.date,
-    });
+    if (data[day - 1].amount1) {
+      amountItem = amountItem.substring(0, amountItem.length - 1) + barLength;
+      bars.push(amountItem);
+    }
+
+    bar[amountItem] = transaction.amount;
+    bar['date'] = transaction.date;
+    data[day - 1] = bar;
   });
 
   return (
@@ -54,29 +59,45 @@ export default function ExpensesBarChart(props) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="day" fontSize={10} />
           <YAxis tickFormatter={currencyIntl} fontSize={10} />
-          <Tooltip content={<CustomTooltip data={data} />} />
-          <Bar dataKey="amount" fill="#8884d8" />
+          <Tooltip
+            content={<CustomTooltip data={data} bars={bars} transactions={props.transactions} />}
+          />
+          {bars.map((bar, idx) => (
+            <Bar dataKey={bar} stackId="a" fill={getRandomColor()} key={idx} />
+          ))}
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 }
 
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = ({ active, payload, transactions }) => {
+  let items = null;
+
+  if (payload[0]) {
+    items = transactions.filter(
+      transaction =>
+        parseInt(formatDate(transaction.date, 'DD')) ===
+        parseInt(formatDate(payload[0].payload.date, 'DD'))
+    );
+  }
+
   return active && payload.length ? (
     <div className="custom-tooltip">
-      <div>{payload[0].payload.title}</div>
       <div>
-        {formatDate(payload[0].payload.date, 'DD.MM.YYYY')} (
+        {formatDate(payload[0].payload.date, 'DD.MM.YYYY')}(
         {formatDate(payload[0].payload.date, 'dddd')})
       </div>
-      <div>{currencyIntl(payload[0].value)}</div>
-      <div>
-        {payload[0].payload.categories &&
-          payload[0].payload.categories.map((category, index) => (
+      {items.map(({ _id, title, amount, categories }) => (
+        <div key={_id}>
+          <div>
+            {title} - {currencyIntl(amount)}
+          </div>
+          {categories.map((category, index) => (
             <CategoryChip id={category._id} key={index} />
           ))}
-      </div>
+        </div>
+      ))}
     </div>
   ) : null;
 };

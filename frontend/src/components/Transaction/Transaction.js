@@ -13,10 +13,6 @@ import '../../styles/transaction.css';
 
 function Transaction({ countPerPage, currentPage, dateRange, fetchTransactions, fetchCategories }) {
   useEffect(() => {
-    fetchTransactions();
-  }, [fetchTransactions, currentPage, countPerPage]);
-
-  useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
 
