@@ -1,144 +1,143 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap&subset=cyrillic,latin-ext');
 body {
-  margin: 0;
-  font-family: adelle,proxima nova,helvetica neue,Helvetica,Arial,sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+    margin: 0;
+    font-family: adelle, proxima nova, helvetica neue, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
 }
 
 /* Make placeholders in Firefox more contrast */
 
 ::-moz-placeholder {
-  opacity: 1;
+    opacity: 1;
 }
 
 #root {
-  max-width: 1366px;
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 .navbar {
-  background-color: #e2e2f3;
+    background-color: #e2e2f3;
 }
 
 .navbar-menu {
-  display: block;
+    display: block;
 }
 
 .navbar-toggler {
-  display: none;
+    display: none;
 }
 
 #show, #hide {
-  flex: 5;
+    flex: 5;
 }
 
 .form_income {
-  position: absolute;
-  top: 100px;
-  right: 100px;
+    position: absolute;
+    top: 100px;
+    right: 100px;
 }
 
 .form_expense {
-  position: absolute;
-  top: 400px;
-  right: 100px;
+    position: absolute;
+    top: 400px;
+    right: 100px;
 }
 
 .tab .active {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .tile-subtitle {
-  min-height: 36px;
+    min-height: 36px;
 }
 
 .btn-error-secondary {
-  color: #e85600!important;
-  background-color: #fff!important;
+    color: #e85600 !important;
+    background-color: #fff !important;
 }
 
 .error {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  margin-top: 10px;
-  min-width: 200px;
-  text-align: center;
-  transform: translate(-50%, 0);
-  -webkit-transform: translate(-50%, 0);
-  z-index: 500;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin-top: 10px;
+    min-width: 200px;
+    text-align: center;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    z-index: 500;
 }
 
 .error .error-child {
-  margin-bottom: 2px;
-  cursor: pointer;
-  animation-name: fadeIn;
-  animation-duration: 1.25s;
-  animation-fill-mode: forwards;
-  visibility: hidden;
+    margin-bottom: 2px;
+    cursor: pointer;
+    animation-name: fadeIn;
+    animation-duration: 1.25s;
+    animation-fill-mode: forwards;
+    visibility: hidden;
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    visibility: visible;
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 .example-enter {
-  opacity: 0.01;
+    opacity: 0.01;
 }
 
 .example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 1000ms ease-in;
+    opacity: 1;
+    transition: opacity 1000ms ease-in;
 }
 
 .example-leave {
-  opacity: 1;
+    opacity: 1;
 }
 
 .example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 100ms ease-in;
+    opacity: 0.01;
+    transition: opacity 100ms ease-in;
 }
 
 .SingleDatePicker_picker, .DateRangePicker_picker {
-  z-index: 400;
+    z-index: 400;
 }
 
 .user-settings {
-  height: 100vh;
+    height: 100vh;
 }
 
 option:disabled {
-  color: rgb(200, 200, 200);
+    color: rgb(200, 200, 200);
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #e4d4e4a1;
+    background-color: #e4d4e4a1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
+    background-color: #c1c1c1;
 }
 
-::-webkit-scrollbar-track, 
+::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
-  border-radius: 7px;
-  visibility: hidden;
+    border-radius: 7px;
+    visibility: hidden;
 }
 
-::-webkit-scrollbar-track:hover, 
+::-webkit-scrollbar-track:hover,
 ::-webkit-scrollbar-thumb:hover {
-  visibility: visible;
+    visibility: visible;
 }

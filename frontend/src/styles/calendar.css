@@ -1,9 +1,9 @@
 .planer {
-	width: 100%;
-  padding: 3%;
-  overflow: auto;
+    width: 100%;
+    padding: 3%;
+    overflow: auto;
 }
 
 .planer__info {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }

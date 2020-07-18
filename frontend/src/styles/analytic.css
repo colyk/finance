@@ -1,31 +1,31 @@
 .main-anatylics {
-  background-color: #e2e2f3;
+    background-color: #e2e2f3;
 }
 
-.main-anatylics>.columns>.column {
-  padding: 10px;
-  color: blueviolet;
-  text-align: center;
+.main-anatylics > .columns > .column {
+    padding: 10px;
+    color: blueviolet;
+    text-align: center;
 }
 
 .expenses-trend {
-  height: 70vh;
-  overflow: auto;
+    height: 70vh;
+    overflow: auto;
 }
 
-.expenses-trend h5{
-  font-family: cursive;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 10px;
+.expenses-trend h5 {
+    font-family: cursive;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .monthly-expense-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .recharts-wrapper {
-  margin: 0 auto;
+    margin: 0 auto;
 }

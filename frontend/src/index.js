@@ -7,7 +7,7 @@ import './styles/index.css';
 import './styles/media.css';
 
 import store from './components/store/index';
-window.store = store; // For testing from console purpose
+window._store = store; // For testing from console purpose
 
 ReactDOM.render(
   <Provider store={store}>
